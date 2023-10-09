@@ -1,7 +1,9 @@
 package io.webfolder.cdp.sample;
 
-import static java.lang.String.format;
-import static java.net.Proxy.Type.SOCKS;
+import com.github.markusbernhardt.proxy.ProxySearch;
+import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.session.Session;
+import io.webfolder.cdp.session.SessionFactory;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -10,11 +12,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.markusbernhardt.proxy.ProxySearch;
-
-import io.webfolder.cdp.Launcher;
-import io.webfolder.cdp.session.Session;
-import io.webfolder.cdp.session.SessionFactory;
+import static java.lang.String.format;
+import static java.net.Proxy.Type.SOCKS;
 
 public class ProxyConnection {
 
@@ -24,8 +23,8 @@ public class ProxyConnection {
 
         SessionFactory factory = new SessionFactory();
         Proxy cdp4jProxy = getProxy(proxySelector,
-                                        new URI(format("http://%s:%d", factory.getHost(), factory.getPort())),
-                                        false);
+                new URI(format("http://%s:%d", factory.getHost(), factory.getPort())),
+                false);
 
         if (cdp4jProxy != null) {
             factory.setHttpClientProxy(cdp4jProxy);
@@ -44,9 +43,9 @@ public class ProxyConnection {
             String protocol = SOCKS.equals(chromeProxy.type()) ? "socks5" : "http";
             InetSocketAddress chromeProxyAddress = (InetSocketAddress) chromeProxy.address();
             arguments.add(format("--proxy-server=%s://%s:%d",
-                                protocol,
-                                chromeProxyAddress.getHostName(),
-                                chromeProxyAddress.getPort()));
+                    protocol,
+                    chromeProxyAddress.getHostName(),
+                    chromeProxyAddress.getPort()));
         }
 
         Launcher launcher = new Launcher(factory);
@@ -72,15 +71,15 @@ public class ProxyConnection {
             switch (proxy.type()) {
                 case HTTP:
                     found = proxy;
-                break;
+                    break;
                 case SOCKS:
                     if (supportSocks) {
                         found = proxy;
                     }
-                break;
+                    break;
                 default:
                     found = null;
-                break;
+                    break;
             }
         }
         return found;

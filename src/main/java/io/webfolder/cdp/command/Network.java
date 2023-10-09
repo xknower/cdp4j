@@ -1,21 +1,3 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.command;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -32,6 +14,7 @@ import io.webfolder.cdp.type.network.ErrorReason;
 import io.webfolder.cdp.type.network.GetResponseBodyForInterceptionResult;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
 import io.webfolder.cdp.type.network.RequestPattern;
+
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +27,7 @@ import java.util.Map;
 public interface Network {
     /**
      * Tells whether clearing browser cache is supported.
-     * 
+     *
      * @return True if browser cache can be cleared.
      */
     @Returns("result")
@@ -52,7 +35,7 @@ public interface Network {
 
     /**
      * Tells whether clearing browser cookies is supported.
-     * 
+     *
      * @return True if browser cookies can be cleared.
      */
     @Returns("result")
@@ -60,7 +43,7 @@ public interface Network {
 
     /**
      * Tells whether emulation of network conditions is supported.
-     * 
+     *
      * @return True if emulation of network conditions is supported.
      */
     @Returns("result")
@@ -81,38 +64,38 @@ public interface Network {
      * modifications, or blocks it, or completes it with the provided response bytes. If a network
      * fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
      * event will be sent with the same InterceptionId.
-     * 
-     * @param errorReason If set this causes the request to fail with the given reason. Passing <code>Aborted</code> for requests
-     * marked with <code>isNavigationRequest</code> also cancels the navigation. Must not be set in response
-     * to an authChallenge.
-     * @param rawResponse If set the requests completes using with the provided base64 encoded raw response, including
-     * HTTP status line and headers etc... Must not be set in response to an authChallenge.
-     * @param url If set the request url will be modified in a way that's not observable by page. Must not be
-     * set in response to an authChallenge.
-     * @param method If set this allows the request method to be overridden. Must not be set in response to an
-     * authChallenge.
-     * @param postData If set this allows postData to be set. Must not be set in response to an authChallenge.
-     * @param headers If set this allows the request headers to be changed. Must not be set in response to an
-     * authChallenge.
+     *
+     * @param errorReason           If set this causes the request to fail with the given reason. Passing <code>Aborted</code> for requests
+     *                              marked with <code>isNavigationRequest</code> also cancels the navigation. Must not be set in response
+     *                              to an authChallenge.
+     * @param rawResponse           If set the requests completes using with the provided base64 encoded raw response, including
+     *                              HTTP status line and headers etc... Must not be set in response to an authChallenge.
+     * @param url                   If set the request url will be modified in a way that's not observable by page. Must not be
+     *                              set in response to an authChallenge.
+     * @param method                If set this allows the request method to be overridden. Must not be set in response to an
+     *                              authChallenge.
+     * @param postData              If set this allows postData to be set. Must not be set in response to an authChallenge.
+     * @param headers               If set this allows the request headers to be changed. Must not be set in response to an
+     *                              authChallenge.
      * @param authChallengeResponse Response to a requestIntercepted with an authChallenge. Must not be set otherwise.
      */
     @Experimental
     void continueInterceptedRequest(String interceptionId, @Optional ErrorReason errorReason,
-            @Optional String rawResponse, @Optional String url, @Optional String method,
-            @Optional String postData, @Optional Map<String, Object> headers,
-            @Optional AuthChallengeResponse authChallengeResponse);
+                                    @Optional String rawResponse, @Optional String url, @Optional String method,
+                                    @Optional String postData, @Optional Map<String, Object> headers,
+                                    @Optional AuthChallengeResponse authChallengeResponse);
 
     /**
      * Deletes browser cookies with matching name and url or domain/path pair.
-     * 
-     * @param name Name of the cookies to remove.
-     * @param url If specified, deletes all the cookies with the given name where domain and path match
-     * provided URL.
+     *
+     * @param name   Name of the cookies to remove.
+     * @param url    If specified, deletes all the cookies with the given name where domain and path match
+     *               provided URL.
      * @param domain If specified, deletes only cookies with the exact domain.
-     * @param path If specified, deletes only cookies with the exact path.
+     * @param path   If specified, deletes only cookies with the exact path.
      */
     void deleteCookies(String name, @Optional String url, @Optional String domain,
-            @Optional String path);
+                       @Optional String path);
 
     /**
      * Disables network tracking, prevents network events from being sent to the client.
@@ -121,31 +104,31 @@ public interface Network {
 
     /**
      * Activates emulation of network conditions.
-     * 
-     * @param offline True to emulate internet disconnection.
-     * @param latency Minimum latency from request sent to response headers received (ms).
+     *
+     * @param offline            True to emulate internet disconnection.
+     * @param latency            Minimum latency from request sent to response headers received (ms).
      * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
-     * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.
-     * @param connectionType Connection type if known.
+     * @param uploadThroughput   Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.
+     * @param connectionType     Connection type if known.
      */
     void emulateNetworkConditions(Boolean offline, Double latency, Double downloadThroughput,
-            Double uploadThroughput, @Optional ConnectionType connectionType);
+                                  Double uploadThroughput, @Optional ConnectionType connectionType);
 
     /**
      * Enables network tracking, network events will now be delivered to the client.
-     * 
-     * @param maxTotalBufferSize Buffer size in bytes to use when preserving network payloads (XHRs, etc).
+     *
+     * @param maxTotalBufferSize    Buffer size in bytes to use when preserving network payloads (XHRs, etc).
      * @param maxResourceBufferSize Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
-     * @param maxPostDataSize Longest post body size (in bytes) that would be included in requestWillBeSent notification
+     * @param maxPostDataSize       Longest post body size (in bytes) that would be included in requestWillBeSent notification
      */
     void enable(@Experimental @Optional Integer maxTotalBufferSize,
-            @Experimental @Optional Integer maxResourceBufferSize,
-            @Optional Integer maxPostDataSize);
+                @Experimental @Optional Integer maxResourceBufferSize,
+                @Optional Integer maxPostDataSize);
 
     /**
      * Returns all browser cookies. Depending on the backend support, will return detailed cookie
      * information in the <code>cookies</code> field.
-     * 
+     *
      * @return Array of cookie objects.
      */
     @Returns("cookies")
@@ -153,7 +136,7 @@ public interface Network {
 
     /**
      * Returns the DER-encoded certificate.
-     * 
+     *
      * @param origin Origin to get certificate for.
      */
     @Experimental
@@ -163,9 +146,8 @@ public interface Network {
     /**
      * Returns all browser cookies for the current URL. Depending on the backend support, will return
      * detailed cookie information in the <code>cookies</code> field.
-     * 
+     *
      * @param urls The list of URLs for which applicable cookies will be fetched
-     * 
      * @return Array of cookie objects.
      */
     @Returns("cookies")
@@ -173,18 +155,16 @@ public interface Network {
 
     /**
      * Returns content served for the given request.
-     * 
+     *
      * @param requestId Identifier of the network request to get content for.
-     * 
      * @return GetResponseBodyResult
      */
     GetResponseBodyResult getResponseBody(String requestId);
 
     /**
      * Returns post data sent with the request. Returns an error when no data was sent with the request.
-     * 
+     *
      * @param requestId Identifier of the network request to get content for.
-     * 
      * @return Base64-encoded request body.
      */
     @Returns("postData")
@@ -192,9 +172,8 @@ public interface Network {
 
     /**
      * Returns content served for the given currently intercepted request.
-     * 
+     *
      * @param interceptionId Identifier for the intercepted request to get body for.
-     * 
      * @return GetResponseBodyForInterceptionResult
      */
     @Experimental
@@ -205,7 +184,6 @@ public interface Network {
      * the intercepted request can't be continued as is -- you either need to cancel it or to provide
      * the response body. The stream only supports sequential read, IO.read will fail if the position
      * is specified.
-     * 
      */
     @Experimental
     @Returns("stream")
@@ -215,7 +193,7 @@ public interface Network {
      * This method sends a new XMLHttpRequest which is identical to the original one. The following
      * parameters should be identical: method, url, async, request body, extra headers, withCredentials
      * attribute, user, password.
-     * 
+     *
      * @param requestId Identifier of XHR to replay.
      */
     @Experimental
@@ -223,22 +201,21 @@ public interface Network {
 
     /**
      * Searches for given string in response content.
-     * 
-     * @param requestId Identifier of the network response to search.
-     * @param query String to search for.
+     *
+     * @param requestId     Identifier of the network response to search.
+     * @param query         String to search for.
      * @param caseSensitive If true, search is case sensitive.
-     * @param isRegex If true, treats string parameter as regex.
-     * 
+     * @param isRegex       If true, treats string parameter as regex.
      * @return List of search matches.
      */
     @Experimental
     @Returns("result")
     List<SearchMatch> searchInResponseBody(String requestId, String query,
-            @Optional Boolean caseSensitive, @Optional Boolean isRegex);
+                                           @Optional Boolean caseSensitive, @Optional Boolean isRegex);
 
     /**
      * Blocks URLs from loading.
-     * 
+     *
      * @param urls URL patterns to block. Wildcards ('*') are allowed.
      */
     @Experimental
@@ -246,7 +223,7 @@ public interface Network {
 
     /**
      * Toggles ignoring of service worker for each request.
-     * 
+     *
      * @param bypass Bypass service worker and load from network.
      */
     @Experimental
@@ -254,43 +231,42 @@ public interface Network {
 
     /**
      * Toggles ignoring cache for each request. If <code>true</code>, cache will not be used.
-     * 
+     *
      * @param cacheDisabled Cache disabled state.
      */
     void setCacheDisabled(Boolean cacheDisabled);
 
     /**
      * Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
-     * 
-     * @param name Cookie name.
-     * @param value Cookie value.
-     * @param url The request-URI to associate with the setting of the cookie. This value can affect the
-     * default domain and path values of the created cookie.
-     * @param domain Cookie domain.
-     * @param path Cookie path.
-     * @param secure True if cookie is secure.
+     *
+     * @param name     Cookie name.
+     * @param value    Cookie value.
+     * @param url      The request-URI to associate with the setting of the cookie. This value can affect the
+     *                 default domain and path values of the created cookie.
+     * @param domain   Cookie domain.
+     * @param path     Cookie path.
+     * @param secure   True if cookie is secure.
      * @param httpOnly True if cookie is http-only.
      * @param sameSite Cookie SameSite type.
-     * @param expires Cookie expiration date, session cookie if not set
-     * 
+     * @param expires  Cookie expiration date, session cookie if not set
      * @return True if successfully set cookie.
      */
     @Returns("success")
     Boolean setCookie(String name, String value, @Optional String url, @Optional String domain,
-            @Optional String path, @Optional Boolean secure, @Optional Boolean httpOnly,
-            @Optional CookieSameSite sameSite, @Optional Double expires);
+                      @Optional String path, @Optional Boolean secure, @Optional Boolean httpOnly,
+                      @Optional CookieSameSite sameSite, @Optional Double expires);
 
     /**
      * Sets given cookies.
-     * 
+     *
      * @param cookies Cookies to be set.
      */
     void setCookies(List<CookieParam> cookies);
 
     /**
      * For testing.
-     * 
-     * @param maxTotalSize Maximum total buffer size.
+     *
+     * @param maxTotalSize    Maximum total buffer size.
      * @param maxResourceSize Maximum per-resource size.
      */
     @Experimental
@@ -298,57 +274,56 @@ public interface Network {
 
     /**
      * Specifies whether to always send extra HTTP headers with the requests from this page.
-     * 
+     *
      * @param headers Map with extra HTTP headers.
      */
     void setExtraHTTPHeaders(Map<String, Object> headers);
 
     /**
      * Sets the requests to intercept that match a the provided patterns and optionally resource types.
-     * 
+     *
      * @param patterns Requests matching any of these patterns will be forwarded and wait for the corresponding
-     * continueInterceptedRequest call.
+     *                 continueInterceptedRequest call.
      */
     @Experimental
     void setRequestInterception(List<RequestPattern> patterns);
 
     /**
      * Allows overriding user agent with the given string.
-     * 
-     * @param userAgent User agent to use.
+     *
+     * @param userAgent      User agent to use.
      * @param acceptLanguage Browser langugage to emulate.
-     * @param platform The platform navigator.platform should return.
+     * @param platform       The platform navigator.platform should return.
      */
     void setUserAgentOverride(String userAgent, @Optional String acceptLanguage,
-            @Optional String platform);
+                              @Optional String platform);
 
     /**
      * Response to Network.requestIntercepted which either modifies the request to continue with any
      * modifications, or blocks it, or completes it with the provided response bytes. If a network
      * fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
      * event will be sent with the same InterceptionId.
-     * 
      */
     @Experimental
     void continueInterceptedRequest(String interceptionId);
 
     /**
      * Deletes browser cookies with matching name and url or domain/path pair.
-     * 
+     *
      * @param name Name of the cookies to remove.
      */
     void deleteCookies(String name);
 
     /**
      * Activates emulation of network conditions.
-     * 
-     * @param offline True to emulate internet disconnection.
-     * @param latency Minimum latency from request sent to response headers received (ms).
+     *
+     * @param offline            True to emulate internet disconnection.
+     * @param latency            Minimum latency from request sent to response headers received (ms).
      * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
-     * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.
+     * @param uploadThroughput   Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.
      */
     void emulateNetworkConditions(Boolean offline, Double latency, Double downloadThroughput,
-            Double uploadThroughput);
+                                  Double uploadThroughput);
 
     /**
      * Enables network tracking, network events will now be delivered to the client.
@@ -358,7 +333,7 @@ public interface Network {
     /**
      * Returns all browser cookies for the current URL. Depending on the backend support, will return
      * detailed cookie information in the <code>cookies</code> field.
-     * 
+     *
      * @return Array of cookie objects.
      */
     @Returns("cookies")
@@ -366,10 +341,9 @@ public interface Network {
 
     /**
      * Searches for given string in response content.
-     * 
+     *
      * @param requestId Identifier of the network response to search.
-     * @param query String to search for.
-     * 
+     * @param query     String to search for.
      * @return List of search matches.
      */
     @Experimental
@@ -378,10 +352,9 @@ public interface Network {
 
     /**
      * Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
-     * 
-     * @param name Cookie name.
+     *
+     * @param name  Cookie name.
      * @param value Cookie value.
-     * 
      * @return True if successfully set cookie.
      */
     @Returns("success")
@@ -389,7 +362,7 @@ public interface Network {
 
     /**
      * Allows overriding user agent with the given string.
-     * 
+     *
      * @param userAgent User agent to use.
      */
     void setUserAgentOverride(String userAgent);

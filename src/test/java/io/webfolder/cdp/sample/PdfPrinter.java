@@ -1,25 +1,9 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.sample;
 
-import static java.lang.Thread.sleep;
-import static java.util.Arrays.asList;
+import io.webfolder.cdp.AdaptiveProcessManager;
+import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.session.Session;
+import io.webfolder.cdp.session.SessionFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,10 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-import io.webfolder.cdp.AdaptiveProcessManager;
-import io.webfolder.cdp.Launcher;
-import io.webfolder.cdp.session.Session;
-import io.webfolder.cdp.session.SessionFactory;
+import static java.lang.Thread.sleep;
+import static java.util.Arrays.asList;
 
 public class PdfPrinter implements AutoCloseable {
 
@@ -51,7 +33,7 @@ public class PdfPrinter implements AutoCloseable {
     public PdfPrinter(List<String> arguments) {
         this.arguments = Collections.unmodifiableList(arguments);
     }
-    
+
     public void execute(Consumer<Session> func) {
         pool.execute(() -> {
             String context = factory.createBrowserContext();
@@ -61,7 +43,7 @@ public class PdfPrinter implements AutoCloseable {
             } catch (Throwable t) {
                 throw new RuntimeException(t);
             } finally {
-                if ( session != null ) {
+                if (session != null) {
                     try {
                         session.close();
                     } catch (Throwable t) {
@@ -87,10 +69,10 @@ public class PdfPrinter implements AutoCloseable {
 
             @Override
             public void run() {
-                if ( factory != null ) {
-                    int     retryCount = 0;
-                    boolean connected  = factory.ping();
-                    while ( ! ( connected = factory.ping() ) && retryCount < 50 ) {
+                if (factory != null) {
+                    int retryCount = 0;
+                    boolean connected = factory.ping();
+                    while (!(connected = factory.ping()) && retryCount < 50) {
                         try {
                             sleep(100);
                         } catch (InterruptedException e) {
@@ -98,7 +80,7 @@ public class PdfPrinter implements AutoCloseable {
                         }
                         retryCount += 1;
                     }
-                    if ( ! connected ) {
+                    if (!connected) {
                         restart();
                     }
                 }
@@ -133,13 +115,13 @@ public class PdfPrinter implements AutoCloseable {
         launcher.kill();
     }
 
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         PdfPrinter manager = new PdfPrinter(Arrays.asList("--disable-gpu", "--headless"));
         manager.init();
 
         List<String> urls = asList(
-                                    "http://www.google.com",
-                                    "http://www.bing.com");
+                "http://www.google.com",
+                "http://www.bing.com");
 
         CountDownLatch latch = new CountDownLatch(urls.size());
 
@@ -152,7 +134,7 @@ public class PdfPrinter implements AutoCloseable {
                     try {
                         s.waitDocumentReady();
                         byte[] content = s.getCommand().getPage().printToPDF();
-                        if ( content != null ) {
+                        if (content != null) {
                             System.out.println("PDF size: " + content.length + " (" + next + ")");
                         }
                     } catch (Throwable e) {
@@ -169,7 +151,7 @@ public class PdfPrinter implements AutoCloseable {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
-            manager.close();   
+            manager.close();
         }
     }
 }

@@ -1,25 +1,14 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.session;
 
-import static java.lang.String.format;
-import static java.util.Base64.getDecoder;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.neovisionaries.ws.client.WebSocket;
+import io.webfolder.cdp.annotation.Domain;
+import io.webfolder.cdp.annotation.Returns;
+import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.logger.CdpLogger;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -31,16 +20,8 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.neovisionaries.ws.client.WebSocket;
-
-import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.Returns;
-import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.logger.CdpLogger;
+import static java.lang.String.format;
+import static java.util.Base64.getDecoder;
 
 class SessionInvocationHandler implements InvocationHandler {
 
@@ -67,34 +48,34 @@ class SessionInvocationHandler implements InvocationHandler {
     private final int timeout;
 
     SessionInvocationHandler(
-                    final Gson gson,
-                    final WebSocket webSocket,
-                    final Map<Integer, WSContext> contexts,
-                    final Session session,
-                    final CdpLogger log,
-                    final boolean browserSession,
-                    final String sessionId,
-                    final String targetId,
-                    final int webSocketReadTimeout) {
-        this.gson           = gson;
-        this.webSocket      = webSocket;
-        this.contexts       = contexts;
-        this.session        = session;
-        this.log            = log;
+            final Gson gson,
+            final WebSocket webSocket,
+            final Map<Integer, WSContext> contexts,
+            final Session session,
+            final CdpLogger log,
+            final boolean browserSession,
+            final String sessionId,
+            final String targetId,
+            final int webSocketReadTimeout) {
+        this.gson = gson;
+        this.webSocket = webSocket;
+        this.contexts = contexts;
+        this.session = session;
+        this.log = log;
         this.browserSession = browserSession;
-        this.sessionId      = sessionId;
-        this.targetId       = targetId;
-        this.timeout        = webSocketReadTimeout;
+        this.sessionId = sessionId;
+        this.targetId = targetId;
+        this.timeout = webSocketReadTimeout;
     }
 
     @Override
     public Object invoke(
-                final Object proxy,
-                final Method method,
-                final Object[] args) throws Throwable {
+            final Object proxy,
+            final Method method,
+            final Object[] args) throws Throwable {
 
         final Class<?> klass = method.getDeclaringClass();
-        final String  domain = klass.getAnnotation(Domain.class).value();
+        final String domain = klass.getAnnotation(Domain.class).value();
         final String command = method.getName();
 
         final boolean hasArgs = args != null && args.length > 0;
@@ -126,7 +107,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
         int id = counter.incrementAndGet();
         Map<String, Object> map = new HashMap<>(3);
-        map.put("id"    , id);
+        map.put("id", id);
         map.put("method", format("%s.%s", domain, command));
         map.put("params", params);
 
@@ -151,7 +132,7 @@ class SessionInvocationHandler implements InvocationHandler {
             throw new CdpException("WebSocket connection is not alive. id: " + id);
         }
 
-        if ( context.getError() != null ) {
+        if (context.getError() != null) {
             throw context.getError();
         }
 
@@ -168,21 +149,21 @@ class SessionInvocationHandler implements InvocationHandler {
         JsonElement data = context.getData();
 
         String returns = method.isAnnotationPresent(Returns.class) ?
-                    method.getAnnotation(Returns.class).value() : null;
+                method.getAnnotation(Returns.class).value() : null;
 
         if (data == null) {
             return null;
         }
 
-        if ( ! data.isJsonObject() ) {
+        if (!data.isJsonObject()) {
             throw new CdpException("invalid response");
         }
 
         JsonObject object = data.getAsJsonObject();
         JsonElement result = object.get("result");
 
-        if ( result == null || ! result.isJsonObject() ) {
-            throw new CdpException("invalid result");   
+        if (result == null || !result.isJsonObject()) {
+            throw new CdpException("invalid result");
         }
 
         JsonObject resultObject = result.getAsJsonObject();
@@ -194,7 +175,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
             JsonElement jsonElement = resultObject.get(returns);
 
-            if ( jsonElement != null && jsonElement.isJsonPrimitive() ) {
+            if (jsonElement != null && jsonElement.isJsonPrimitive()) {
                 if (String.class.equals(retType)) {
                     return resultObject.get(returns).getAsString();
                 } else if (Boolean.class.equals(retType)) {

@@ -1,22 +1,16 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp;
+
+import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.logger.CdpLoggerType;
+import io.webfolder.cdp.session.SessionFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import static io.webfolder.cdp.session.SessionFactory.DEFAULT_HOST;
 import static java.lang.Long.toHexString;
@@ -28,18 +22,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.ThreadLocalRandom.current;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.logger.CdpLoggerType;
-import io.webfolder.cdp.session.SessionFactory;
 
 public class Launcher extends AbstractLauncher {
 
@@ -102,13 +84,13 @@ public class Launcher extends AbstractLauncher {
                 });
                 final int exitCode = process.waitFor();
                 if (exitCode == 0) {
-                	try (InputStream is = process.getInputStream()) {
-                		String location = toString(is).trim().replace("\"", "");
-                		File chrome = new File(location);
-                		if (chrome.exists() && chrome.canExecute()) {
-                			return chrome.toString();
-                		}
-                	}
+                    try (InputStream is = process.getInputStream()) {
+                        String location = toString(is).trim().replace("\"", "");
+                        File chrome = new File(location);
+                        if (chrome.exists() && chrome.canExecute()) {
+                            return chrome.toString();
+                        }
+                    }
                 }
             }
             throw new CdpException("Unable to find chrome.exe");
@@ -120,37 +102,37 @@ public class Launcher extends AbstractLauncher {
 
     /**
      * Tests whether chrome/chromium is installed.
-     * 
+     *
      * @return {@code true} if browser is found on predefined paths
      */
     public boolean isChromeInstalled() {
-    	String path = null;
-    	try {
-    		path = findChrome();
-    	} catch (CdpException e) {
-    		if ("Unable to find chrome.exe".equals(e.getMessage())) {
-    			// ignore
-    		} else {
-    			throw e;
-    		}
-    	}
-    	return path != null ? true : false;
+        String path = null;
+        try {
+            path = findChrome();
+        } catch (CdpException e) {
+            if ("Unable to find chrome.exe".equals(e.getMessage())) {
+                // ignore
+            } else {
+                throw e;
+            }
+        }
+        return path != null ? true : false;
     }
 
     protected List<String> getChromeWinPaths() {
-    	List<String> prefixes = asList("%localappdata%",
-    								   "%programfiles%",
-    								   "%programfiles(x86)%");
-    	List<String> suffixes = asList(
-    			"\\Google\\Chrome SxS\\Application\\chrome.exe",
-    			"\\Google\\Chrome\\Application\\chrome.exe");
-    	List<String> installations = new ArrayList<String>(prefixes.size() * suffixes.size());
-    	for (String prefix : prefixes) {
-    		for (String suffix : suffixes) {
-    			installations.add(prefix + suffix);
-    		}
-    	}
-    	return installations;
+        List<String> prefixes = asList("%localappdata%",
+                "%programfiles%",
+                "%programfiles(x86)%");
+        List<String> suffixes = asList(
+                "\\Google\\Chrome SxS\\Application\\chrome.exe",
+                "\\Google\\Chrome\\Application\\chrome.exe");
+        List<String> installations = new ArrayList<String>(prefixes.size() * suffixes.size());
+        for (String prefix : prefixes) {
+            for (String suffix : suffixes) {
+                installations.add(prefix + suffix);
+            }
+        }
+        return installations;
     }
 
     public String findChromeOsxPath() {

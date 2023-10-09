@@ -1,30 +1,11 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp;
 
-import static java.lang.Thread.sleep;
+import io.webfolder.cdp.exception.CdpException;
+import org.jvnet.winp.WinProcess;
 
 import java.util.TreeMap;
 
-import org.jvnet.winp.WinProcess;
-
-import io.webfolder.cdp.exception.CdpException;
+import static java.lang.Thread.sleep;
 
 public class WindowsProcessManager extends ProcessManager {
 
@@ -44,12 +25,12 @@ public class WindowsProcessManager extends ProcessManager {
 
     private String getCdp4jId(WinProcess process, int retryCount) {
         String id = getCdp4jId(process);
-        if ( id != null ) {
+        if (id != null) {
             return id;
         } else {
             for (int i = 0; i < retryCount; i++) {
                 id = getCdp4jId(process);
-                if ( id != null ) {
+                if (id != null) {
                     return id;
                 } else {
                     try {
@@ -71,7 +52,7 @@ public class WindowsProcessManager extends ProcessManager {
         } catch (Throwable t) {
             // ignore
         }
-        if ( cdp4jId != null && ! cdp4jId.trim().isEmpty() ) {
+        if (cdp4jId != null && !cdp4jId.trim().isEmpty()) {
             return cdp4jId;
         }
         try {

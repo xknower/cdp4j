@@ -1,41 +1,22 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.session;
-
-import static java.lang.Integer.parseInt;
-import static java.util.Collections.unmodifiableMap;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executor;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
-
 import io.webfolder.cdp.event.Events;
 import io.webfolder.cdp.exception.CommandException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.logger.CdpLogger;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+
+import static java.lang.Integer.parseInt;
+import static java.util.Collections.unmodifiableMap;
 
 class WSAdapter extends WebSocketAdapter {
 
@@ -66,12 +47,12 @@ class WSAdapter extends WebSocketAdapter {
 
         @Override
         public void run() {
-            if ( session != null && session.isConnected() ) {
+            if (session != null && session.isConnected()) {
                 session.close();
                 session.terminate(
                         object.get("params")
-                        .getAsJsonObject()
-                        .get("reason").getAsString());
+                                .getAsJsonObject()
+                                .get("reason").getAsString());
             }
         }
     }
@@ -82,40 +63,40 @@ class WSAdapter extends WebSocketAdapter {
             final List<EventListener> listeners,
             final Executor executor,
             final CdpLogger log) {
-        this.gson      = gson;
-        this.contexts  = contexts;
+        this.gson = gson;
+        this.contexts = contexts;
         this.listeners = listeners;
-        this.executor  = executor;
-        this.log       = log; 
+        this.executor = executor;
+        this.log = log;
     }
 
     @Override
     public void onTextMessage(
-                            final WebSocket websocket,
-                            final String data) throws Exception {
+            final WebSocket websocket,
+            final String data) throws Exception {
         onMessage(data, true);
     }
 
     void onMessage(final String data, boolean async) throws Exception {
         Runnable runnable = () -> {
             log.debug(data);
-            JsonElement  json = gson.fromJson(data, JsonElement.class);
+            JsonElement json = gson.fromJson(data, JsonElement.class);
             JsonObject object = json.getAsJsonObject();
             JsonElement idElement = object.get("id");
-            if ( idElement != null ) {
+            if (idElement != null) {
                 String id = idElement.getAsString();
-                if ( id != null ) {
+                if (id != null) {
                     int valId = parseInt(id);
                     WSContext context = contexts.remove(valId);
-                    if ( context != null ) {
+                    if (context != null) {
                         JsonObject error = object.getAsJsonObject("error");
-                        if ( error != null ) {
+                        if (error != null) {
                             int code = (int) error.getAsJsonPrimitive("code").getAsDouble();
                             String message = error.getAsJsonPrimitive("message").getAsString();
                             JsonElement messageData = error.get("data");
                             context.setError(new CommandException(code, message +
-                                                        (messageData != null && messageData.isJsonPrimitive() ? ". " +
-                                                        messageData.getAsString() : "")));
+                                    (messageData != null && messageData.isJsonPrimitive() ? ". " +
+                                            messageData.getAsString() : "")));
                         } else {
                             context.setData(json);
                         }
@@ -123,10 +104,10 @@ class WSAdapter extends WebSocketAdapter {
                 }
             } else {
                 JsonElement method = object.get("method");
-                if ( method != null && method.isJsonPrimitive() ) {
+                if (method != null && method.isJsonPrimitive()) {
                     String eventName = method.getAsString();
-                    if ( "Inspector.detached".equals(eventName) && session != null ) {
-                        if ( session != null && session.isConnected() ) {
+                    if ("Inspector.detached".equals(eventName) && session != null) {
+                        if (session != null && session.isConnected()) {
                             Thread thread = new Thread(new TerminateSession(session, object));
                             thread.setName("cdp4j-terminate");
                             thread.setDaemon(true);
@@ -135,7 +116,7 @@ class WSAdapter extends WebSocketAdapter {
                         }
                     } else {
                         Events event = events.get(eventName);
-                        if ( event != null ) {
+                        if (event != null) {
                             JsonElement params = object.get("params");
                             Object value = gson.fromJson(params, event.klass);
                             for (EventListener next : listeners) {

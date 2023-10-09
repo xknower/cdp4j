@@ -1,21 +1,3 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.command;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -24,6 +6,7 @@ import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.target.RemoteLocation;
 import io.webfolder.cdp.type.target.TargetInfo;
+
 import java.util.List;
 
 /**
@@ -33,15 +16,13 @@ import java.util.List;
 public interface Target {
     /**
      * Activates (focuses) the target.
-     * 
      */
     void activateTarget(String targetId);
 
     /**
      * Attaches to the target with given id.
-     * 
+     *
      * @param flatten Enables "flat" access to the session via specifying sessionId attribute in the commands.
-     * 
      * @return Id assigned to the session.
      */
     @Returns("sessionId")
@@ -49,7 +30,7 @@ public interface Target {
 
     /**
      * Attaches to the browser target, only uses flat sessionId mode.
-     * 
+     *
      * @return Id assigned to the session.
      */
     @Experimental
@@ -58,7 +39,6 @@ public interface Target {
 
     /**
      * Closes the target. If the target is a page that gets closed too.
-     * 
      */
     @Returns("success")
     Boolean closeTarget(String targetId);
@@ -66,13 +46,13 @@ public interface Target {
     /**
      * Inject object to the target's main frame that provides a communication
      * channel with browser target.
-     *
+     * <p>
      * Injected object will be available as <code>window[bindingName]</code>.
-     *
+     * <p>
      * The object has the follwing API:
      * - <code>binding.send(json)</code> - a method to send messages over the remote debugging protocol
      * - <code>binding.onmessage = json => handleMessage(json)</code> - a callback that will be called for the protocol notifications and command responses.
-     * 
+     *
      * @param bindingName Binding name, 'cdp' if not specified.
      */
     @Experimental
@@ -81,7 +61,7 @@ public interface Target {
     /**
      * Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than
      * one.
-     * 
+     *
      * @return The id of the context created.
      */
     @Experimental
@@ -90,7 +70,7 @@ public interface Target {
 
     /**
      * Returns all browser contexts created with <code>Target.createBrowserContext</code> method.
-     * 
+     *
      * @return An array of browser context ids.
      */
     @Experimental
@@ -99,40 +79,37 @@ public interface Target {
 
     /**
      * Creates a new page.
-     * 
-     * @param url The initial URL the page will be navigated to.
-     * @param width Frame width in DIP (headless chrome only).
-     * @param height Frame height in DIP (headless chrome only).
-     * @param browserContextId The browser context to create the page in.
+     *
+     * @param url                     The initial URL the page will be navigated to.
+     * @param width                   Frame width in DIP (headless chrome only).
+     * @param height                  Frame height in DIP (headless chrome only).
+     * @param browserContextId        The browser context to create the page in.
      * @param enableBeginFrameControl Whether BeginFrames for this target will be controlled via DevTools (headless chrome only,
-     * not supported on MacOS yet, false by default).
-     * 
+     *                                not supported on MacOS yet, false by default).
      * @return The id of the page opened.
      */
     @Returns("targetId")
     String createTarget(String url, @Optional Integer width, @Optional Integer height,
-            @Optional String browserContextId,
-            @Experimental @Optional Boolean enableBeginFrameControl);
+                        @Optional String browserContextId,
+                        @Experimental @Optional Boolean enableBeginFrameControl);
 
     /**
      * Detaches session with given id.
-     * 
+     *
      * @param sessionId Session to detach.
-     * @param targetId Deprecated.
+     * @param targetId  Deprecated.
      */
     void detachFromTarget(@Optional String sessionId, @Optional String targetId);
 
     /**
      * Deletes a BrowserContext. All the belonging pages will be closed without calling their
      * beforeunload hooks.
-     * 
      */
     @Experimental
     void disposeBrowserContext(String browserContextId);
 
     /**
      * Returns information about a target.
-     * 
      */
     @Experimental
     @Returns("targetInfo")
@@ -140,7 +117,7 @@ public interface Target {
 
     /**
      * Retrieves a list of available targets.
-     * 
+     *
      * @return The list of targets.
      */
     @Returns("targetInfos")
@@ -148,9 +125,9 @@ public interface Target {
 
     /**
      * Sends protocol message over session with given id.
-     * 
+     *
      * @param sessionId Identifier of the session.
-     * @param targetId Deprecated.
+     * @param targetId  Deprecated.
      */
     void sendMessageToTarget(String message, @Optional String sessionId, @Optional String targetId);
 
@@ -158,20 +135,20 @@ public interface Target {
      * Controls whether to automatically attach to new targets which are considered to be related to
      * this one. When turned on, attaches to all existing related targets as well. When turned off,
      * automatically detaches from all currently attached targets.
-     * 
-     * @param autoAttach Whether to auto-attach to related targets.
+     *
+     * @param autoAttach             Whether to auto-attach to related targets.
      * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use<code>Runtime.runIfWaitingForDebugger</code>
-     * to run paused targets.
-     * @param flatten Enables "flat" access to the session via specifying sessionId attribute in the commands.
+     *                               to run paused targets.
+     * @param flatten                Enables "flat" access to the session via specifying sessionId attribute in the commands.
      */
     @Experimental
     void setAutoAttach(Boolean autoAttach, Boolean waitForDebuggerOnStart,
-            @Experimental @Optional Boolean flatten);
+                       @Experimental @Optional Boolean flatten);
 
     /**
      * Controls whether to discover available targets and notify via
      * <code>targetCreated/targetInfoChanged/targetDestroyed</code> events.
-     * 
+     *
      * @param discover Whether to discover available targets.
      */
     void setDiscoverTargets(Boolean discover);
@@ -179,7 +156,7 @@ public interface Target {
     /**
      * Enables target discovery for the specified locations, when <code>setDiscoverTargets</code> was set to
      * <code>true</code>.
-     * 
+     *
      * @param locations List of remote locations.
      */
     @Experimental
@@ -187,8 +164,7 @@ public interface Target {
 
     /**
      * Attaches to the target with given id.
-     * 
-     * 
+     *
      * @return Id assigned to the session.
      */
     @Returns("sessionId")
@@ -197,22 +173,20 @@ public interface Target {
     /**
      * Inject object to the target's main frame that provides a communication
      * channel with browser target.
-     *
+     * <p>
      * Injected object will be available as <code>window[bindingName]</code>.
-     *
+     * <p>
      * The object has the follwing API:
      * - <code>binding.send(json)</code> - a method to send messages over the remote debugging protocol
      * - <code>binding.onmessage = json => handleMessage(json)</code> - a callback that will be called for the protocol notifications and command responses.
-     * 
      */
     @Experimental
     void exposeDevToolsProtocol(String targetId);
 
     /**
      * Creates a new page.
-     * 
+     *
      * @param url The initial URL the page will be navigated to.
-     * 
      * @return The id of the page opened.
      */
     @Returns("targetId")
@@ -232,7 +206,6 @@ public interface Target {
 
     /**
      * Sends protocol message over session with given id.
-     * 
      */
     void sendMessageToTarget(String message);
 
@@ -240,10 +213,10 @@ public interface Target {
      * Controls whether to automatically attach to new targets which are considered to be related to
      * this one. When turned on, attaches to all existing related targets as well. When turned off,
      * automatically detaches from all currently attached targets.
-     * 
-     * @param autoAttach Whether to auto-attach to related targets.
+     *
+     * @param autoAttach             Whether to auto-attach to related targets.
      * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use<code>Runtime.runIfWaitingForDebugger</code>
-     * to run paused targets.
+     *                               to run paused targets.
      */
     @Experimental
     void setAutoAttach(Boolean autoAttach, Boolean waitForDebuggerOnStart);

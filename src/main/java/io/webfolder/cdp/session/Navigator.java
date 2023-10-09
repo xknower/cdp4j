@@ -1,30 +1,4 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.session;
-
-import static java.lang.Boolean.TRUE;
-import static java.lang.String.valueOf;
-import static java.util.Collections.emptyMap;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import io.webfolder.cdp.command.DOM;
 import io.webfolder.cdp.command.Network;
@@ -33,11 +7,19 @@ import io.webfolder.cdp.type.page.GetNavigationHistoryResult;
 import io.webfolder.cdp.type.page.NavigationEntry;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.lang.Boolean.TRUE;
+import static java.lang.String.valueOf;
+import static java.util.Collections.emptyMap;
+
 public interface Navigator {
 
     /**
      * This method stops window loading.
-     * 
+     *
      * @return this
      */
     public default Session stop() {
@@ -48,7 +30,7 @@ public interface Navigator {
 
     /**
      * Returns the window to the previous item in the history.
-     * 
+     *
      * @return this
      */
     public default Session back() {
@@ -60,7 +42,7 @@ public interface Navigator {
             return getThis();
         }
         NavigationEntry entry = history.getEntries().get(index);
-        if ( entry != null ) {
+        if (entry != null) {
             page.navigateToHistoryEntry(entry.getId());
         }
         return getThis();
@@ -68,7 +50,7 @@ public interface Navigator {
 
     /**
      * Moves the window one document forward in the history
-     * 
+     *
      * @return this
      */
     public default Session forward() {
@@ -80,7 +62,7 @@ public interface Navigator {
             return getThis();
         }
         NavigationEntry entry = history.getEntries().get(index);
-        if ( entry != null ) {
+        if (entry != null) {
             page.navigateToHistoryEntry(entry.getId());
         }
         return getThis();
@@ -88,7 +70,7 @@ public interface Navigator {
 
     /**
      * This method reloads the resource from the current URL.
-     * 
+     *
      * @return this
      */
     public default Session reload() {
@@ -100,9 +82,8 @@ public interface Navigator {
 
     /**
      * Allows overriding user agent with the given string.
-     * 
+     *
      * @param userAgent User agent to use
-     * 
      * @return this
      */
     public default Session setUserAgent(final String userAgent) {
@@ -115,20 +96,20 @@ public interface Navigator {
 
     /**
      * Document URL that <code>Document</code> points to.
-     * 
+     *
      * @return document location
      */
     default String getLocation() {
         return getThis()
-                    .getCommand()
-                    .getDOM()
-                    .getDocument()
-                    .getDocumentURL();
+                .getCommand()
+                .getDOM()
+                .getDocument()
+                .getDocumentURL();
     }
 
     /**
      * Retrieves <code>Location.pathname</code> property.
-     * 
+     *
      * @return an initial <strong>/</strong> followed by the path of the URL
      */
     public default String getPathname() {
@@ -143,14 +124,14 @@ public interface Navigator {
 
     /**
      * Gets query string
-     * 
+     *
      * @return key value pair
      */
     @SuppressWarnings("unchecked")
     public default Map<String, Object> getQueryString() {
         getThis().disableFlowLog();
         String json = (String) getThis()
-                                .evaluate("JSON.stringify(Array.from(new URLSearchParams(document.location.search)))");
+                .evaluate("JSON.stringify(Array.from(new URLSearchParams(document.location.search)))");
         getThis().enableFlowLog();
         if (json == null || json.trim().isEmpty()) {
             return emptyMap();
@@ -173,7 +154,7 @@ public interface Navigator {
 
     /**
      * Gets the full HTML contents of the page, including the doctype.
-     * 
+     *
      * @return string content of the document
      */
     default String getContent() {
@@ -189,7 +170,7 @@ public interface Navigator {
 
     /**
      * Gets the title of the document.
-     * 
+     *
      * @return string containing the document's title
      */
     default String getTitle() {
@@ -204,7 +185,7 @@ public interface Navigator {
 
     /**
      * Gets the state of Document
-     * 
+     *
      * @return <code>true</code> if Document.readyState property is <strong>complete</strong>
      */
     default boolean isDomReady() {
@@ -219,7 +200,7 @@ public interface Navigator {
 
     /**
      * Clears browser cache.
-     * 
+     *
      * @return <code>true</code> if browser cache cleared.
      */
     public default boolean clearCache() {
@@ -229,9 +210,9 @@ public interface Navigator {
         Boolean canClear = network.canClearBrowserCache();
         if (TRUE.equals(canClear)) {
             getThis()
-                .getCommand()
-                .getNetwork()
-                .clearBrowserCache();
+                    .getCommand()
+                    .getNetwork()
+                    .clearBrowserCache();
             return true;
         }
         return false;
@@ -239,7 +220,7 @@ public interface Navigator {
 
     /**
      * Clears all browser cookies.
-     * 
+     *
      * @return <code>true</code> if browser cookies cleared.
      */
     public default boolean clearCookies() {
@@ -249,9 +230,9 @@ public interface Navigator {
         Boolean canClear = network.canClearBrowserCookies();
         if (TRUE.equals(canClear)) {
             getThis()
-                .getCommand()
-                .getNetwork()
-                .clearBrowserCookies();
+                    .getCommand()
+                    .getNetwork()
+                    .clearBrowserCookies();
             return true;
         }
         return false;

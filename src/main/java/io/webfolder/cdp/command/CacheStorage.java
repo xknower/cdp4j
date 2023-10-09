@@ -1,21 +1,3 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.command;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -24,6 +6,7 @@ import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.cachestorage.Cache;
 import io.webfolder.cdp.type.cachestorage.CachedResponse;
 import io.webfolder.cdp.type.cachestorage.RequestEntriesResult;
+
 import java.util.List;
 
 @Experimental
@@ -31,14 +14,14 @@ import java.util.List;
 public interface CacheStorage {
     /**
      * Deletes a cache.
-     * 
+     *
      * @param cacheId Id of cache for deletion.
      */
     void deleteCache(String cacheId);
 
     /**
      * Deletes a cache entry.
-     * 
+     *
      * @param cacheId Id of cache where the entry will be deleted.
      * @param request URL spec of the request.
      */
@@ -46,9 +29,8 @@ public interface CacheStorage {
 
     /**
      * Requests cache names.
-     * 
+     *
      * @param securityOrigin Security origin.
-     * 
      * @return Caches for the security origin.
      */
     @Returns("caches")
@@ -56,10 +38,9 @@ public interface CacheStorage {
 
     /**
      * Fetches cache entry.
-     * 
-     * @param cacheId Id of cache that contains the enty.
+     *
+     * @param cacheId    Id of cache that contains the enty.
      * @param requestURL URL spec of the request.
-     * 
      * @return Response read from the cache.
      */
     @Returns("response")
@@ -67,11 +48,10 @@ public interface CacheStorage {
 
     /**
      * Requests data from cache.
-     * 
-     * @param cacheId ID of cache to get entries from.
+     *
+     * @param cacheId   ID of cache to get entries from.
      * @param skipCount Number of records to skip.
-     * @param pageSize Number of records to fetch.
-     * 
+     * @param pageSize  Number of records to fetch.
      * @return RequestEntriesResult
      */
     RequestEntriesResult requestEntries(String cacheId, Integer skipCount, Integer pageSize);

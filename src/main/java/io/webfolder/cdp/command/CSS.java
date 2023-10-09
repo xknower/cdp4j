@@ -1,21 +1,3 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.command;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -34,6 +16,7 @@ import io.webfolder.cdp.type.css.SelectorList;
 import io.webfolder.cdp.type.css.SourceRange;
 import io.webfolder.cdp.type.css.StyleDeclarationEdit;
 import io.webfolder.cdp.type.css.Value;
+
 import java.util.List;
 
 /**
@@ -53,11 +36,10 @@ public interface CSS {
     /**
      * Inserts a new rule with the given <code>ruleText</code>in a stylesheet with given<code>styleSheetId</code>, at the
      * position specified by <code>location</code>.
-     * 
+     *
      * @param styleSheetId The css style sheet identifier where a new rule should be inserted.
-     * @param ruleText The text of a new rule.
-     * @param location Text position of a new rule in the target style sheet.
-     * 
+     * @param ruleText     The text of a new rule.
+     * @param location     Text position of a new rule in the target style sheet.
      * @return The newly created rule.
      */
     @Returns("rule")
@@ -65,8 +47,7 @@ public interface CSS {
 
     /**
      * Returns all class names from specified stylesheet.
-     * 
-     * 
+     *
      * @return Class name list.
      */
     @Returns("classNames")
@@ -74,9 +55,8 @@ public interface CSS {
 
     /**
      * Creates a new special "via-inspector" stylesheet in the frame with given <code>frameId</code>.
-     * 
+     *
      * @param frameId Identifier of the frame where "via-inspector" stylesheet should be created.
-     * 
      * @return Identifier of the created "via-inspector" stylesheet.
      */
     @Returns("styleSheetId")
@@ -96,22 +76,20 @@ public interface CSS {
     /**
      * Ensures that the given node will have specified pseudo-classes whenever its style is computed by
      * the browser.
-     * 
-     * @param nodeId The element id for which to force the pseudo state.
+     *
+     * @param nodeId              The element id for which to force the pseudo state.
      * @param forcedPseudoClasses Element pseudo classes to force when computing the element's style.
      */
     void forcePseudoState(Integer nodeId, List<String> forcedPseudoClasses);
 
     /**
-     * 
      * @return GetBackgroundColorsResult
      */
     GetBackgroundColorsResult getBackgroundColors(Integer nodeId);
 
     /**
      * Returns the computed style for a DOM node identified by <code>nodeId</code>.
-     * 
-     * 
+     *
      * @return Computed style for the specified DOM node.
      */
     @Returns("computedStyle")
@@ -120,16 +98,14 @@ public interface CSS {
     /**
      * Returns the styles defined inline (explicitly in the "style" attribute and implicitly, using DOM
      * attributes) for a DOM node identified by <code>nodeId</code>.
-     * 
-     * 
+     *
      * @return GetInlineStylesForNodeResult
      */
     GetInlineStylesForNodeResult getInlineStylesForNode(Integer nodeId);
 
     /**
      * Returns requested styles for a DOM node identified by <code>nodeId</code>.
-     * 
-     * 
+     *
      * @return GetMatchedStylesForNodeResult
      */
     GetMatchedStylesForNodeResult getMatchedStylesForNode(Integer nodeId);
@@ -143,8 +119,7 @@ public interface CSS {
     /**
      * Requests information about platform fonts which we used to render child TextNodes in the given
      * node.
-     * 
-     * 
+     *
      * @return Usage statistics for every employed platform font.
      */
     @Returns("fonts")
@@ -152,8 +127,7 @@ public interface CSS {
 
     /**
      * Returns the current textual content for a stylesheet.
-     * 
-     * 
+     *
      * @return The stylesheet text.
      */
     @Returns("text")
@@ -162,15 +136,14 @@ public interface CSS {
     /**
      * Find a rule with the given active property for the given node and set the new value for this
      * property
-     * 
+     *
      * @param nodeId The element id for which to set property.
      */
     void setEffectivePropertyValueForNode(Integer nodeId, String propertyName, String value);
 
     /**
      * Modifies the keyframe rule key text.
-     * 
-     * 
+     *
      * @return The resulting key text after modification.
      */
     @Returns("keyText")
@@ -178,8 +151,7 @@ public interface CSS {
 
     /**
      * Modifies the rule selector.
-     * 
-     * 
+     *
      * @return The resulting CSS media rule after modification.
      */
     @Returns("media")
@@ -187,8 +159,7 @@ public interface CSS {
 
     /**
      * Modifies the rule selector.
-     * 
-     * 
+     *
      * @return The resulting selector list after modification.
      */
     @Returns("selectorList")
@@ -196,8 +167,7 @@ public interface CSS {
 
     /**
      * Sets the new stylesheet text.
-     * 
-     * 
+     *
      * @return URL of source map associated with script (if any).
      */
     @Returns("sourceMapURL")
@@ -205,8 +175,7 @@ public interface CSS {
 
     /**
      * Applies specified style edits one after another in the given order.
-     * 
-     * 
+     *
      * @return The resulting styles after modification.
      */
     @Returns("styles")

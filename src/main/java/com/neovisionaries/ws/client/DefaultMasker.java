@@ -13,13 +13,11 @@ public class DefaultMasker implements Masker {
     }
 
     public void mask(byte[] payload) {
-        if (payload == null)
-        {
+        if (payload == null) {
             return;
         }
 
-        for (int i = 0; i < payload.length; ++i)
-        {
+        for (int i = 0; i < payload.length; ++i) {
             // Mask
             payload[i] = (byte) ((payload[i] ^ this.maskingKey[i % 4]) & 0xFF);
         }

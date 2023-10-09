@@ -1,26 +1,8 @@
-/*
- * Copyright (C) 2015-2017 Neo Visionaries Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.neovisionaries.ws.client;
 
 
-import static com.neovisionaries.ws.client.WebSocketState.CLOSED;
-import static com.neovisionaries.ws.client.WebSocketState.CLOSING;
-import static com.neovisionaries.ws.client.WebSocketState.CONNECTING;
-import static com.neovisionaries.ws.client.WebSocketState.CREATED;
-import static com.neovisionaries.ws.client.WebSocketState.OPEN;
+import com.neovisionaries.ws.client.StateManager.CloseInitiator;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -31,7 +13,13 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import com.neovisionaries.ws.client.StateManager.CloseInitiator;
+import java.util.concurrent.RejectedExecutionException;
+
+import static com.neovisionaries.ws.client.WebSocketState.CLOSED;
+import static com.neovisionaries.ws.client.WebSocketState.CLOSING;
+import static com.neovisionaries.ws.client.WebSocketState.CONNECTING;
+import static com.neovisionaries.ws.client.WebSocketState.CREATED;
+import static com.neovisionaries.ws.client.WebSocketState.OPEN;
 
 
 /**
@@ -1082,14 +1070,12 @@ import com.neovisionaries.ws.client.StateManager.CloseInitiator;
  * }</pre>
  * </blockquote>
  *
+ * @author Takahiko Kawasaki
  * @see <a href="https://tools.ietf.org/html/rfc6455">RFC 6455 (The WebSocket Protocol)</a>
  * @see <a href="https://tools.ietf.org/html/rfc7692">RFC 7692 (Compression Extensions for WebSocket)</a>
  * @see <a href="https://github.com/TakahikoKawasaki/nv-websocket-client">[GitHub] nv-websocket-client</a>
- *
- * @author Takahiko Kawasaki
  */
-public class WebSocket
-{
+public class WebSocket {
     private static final long DEFAULT_CLOSE_DELAY = 10 * 1000L;
     private final WebSocketFactory mWebSocketFactory;
     private final SocketConnector mSocketConnector;
@@ -1125,15 +1111,14 @@ public class WebSocket
 
 
     WebSocket(WebSocketFactory factory, boolean secure, String userInfo,
-            String host, String path, SocketConnector connector)
-    {
-        mWebSocketFactory  = factory;
-        mSocketConnector   = connector;
-        mStateManager      = new StateManager();
-        mHandshakeBuilder  = new HandshakeBuilder(secure, userInfo, host, path);
-        mListenerManager   = new ListenerManager(this);
-        mPingSender        = new PingSender(this, new CounterPayloadGenerator());
-        mPongSender        = new PongSender(this, new CounterPayloadGenerator());
+              String host, String path, SocketConnector connector) {
+        mWebSocketFactory = factory;
+        mSocketConnector = connector;
+        mStateManager = new StateManager();
+        mHandshakeBuilder = new HandshakeBuilder(secure, userInfo, host, path);
+        mListenerManager = new ListenerManager(this);
+        mPingSender = new PingSender(this, new CounterPayloadGenerator());
+        mPongSender = new PongSender(this, new CounterPayloadGenerator());
     }
 
 
@@ -1154,16 +1139,11 @@ public class WebSocket
      * #recreate(int)} method instead.
      * </p>
      *
-     * @return
-     *         A new {@code WebSocket} instance.
-     *
-     * @throws IOException
-     *         {@link WebSocketFactory#createSocket(URI)} threw an exception.
-     *
+     * @return A new {@code WebSocket} instance.
+     * @throws IOException {@link WebSocketFactory#createSocket(URI)} threw an exception.
      * @since 1.6
      */
-    public WebSocket recreate() throws IOException
-    {
+    public WebSocket recreate() throws IOException {
         return recreate(mSocketConnector.getConnectionTimeout());
     }
 
@@ -1178,25 +1158,15 @@ public class WebSocket
      * {@code WebSocket} instance is used again.
      * </p>
      *
-     * @return
-     *         A new {@code WebSocket} instance.
-     *
-     * @param timeout
-     *         The timeout value in milliseconds for socket timeout.
-     *         A timeout of zero is interpreted as an infinite timeout.
-     *
-     * @throws IllegalArgumentException
-     *         The given timeout value is negative.
-     *
-     * @throws IOException
-     *         {@link WebSocketFactory#createSocket(URI)} threw an exception.
-     *
+     * @param timeout The timeout value in milliseconds for socket timeout.
+     *                A timeout of zero is interpreted as an infinite timeout.
+     * @return A new {@code WebSocket} instance.
+     * @throws IllegalArgumentException The given timeout value is negative.
+     * @throws IOException              {@link WebSocketFactory#createSocket(URI)} threw an exception.
      * @since 1.10
      */
-    public WebSocket recreate(int timeout) throws IOException
-    {
-        if (timeout < 0)
-        {
+    public WebSocket recreate(int timeout) throws IOException {
+        if (timeout < 0) {
             throw new IllegalArgumentException("The given timeout value is negative.");
         }
 
@@ -1216,8 +1186,7 @@ public class WebSocket
 
         // Copy listeners.
         List<WebSocketListener> listeners = mListenerManager.getListeners();
-        synchronized (listeners)
-        {
+        synchronized (listeners) {
             instance.addListeners(listeners);
         }
 
@@ -1227,10 +1196,8 @@ public class WebSocket
 
     @Override
     @SuppressWarnings("deprecation")
-    protected void finalize() throws Throwable
-    {
-        if (isInState(CREATED))
-        {
+    protected void finalize() throws Throwable {
+        if (isInState(CREATED)) {
             // The raw socket needs to be closed.
             finish();
         }
@@ -1257,15 +1224,11 @@ public class WebSocket
      * See the description of {@link WebSocketState} for details.
      * </p>
      *
-     * @return
-     *         The current state.
-     *
+     * @return The current state.
      * @see WebSocketState
      */
-    public WebSocketState getState()
-    {
-        synchronized (mStateManager)
-        {
+    public WebSocketState getState() {
+        synchronized (mStateManager) {
             return mStateManager.getState();
         }
     }
@@ -1275,13 +1238,10 @@ public class WebSocket
      * Check if the current state of this WebSocket is {@link
      * WebSocketState#OPEN OPEN}.
      *
-     * @return
-     *         {@code true} if the current state is OPEN.
-     *
+     * @return {@code true} if the current state is OPEN.
      * @since 1.1
      */
-    public boolean isOpen()
-    {
+    public boolean isOpen() {
         return isInState(OPEN);
     }
 
@@ -1289,10 +1249,8 @@ public class WebSocket
     /**
      * Check if the current state is equal to the specified state.
      */
-    private boolean isInState(WebSocketState state)
-    {
-        synchronized (mStateManager)
-        {
+    private boolean isInState(WebSocketState state) {
+        synchronized (mStateManager) {
             return (mStateManager.getState() == state);
         }
     }
@@ -1309,19 +1267,13 @@ public class WebSocket
     /**
      * Add a value for {@code Sec-WebSocket-Protocol}.
      *
-     * @param protocol
-     *         A protocol name.
-     *
-     * @return
-     *         {@code this} object.
-     *
-     * @throws IllegalArgumentException
-     *         The protocol name is invalid. A protocol name must be
-     *         a non-empty string with characters in the range U+0021
-     *         to U+007E not including separator characters.
+     * @param protocol A protocol name.
+     * @return {@code this} object.
+     * @throws IllegalArgumentException The protocol name is invalid. A protocol name must be
+     *                                  a non-empty string with characters in the range U+0021
+     *                                  to U+007E not including separator characters.
      */
-    public WebSocket addProtocol(String protocol)
-    {
+    public WebSocket addProtocol(String protocol) {
         mHandshakeBuilder.addProtocol(protocol);
 
         return this;
@@ -1331,16 +1283,11 @@ public class WebSocket
     /**
      * Remove a protocol from {@code Sec-WebSocket-Protocol}.
      *
-     * @param protocol
-     *         A protocol name. {@code null} is silently ignored.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param protocol A protocol name. {@code null} is silently ignored.
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket removeProtocol(String protocol)
-    {
+    public WebSocket removeProtocol(String protocol) {
         mHandshakeBuilder.removeProtocol(protocol);
 
         return this;
@@ -1350,13 +1297,10 @@ public class WebSocket
     /**
      * Remove all protocols from {@code Sec-WebSocket-Protocol}.
      *
-     * @return
-     *         {@code this} object.
-     *
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket clearProtocols()
-    {
+    public WebSocket clearProtocols() {
         mHandshakeBuilder.clearProtocols();
 
         return this;
@@ -1366,14 +1310,10 @@ public class WebSocket
     /**
      * Add a value for {@code Sec-WebSocket-Extension}.
      *
-     * @param extension
-     *         An extension. {@code null} is silently ignored.
-     *
-     * @return
-     *         {@code this} object.
+     * @param extension An extension. {@code null} is silently ignored.
+     * @return {@code this} object.
      */
-    public WebSocket addExtension(WebSocketExtension extension)
-    {
+    public WebSocket addExtension(WebSocketExtension extension) {
         mHandshakeBuilder.addExtension(extension);
 
         return this;
@@ -1387,18 +1327,13 @@ public class WebSocket
      * Extensions</a> in <a href="https://tools.ietf.org/html/rfc6455"
      * >RFC 6455</a>.
      *
-     * @param extension
-     *         A string that represents a WebSocket extension. If it does
-     *         not comply with RFC 6455, no value is added to {@code
-     *         Sec-WebSocket-Extension}.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param extension A string that represents a WebSocket extension. If it does
+     *                  not comply with RFC 6455, no value is added to {@code
+     *                  Sec-WebSocket-Extension}.
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket addExtension(String extension)
-    {
+    public WebSocket addExtension(String extension) {
         mHandshakeBuilder.addExtension(extension);
 
         return this;
@@ -1408,16 +1343,11 @@ public class WebSocket
     /**
      * Remove an extension from {@code Sec-WebSocket-Extension}.
      *
-     * @param extension
-     *         An extension to remove. {@code null} is silently ignored.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param extension An extension to remove. {@code null} is silently ignored.
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket removeExtension(WebSocketExtension extension)
-    {
+    public WebSocket removeExtension(WebSocketExtension extension) {
         mHandshakeBuilder.removeExtension(extension);
 
         return this;
@@ -1428,16 +1358,11 @@ public class WebSocket
      * Remove extensions from {@code Sec-WebSocket-Extension} by
      * an extension name.
      *
-     * @param name
-     *         An extension name. {@code null} is silently ignored.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param name An extension name. {@code null} is silently ignored.
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket removeExtensions(String name)
-    {
+    public WebSocket removeExtensions(String name) {
         mHandshakeBuilder.removeExtensions(name);
 
         return this;
@@ -1447,13 +1372,10 @@ public class WebSocket
     /**
      * Remove all extensions from {@code Sec-WebSocket-Extension}.
      *
-     * @return
-     *         {@code this} object.
-     *
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket clearExtensions()
-    {
+    public WebSocket clearExtensions() {
         mHandshakeBuilder.clearExtensions();
 
         return this;
@@ -1463,18 +1385,12 @@ public class WebSocket
     /**
      * Add a pair of extra HTTP header.
      *
-     * @param name
-     *         An HTTP header name. When {@code null} or an empty
-     *         string is given, no header is added.
-     *
-     * @param value
-     *         The value of the HTTP header.
-     *
-     * @return
-     *         {@code this} object.
+     * @param name  An HTTP header name. When {@code null} or an empty
+     *              string is given, no header is added.
+     * @param value The value of the HTTP header.
+     * @return {@code this} object.
      */
-    public WebSocket addHeader(String name, String value)
-    {
+    public WebSocket addHeader(String name, String value) {
         mHandshakeBuilder.addHeader(name, value);
 
         return this;
@@ -1484,16 +1400,11 @@ public class WebSocket
     /**
      * Remove pairs of extra HTTP headers.
      *
-     * @param name
-     *         An HTTP header name. {@code null} is silently ignored.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param name An HTTP header name. {@code null} is silently ignored.
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket removeHeaders(String name)
-    {
+    public WebSocket removeHeaders(String name) {
         mHandshakeBuilder.removeHeaders(name);
 
         return this;
@@ -1503,13 +1414,10 @@ public class WebSocket
     /**
      * Clear all extra HTTP headers.
      *
-     * @return
-     *         {@code this} object.
-     *
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket clearHeaders()
-    {
+    public WebSocket clearHeaders() {
         mHandshakeBuilder.clearHeaders();
 
         return this;
@@ -1519,15 +1427,11 @@ public class WebSocket
     /**
      * Set the credentials to connect to the WebSocket endpoint.
      *
-     * @param userInfo
-     *         The credentials for Basic Authentication. The format
-     *         should be <code><i>id</i>:<i>password</i></code>.
-     *
-     * @return
-     *         {@code this} object.
+     * @param userInfo The credentials for Basic Authentication. The format
+     *                 should be <code><i>id</i>:<i>password</i></code>.
+     * @return {@code this} object.
      */
-    public WebSocket setUserInfo(String userInfo)
-    {
+    public WebSocket setUserInfo(String userInfo) {
         mHandshakeBuilder.setUserInfo(userInfo);
 
         return this;
@@ -1537,17 +1441,11 @@ public class WebSocket
     /**
      * Set the credentials to connect to the WebSocket endpoint.
      *
-     * @param id
-     *         The ID.
-     *
-     * @param password
-     *         The password.
-     *
-     * @return
-     *         {@code this} object.
+     * @param id       The ID.
+     * @param password The password.
+     * @return {@code this} object.
      */
-    public WebSocket setUserInfo(String id, String password)
-    {
+    public WebSocket setUserInfo(String id, String password) {
         mHandshakeBuilder.setUserInfo(id, password);
 
         return this;
@@ -1557,13 +1455,10 @@ public class WebSocket
     /**
      * Clear the credentials to connect to the WebSocket endpoint.
      *
-     * @return
-     *         {@code this} object.
-     *
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket clearUserInfo()
-    {
+    public WebSocket clearUserInfo() {
         mHandshakeBuilder.clearUserInfo();
 
         return this;
@@ -1583,12 +1478,10 @@ public class WebSocket
      * listeners are called and the WebSocket is eventually closed.
      * </p>
      *
-     * @return
-     *         {@code true} if extended use of WebSocket frames
-     *         are allowed.
+     * @return {@code true} if extended use of WebSocket frames
+     * are allowed.
      */
-    public boolean isExtended()
-    {
+    public boolean isExtended() {
         return mExtended;
     }
 
@@ -1596,14 +1489,10 @@ public class WebSocket
     /**
      * Allow or disallow extended use of WebSocket frames.
      *
-     * @param extended
-     *         {@code true} to allow extended use of WebSocket frames.
-     *
-     * @return
-     *         {@code this} object.
+     * @param extended {@code true} to allow extended use of WebSocket frames.
+     * @return {@code this} object.
      */
-    public WebSocket setExtended(boolean extended)
-    {
+    public WebSocket setExtended(boolean extended) {
         mExtended = extended;
 
         return this;
@@ -1615,13 +1504,10 @@ public class WebSocket
      * #sendFrame(WebSocketFrame)} is done. The default value is
      * {@code true}.
      *
-     * @return
-     *         {@code true} if flush is performed automatically.
-     *
+     * @return {@code true} if flush is performed automatically.
      * @since 1.5
      */
-    public boolean isAutoFlush()
-    {
+    public boolean isAutoFlush() {
         return mAutoFlush;
     }
 
@@ -1629,17 +1515,12 @@ public class WebSocket
     /**
      * Enable or disable auto-flush of sent frames.
      *
-     * @param auto
-     *         {@code true} to enable auto-flush. {@code false} to
-     *         disable it.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param auto {@code true} to enable auto-flush. {@code false} to
+     *             disable it.
+     * @return {@code this} object.
      * @since 1.5
      */
-    public WebSocket setAutoFlush(boolean auto)
-    {
+    public WebSocket setAutoFlush(boolean auto) {
         mAutoFlush = auto;
 
         return this;
@@ -1652,20 +1533,17 @@ public class WebSocket
      * "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
      * to this client. The default value is {@code true}.
      *
-     * @return
-     *         {@code true} if the configuration allows for the server to
-     *         close the WebSocket connection without sending a close frame
-     *         to this client. {@code false} if the configuration requires
-     *         that an error be reported via
-     *         {@link WebSocketListener#onError(WebSocket, WebSocketException)
-     *         onError()} method and {@link WebSocketListener#onFrameError(WebSocket,
-     *         WebSocketException, WebSocketFrame) onFrameError()} method of
-     *         {@link WebSocketListener}.
-     *
+     * @return {@code true} if the configuration allows for the server to
+     * close the WebSocket connection without sending a close frame
+     * to this client. {@code false} if the configuration requires
+     * that an error be reported via
+     * {@link WebSocketListener#onError(WebSocket, WebSocketException)
+     * onError()} method and {@link WebSocketListener#onFrameError(WebSocket,
+     * WebSocketException, WebSocketFrame) onFrameError()} method of
+     * {@link WebSocketListener}.
      * @since 1.29
      */
-    public boolean isMissingCloseFrameAllowed()
-    {
+    public boolean isMissingCloseFrameAllowed() {
         return mMissingCloseFrameAllowed;
     }
 
@@ -1676,20 +1554,15 @@ public class WebSocket
      * "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
      * to this client.
      *
-     * @param allowed
-     *         {@code true} to allow the server to close the WebSocket
-     *         connection without sending a close frame to this client.
-     *         {@code false} to make this instance report an error when the
-     *         end of the input stream of the WebSocket connection is reached
-     *         before a close frame is read.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param allowed {@code true} to allow the server to close the WebSocket
+     *                connection without sending a close frame to this client.
+     *                {@code false} to make this instance report an error when the
+     *                end of the input stream of the WebSocket connection is reached
+     *                before a close frame is read.
+     * @return {@code this} object.
      * @since 1.29
      */
-    public WebSocket setMissingCloseFrameAllowed(boolean allowed)
-    {
+    public WebSocket setMissingCloseFrameAllowed(boolean allowed) {
         mMissingCloseFrameAllowed = allowed;
 
         return this;
@@ -1709,14 +1582,11 @@ public class WebSocket
      * implementation of {@code ReadingThread}.
      * </p>
      *
-     * @return
-     *         {@code true} if text messages are passed to listeners without
-     *         string conversion.
-     *
+     * @return {@code true} if text messages are passed to listeners without
+     * string conversion.
      * @since 2.6
      */
-    public boolean isDirectTextMessage()
-    {
+    public boolean isDirectTextMessage() {
         return mDirectTextMessage;
     }
 
@@ -1735,16 +1605,11 @@ public class WebSocket
      * implementation of {@code ReadingThread}.
      * </p>
      *
-     * @param direct
-     *         {@code true} to receive text messages as byte arrays.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param direct {@code true} to receive text messages as byte arrays.
+     * @return {@code this} object.
      * @since 2.6
      */
-    public WebSocket setDirectTextMessage(boolean direct)
-    {
+    public WebSocket setDirectTextMessage(boolean direct) {
         mDirectTextMessage = direct;
 
         return this;
@@ -1754,19 +1619,14 @@ public class WebSocket
     /**
      * Flush frames to the server. Flush is performed asynchronously.
      *
-     * @return
-     *         {@code this} object.
-     *
+     * @return {@code this} object.
      * @since 1.5
      */
-    public WebSocket flush()
-    {
-        synchronized (mStateManager)
-        {
+    public WebSocket flush() {
+        synchronized (mStateManager) {
             WebSocketState state = mStateManager.getState();
 
-            if (state != OPEN && state != CLOSING)
-            {
+            if (state != OPEN && state != CLOSING) {
                 return this;
             }
         }
@@ -1775,8 +1635,7 @@ public class WebSocket
         WritingThread wt = mWritingThread;
 
         // If and only if an instance of WritingThread is available.
-        if (wt != null)
-        {
+        if (wt != null) {
             // Request flush.
             wt.queueFlush();
         }
@@ -1789,13 +1648,10 @@ public class WebSocket
      * Get the size of the frame queue. The default value is 0 and it means
      * there is no limit on the queue size.
      *
-     * @return
-     *         The size of the frame queue.
-     *
+     * @return The size of the frame queue.
      * @since 1.15
      */
-    public int getFrameQueueSize()
-    {
+    public int getFrameQueueSize() {
         return mFrameQueueSize;
     }
 
@@ -1821,21 +1677,13 @@ public class WebSocket
      * {@link #sendClose()} and {@link #sendPing()}) do not block.
      * </p>
      *
-     * @param size
-     *         The queue size. 0 means no limit. Negative numbers are not allowed.
-     *
-     * @return
-     *         {@code this} object.
-     *
-     * @throws IllegalArgumentException
-     *         {@code size} is negative.
-     *
+     * @param size The queue size. 0 means no limit. Negative numbers are not allowed.
+     * @return {@code this} object.
+     * @throws IllegalArgumentException {@code size} is negative.
      * @since 1.15
      */
-    public WebSocket setFrameQueueSize(int size) throws IllegalArgumentException
-    {
-        if (size < 0)
-        {
+    public WebSocket setFrameQueueSize(int size) throws IllegalArgumentException {
+        if (size < 0) {
             throw new IllegalArgumentException("size must not be negative.");
         }
 
@@ -1849,14 +1697,11 @@ public class WebSocket
      * Get the maximum payload size. The default value is 0 which means that
      * the maximum payload size is not set and as a result frames are not split.
      *
-     * @return
-     *         The maximum payload size. 0 means that the maximum payload size
-     *         is not set.
-     *
+     * @return The maximum payload size. 0 means that the maximum payload size
+     * is not set.
      * @since 1.27
      */
-    public int getMaxPayloadSize()
-    {
+    public int getMaxPayloadSize() {
         return mMaxPayloadSize;
     }
 
@@ -1871,21 +1716,13 @@ public class WebSocket
      * specification even if their payload size exceeds the maximum payload size.
      * </p>
      *
-     * @param size
-     *         The maximum payload size. 0 to unset the maximum payload size.
-     *
-     * @return
-     *         {@code this} object.
-     *
-     * @throws IllegalArgumentException
-     *         {@code size} is negative.
-     *
+     * @param size The maximum payload size. 0 to unset the maximum payload size.
+     * @return {@code this} object.
+     * @throws IllegalArgumentException {@code size} is negative.
      * @since 1.27
      */
-    public WebSocket setMaxPayloadSize(int size) throws IllegalArgumentException
-    {
-        if (size < 0)
-        {
+    public WebSocket setMaxPayloadSize(int size) throws IllegalArgumentException {
+        if (size < 0) {
             throw new IllegalArgumentException("size must not be negative.");
         }
 
@@ -1900,13 +1737,10 @@ public class WebSocket
      * <a href="https://tools.ietf.org/html/rfc6455#section-5.5.2">ping</a>
      * frames.
      *
-     * @return
-     *         The interval in milliseconds.
-     *
+     * @return The interval in milliseconds.
      * @since 1.2
      */
-    public long getPingInterval()
-    {
+    public long getPingInterval() {
         return mPingSender.getInterval();
     }
 
@@ -1922,17 +1756,12 @@ public class WebSocket
      * both before and after {@link #connect()} method.
      * </p>
      *
-     * @param interval
-     *         The interval in milliseconds. A negative value is
-     *         regarded as zero.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param interval The interval in milliseconds. A negative value is
+     *                 regarded as zero.
+     * @return {@code this} object.
      * @since 1.2
      */
-    public WebSocket setPingInterval(long interval)
-    {
+    public WebSocket setPingInterval(long interval) {
         mPingSender.setInterval(interval);
 
         return this;
@@ -1944,13 +1773,10 @@ public class WebSocket
      * <a href="https://tools.ietf.org/html/rfc6455#section-5.5.3">pong</a>
      * frames.
      *
-     * @return
-     *         The interval in milliseconds.
-     *
+     * @return The interval in milliseconds.
      * @since 1.2
      */
-    public long getPongInterval()
-    {
+    public long getPongInterval() {
         return mPongSender.getInterval();
     }
 
@@ -1983,17 +1809,12 @@ public class WebSocket
      * </dl>
      * </blockquote>
      *
-     * @param interval
-     *         The interval in milliseconds. A negative value is
-     *         regarded as zero.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param interval The interval in milliseconds. A negative value is
+     *                 regarded as zero.
+     * @return {@code this} object.
      * @since 1.2
      */
-    public WebSocket setPongInterval(long interval)
-    {
+    public WebSocket setPongInterval(long interval) {
         mPongSender.setInterval(interval);
 
         return this;
@@ -2003,13 +1824,10 @@ public class WebSocket
     /**
      * Get the generator of payload of ping frames that are sent automatically.
      *
-     * @return
-     *         The generator of payload ping frames that are sent automatically.
-     *
+     * @return The generator of payload ping frames that are sent automatically.
      * @since 1.20
      */
-    public PayloadGenerator getPingPayloadGenerator()
-    {
+    public PayloadGenerator getPingPayloadGenerator() {
         return mPingSender.getPayloadGenerator();
     }
 
@@ -2017,13 +1835,10 @@ public class WebSocket
     /**
      * Set the generator of payload of ping frames that are sent automatically.
      *
-     * @param generator
-     *         The generator of payload ping frames that are sent automatically.
-     *
+     * @param generator The generator of payload ping frames that are sent automatically.
      * @since 1.20
      */
-    public WebSocket setPingPayloadGenerator(PayloadGenerator generator)
-    {
+    public WebSocket setPingPayloadGenerator(PayloadGenerator generator) {
         mPingSender.setPayloadGenerator(generator);
 
         return this;
@@ -2033,13 +1848,10 @@ public class WebSocket
     /**
      * Get the generator of payload of pong frames that are sent automatically.
      *
-     * @return
-     *         The generator of payload pong frames that are sent automatically.
-     *
+     * @return The generator of payload pong frames that are sent automatically.
      * @since 1.20
      */
-    public PayloadGenerator getPongPayloadGenerator()
-    {
+    public PayloadGenerator getPongPayloadGenerator() {
         return mPongSender.getPayloadGenerator();
     }
 
@@ -2047,13 +1859,10 @@ public class WebSocket
     /**
      * Set the generator of payload of pong frames that are sent automatically.
      *
-     * @param generator
-     *         The generator of payload ppng frames that are sent automatically.
-     *
+     * @param generator The generator of payload ppng frames that are sent automatically.
      * @since 1.20
      */
-    public WebSocket setPongPayloadGenerator(PayloadGenerator generator)
-    {
+    public WebSocket setPongPayloadGenerator(PayloadGenerator generator) {
         mPongSender.setPayloadGenerator(generator);
 
         return this;
@@ -2063,13 +1872,10 @@ public class WebSocket
     /**
      * Get the name of the {@code Timer} that sends ping frames periodically.
      *
-     * @return
-     *         The {@code Timer}'s name.
-     *
+     * @return The {@code Timer}'s name.
      * @since 2.5
      */
-    public String getPingSenderName()
-    {
+    public String getPingSenderName() {
         return mPingSender.getTimerName();
     }
 
@@ -2077,16 +1883,11 @@ public class WebSocket
     /**
      * Set the name of the {@code Timer} that sends ping frames periodically.
      *
-     * @param name
-     *         A name for the {@code Timer}.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param name A name for the {@code Timer}.
+     * @return {@code this} object.
      * @since 2.5
      */
-    public WebSocket setPingSenderName(String name)
-    {
+    public WebSocket setPingSenderName(String name) {
         mPingSender.setTimerName(name);
 
         return this;
@@ -2096,13 +1897,10 @@ public class WebSocket
     /**
      * Get the name of the {@code Timer} that sends pong frames periodically.
      *
-     * @return
-     *         The {@code Timer}'s name.
-     *
+     * @return The {@code Timer}'s name.
      * @since 2.5
      */
-    public String getPongSenderName()
-    {
+    public String getPongSenderName() {
         return mPongSender.getTimerName();
     }
 
@@ -2110,16 +1908,11 @@ public class WebSocket
     /**
      * Set the name of the {@code Timer} that sends pong frames periodically.
      *
-     * @param name
-     *         A name for the {@code Timer}.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param name A name for the {@code Timer}.
+     * @return {@code this} object.
      * @since 2.5
      */
-    public WebSocket setPongSenderName(String name)
-    {
+    public WebSocket setPongSenderName(String name) {
         mPongSender.setTimerName(name);
 
         return this;
@@ -2129,14 +1922,10 @@ public class WebSocket
     /**
      * Add a listener to receive events on this WebSocket.
      *
-     * @param listener
-     *         A listener to add.
-     *
-     * @return
-     *         {@code this} object.
+     * @param listener A listener to add.
+     * @return {@code this} object.
      */
-    public WebSocket addListener(WebSocketListener listener)
-    {
+    public WebSocket addListener(WebSocketListener listener) {
         mListenerManager.addListener(listener);
 
         return this;
@@ -2146,17 +1935,12 @@ public class WebSocket
     /**
      * Add listeners.
      *
-     * @param listeners
-     *         Listeners to add. {@code null} is silently ignored.
-     *         {@code null} elements in the list are ignored, too.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param listeners Listeners to add. {@code null} is silently ignored.
+     *                  {@code null} elements in the list are ignored, too.
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket addListeners(List<WebSocketListener> listeners)
-    {
+    public WebSocket addListeners(List<WebSocketListener> listeners) {
         mListenerManager.addListeners(listeners);
 
         return this;
@@ -2166,16 +1950,11 @@ public class WebSocket
     /**
      * Remove a listener from this WebSocket.
      *
-     * @param listener
-     *         A listener to remove. {@code null} won't cause an error.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param listener A listener to remove. {@code null} won't cause an error.
+     * @return {@code this} object.
      * @since 1.13
      */
-    public WebSocket removeListener(WebSocketListener listener)
-    {
+    public WebSocket removeListener(WebSocketListener listener) {
         mListenerManager.removeListener(listener);
 
         return this;
@@ -2185,17 +1964,12 @@ public class WebSocket
     /**
      * Remove listeners.
      *
-     * @param listeners
-     *         Listeners to remove. {@code null} is silently ignored.
-     *         {@code null} elements in the list are ignored, too.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param listeners Listeners to remove. {@code null} is silently ignored.
+     *                  {@code null} elements in the list are ignored, too.
+     * @return {@code this} object.
      * @since 1.14
      */
-    public WebSocket removeListeners(List<WebSocketListener> listeners)
-    {
+    public WebSocket removeListeners(List<WebSocketListener> listeners) {
         mListenerManager.removeListeners(listeners);
 
         return this;
@@ -2205,13 +1979,10 @@ public class WebSocket
     /**
      * Remove all the listeners from this WebSocket.
      *
-     * @return
-     *         {@code this} object.
-     *
+     * @return {@code this} object.
      * @since 1.13
      */
-    public WebSocket clearListeners()
-    {
+    public WebSocket clearListeners() {
         mListenerManager.clearListeners();
 
         return this;
@@ -2222,13 +1993,11 @@ public class WebSocket
      * Get the raw socket which this WebSocket uses internally if it has been
      * established, yet.
      *
-     * @return
-     *         The underlying {@link Socket} instance.
-     *         This may be {@code null} in case the underlying socket has not
-     *         been established, yet.
+     * @return The underlying {@link Socket} instance.
+     * This may be {@code null} in case the underlying socket has not
+     * been established, yet.
      */
-    public Socket getSocket()
-    {
+    public Socket getSocket() {
         return mSocketConnector.getSocket();
     }
 
@@ -2237,11 +2006,9 @@ public class WebSocket
      * Get the raw socket which this WebSocket uses internally. This will
      * establish a connection to the server if not already done.
      *
-     * @return
-     *         The underlying {@link Socket} instance.
+     * @return The underlying {@link Socket} instance.
      */
-    public Socket getConnectedSocket() throws WebSocketException
-    {
+    public Socket getConnectedSocket() throws WebSocketException {
         return mSocketConnector.getConnectedSocket();
     }
 
@@ -2250,13 +2017,10 @@ public class WebSocket
      * Get the URI of the WebSocket endpoint. The scheme part is either
      * {@code "ws"} or {@code "wss"}. The authority part is always empty.
      *
-     * @return
-     *         The URI of the WebSocket endpoint.
-     *
+     * @return The URI of the WebSocket endpoint.
      * @since 1.1
      */
-    public URI getURI()
-    {
+    public URI getURI() {
         return mHandshakeBuilder.getURI();
     }
 
@@ -2306,19 +2070,15 @@ public class WebSocket
      * the raw socket are not copied.)
      * </p>
      *
-     * @return
-     *         {@code this} object.
-     *
-     * @throws WebSocketException
-     *         <ul>
-     *           <li>The current state of the WebSocket is not {@link
-     *               WebSocketState#CREATED CREATED}
-     *           <li>Connecting the server failed.
-     *           <li>The opening handshake failed.
-     *         </ul>
+     * @return {@code this} object.
+     * @throws WebSocketException <ul>
+     *                            <li>The current state of the WebSocket is not {@link
+     *                            WebSocketState#CREATED CREATED}
+     *                            <li>Connecting the server failed.
+     *                            <li>The opening handshake failed.
+     *                            </ul>
      */
-    public WebSocket connect() throws WebSocketException
-    {
+    public WebSocket connect() throws WebSocketException {
         // Change the state to CONNECTING. If the state before
         // the change is not CREATED, an exception is thrown.
         changeStateOnConnect();
@@ -2326,16 +2086,13 @@ public class WebSocket
         // HTTP headers from the server.
         Map<String, List<String>> headers;
 
-        try
-        {
+        try {
             // Connect to the server.
             Socket socket = mSocketConnector.connect();
 
             // Perform WebSocket handshake.
             headers = shakeHands(socket);
-        }
-        catch (WebSocketException e)
-        {
+        } catch (WebSocketException e) {
             // Close the socket.
             mSocketConnector.closeSilently();
 
@@ -2376,26 +2133,16 @@ public class WebSocket
      * <code>executorService.{@link ExecutorService#submit(Callable) submit}({@link #connectable()})</code>
      * </blockquote>
      *
-     * @param executorService
-     *         An {@link ExecutorService} to execute a task created by
-     *         {@link #connectable()}.
-     *
-     * @return
-     *         The value returned from {@link ExecutorService#submit(Callable)}.
-     *
-     * @throws NullPointerException
-     *         If the given {@link ExecutorService} is {@code null}.
-     *
-     * @throws RejectedExecutionException
-     *         If the given {@link ExecutorService} rejected the task
-     *         created by {@link #connectable()}.
-     *
+     * @param executorService An {@link ExecutorService} to execute a task created by
+     *                        {@link #connectable()}.
+     * @return The value returned from {@link ExecutorService#submit(Callable)}.
+     * @throws NullPointerException       If the given {@link ExecutorService} is {@code null}.
+     * @throws RejectedExecutionException If the given {@link ExecutorService} rejected the task
+     *                                    created by {@link #connectable()}.
      * @see #connectAsynchronously()
-     *
      * @since 1.7
      */
-    public Future<WebSocket> connect(ExecutorService executorService)
-    {
+    public Future<WebSocket> connect(ExecutorService executorService) {
         return executorService.submit(connectable());
     }
 
@@ -2405,16 +2152,12 @@ public class WebSocket
      * whose {@link Callable#call() call()} method calls {@link #connect()}
      * method of this {@code WebSocket} instance.
      *
-     * @return
-     *         A new {@link Callable}{@code <}{@link WebSocket}{@code >} instance
-     *         for asynchronous {@link #connect()}.
-     *
+     * @return A new {@link Callable}{@code <}{@link WebSocket}{@code >} instance
+     * for asynchronous {@link #connect()}.
      * @see #connect(ExecutorService)
-     *
      * @since 1.7
      */
-    public Callable<WebSocket> connectable()
-    {
+    public Callable<WebSocket> connectable() {
         return new Connectable(this);
     }
 
@@ -2425,20 +2168,16 @@ public class WebSocket
      * {@link WebSocketListener#onConnectError(WebSocket, WebSocketException)
      * onConnectError()} method of {@link WebSocketListener} is called.
      *
-     * @return
-     *         {@code this} object.
-     *
+     * @return {@code this} object.
      * @since 1.8
      */
-    public WebSocket connectAsynchronously()
-    {
+    public WebSocket connectAsynchronously() {
         Thread thread = new ConnectThread(this);
 
         // Get the reference (just in case)
         ListenerManager lm = mListenerManager;
 
-        if (lm != null)
-        {
+        if (lm != null) {
             lm.callOnThreadCreated(ThreadType.CONNECT_THREAD, thread);
         }
 
@@ -2456,11 +2195,9 @@ public class WebSocket
      * disconnect}{@code (}{@link WebSocketCloseCode#NORMAL}{@code , null)}.
      * </p>
      *
-     * @return
-     *         {@code this} object.
+     * @return {@code this} object.
      */
-    public WebSocket disconnect()
-    {
+    public WebSocket disconnect() {
         return disconnect(WebSocketCloseCode.NORMAL, null);
     }
 
@@ -2473,18 +2210,13 @@ public class WebSocket
      * disconnect}{@code (closeCode, null)}.
      * </p>
      *
-     * @param closeCode
-     *         The close code embedded in a <a href=
-     *         "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
-     *         which this WebSocket client will send to the server.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param closeCode The close code embedded in a <a href=
+     *                  "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
+     *                  which this WebSocket client will send to the server.
+     * @return {@code this} object.
      * @since 1.5
      */
-    public WebSocket disconnect(int closeCode)
-    {
+    public WebSocket disconnect(int closeCode) {
         return disconnect(closeCode, null);
     }
 
@@ -2497,22 +2229,17 @@ public class WebSocket
      * disconnect}{@code (}{@link WebSocketCloseCode#NORMAL}{@code , reason)}.
      * </p>
      *
-     * @param reason
-     *         The reason embedded in a <a href=
-     *         "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
-     *         which this WebSocket client will send to the server. Note that
-     *         the length of the bytes which represents the given reason must
-     *         not exceed 125. In other words, {@code (reason.}{@link
-     *         String#getBytes(String) getBytes}{@code ("UTF-8").length <= 125)}
-     *         must be true.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param reason The reason embedded in a <a href=
+     *               "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
+     *               which this WebSocket client will send to the server. Note that
+     *               the length of the bytes which represents the given reason must
+     *               not exceed 125. In other words, {@code (reason.}{@link
+     *               String#getBytes(String) getBytes}{@code ("UTF-8").length <= 125)}
+     *               must be true.
+     * @return {@code this} object.
      * @since 1.5
      */
-    public WebSocket disconnect(String reason)
-    {
+    public WebSocket disconnect(String reason) {
         return disconnect(WebSocketCloseCode.NORMAL, reason);
     }
 
@@ -2525,31 +2252,22 @@ public class WebSocket
      * disconnect}{@code (closeCode, reason, 10000L)}.
      * </p>
      *
-     * @param closeCode
-     *         The close code embedded in a <a href=
-     *         "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
-     *         which this WebSocket client will send to the server.
-     *
-     * @param reason
-     *         The reason embedded in a <a href=
-     *         "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
-     *         which this WebSocket client will send to the server. Note that
-     *         the length of the bytes which represents the given reason must
-     *         not exceed 125. In other words, {@code (reason.}{@link
-     *         String#getBytes(String) getBytes}{@code ("UTF-8").length <= 125)}
-     *         must be true.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param closeCode The close code embedded in a <a href=
+     *                  "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
+     *                  which this WebSocket client will send to the server.
+     * @param reason    The reason embedded in a <a href=
+     *                  "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
+     *                  which this WebSocket client will send to the server. Note that
+     *                  the length of the bytes which represents the given reason must
+     *                  not exceed 125. In other words, {@code (reason.}{@link
+     *                  String#getBytes(String) getBytes}{@code ("UTF-8").length <= 125)}
+     *                  must be true.
+     * @return {@code this} object.
      * @see WebSocketCloseCode
-     *
      * @see <a href="https://tools.ietf.org/html/rfc6455#section-5.5.1">RFC 6455, 5.5.1. Close</a>
-     *
      * @since 1.5
      */
-    public WebSocket disconnect(int closeCode, String reason)
-    {
+    public WebSocket disconnect(int closeCode, String reason) {
         return disconnect(closeCode, reason, DEFAULT_CLOSE_DELAY);
     }
 
@@ -2557,51 +2275,38 @@ public class WebSocket
     /**
      * Disconnect the WebSocket.
      *
-     * @param closeCode
-     *         The close code embedded in a <a href=
-     *         "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
-     *         which this WebSocket client will send to the server.
-     *
-     * @param reason
-     *         The reason embedded in a <a href=
-     *         "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
-     *         which this WebSocket client will send to the server. Note that
-     *         the length of the bytes which represents the given reason must
-     *         not exceed 125. In other words, {@code (reason.}{@link
-     *         String#getBytes(String) getBytes}{@code ("UTF-8").length <= 125)}
-     *         must be true.
-     *
-     * @param closeDelay
-     *         Delay in milliseconds before calling {@link Socket#close()} forcibly.
-     *         This safeguard is needed for the case where the server fails to send
-     *         back a close frame. The default value is 10000 (= 10 seconds). When
-     *         a negative value is given, the default value is used.
-     *
-     *         If a very short time (e.g. 0) is given, it is likely to happen either
-     *         (1) that this client will fail to send a close frame to the server
-     *         (in this case, you will probably see an error message "Flushing frames
-     *         to the server failed: Socket closed") or (2) that the WebSocket
-     *         connection will be closed before this client receives a close frame
-     *         from the server (in this case, the second argument of {@link
-     *         WebSocketListener#onDisconnected(WebSocket, WebSocketFrame,
-     *         WebSocketFrame, boolean) WebSocketListener.onDisconnected} will be
-     *         {@code null}).
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param closeCode  The close code embedded in a <a href=
+     *                   "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
+     *                   which this WebSocket client will send to the server.
+     * @param reason     The reason embedded in a <a href=
+     *                   "https://tools.ietf.org/html/rfc6455#section-5.5.1">close frame</a>
+     *                   which this WebSocket client will send to the server. Note that
+     *                   the length of the bytes which represents the given reason must
+     *                   not exceed 125. In other words, {@code (reason.}{@link
+     *                   String#getBytes(String) getBytes}{@code ("UTF-8").length <= 125)}
+     *                   must be true.
+     * @param closeDelay Delay in milliseconds before calling {@link Socket#close()} forcibly.
+     *                   This safeguard is needed for the case where the server fails to send
+     *                   back a close frame. The default value is 10000 (= 10 seconds). When
+     *                   a negative value is given, the default value is used.
+     *                   <p>
+     *                   If a very short time (e.g. 0) is given, it is likely to happen either
+     *                   (1) that this client will fail to send a close frame to the server
+     *                   (in this case, you will probably see an error message "Flushing frames
+     *                   to the server failed: Socket closed") or (2) that the WebSocket
+     *                   connection will be closed before this client receives a close frame
+     *                   from the server (in this case, the second argument of {@link
+     *                   WebSocketListener#onDisconnected(WebSocket, WebSocketFrame,
+     *                   WebSocketFrame, boolean) WebSocketListener.onDisconnected} will be
+     *                   {@code null}).
+     * @return {@code this} object.
      * @see WebSocketCloseCode
-     *
      * @see <a href="https://tools.ietf.org/html/rfc6455#section-5.5.1">RFC 6455, 5.5.1. Close</a>
-     *
      * @since 1.26
      */
-    public WebSocket disconnect(int closeCode, String reason, long closeDelay)
-    {
-        synchronized (mStateManager)
-        {
-            switch (mStateManager.getState())
-            {
+    public WebSocket disconnect(int closeCode, String reason, long closeDelay) {
+        synchronized (mStateManager) {
+            switch (mStateManager.getState()) {
                 case CREATED:
                     finishAsynchronously();
                     return this;
@@ -2636,8 +2341,7 @@ public class WebSocket
         mListenerManager.callOnStateChanged(CLOSING);
 
         // If a negative value is given.
-        if (closeDelay < 0)
-        {
+        if (closeDelay < 0) {
             // Use the default value.
             closeDelay = DEFAULT_CLOSE_DELAY;
         }
@@ -2657,11 +2361,9 @@ public class WebSocket
      * (= after the opening handshake succeeds).
      * </p>
      *
-     * @return
-     *         The agreed extensions.
+     * @return The agreed extensions.
      */
-    public List<WebSocketExtension> getAgreedExtensions()
-    {
+    public List<WebSocketExtension> getAgreedExtensions() {
         return mAgreedExtensions;
     }
 
@@ -2674,11 +2376,9 @@ public class WebSocket
      * (= after the opening handshake succeeds).
      * </p>
      *
-     * @return
-     *         The agreed protocol.
+     * @return The agreed protocol.
      */
-    public String getAgreedProtocol()
-    {
+    public String getAgreedProtocol() {
         return mAgreedProtocol;
     }
 
@@ -2712,26 +2412,19 @@ public class WebSocket
      * frame.
      * </p>
      *
-     * @param frame
-     *         A WebSocket frame to be sent to the server.
-     *         If {@code null} is given, nothing is done.
-     *
-     * @return
-     *         {@code this} object.
+     * @param frame A WebSocket frame to be sent to the server.
+     *              If {@code null} is given, nothing is done.
+     * @return {@code this} object.
      */
-    public WebSocket sendFrame(WebSocketFrame frame)
-    {
-        if (frame == null)
-        {
+    public WebSocket sendFrame(WebSocketFrame frame) {
+        if (frame == null) {
             return this;
         }
 
-        synchronized (mStateManager)
-        {
+        synchronized (mStateManager) {
             WebSocketState state = mStateManager.getState();
 
-            if (state != OPEN && state != CLOSING)
-            {
+            if (state != OPEN && state != CLOSING) {
                 return this;
             }
         }
@@ -2747,8 +2440,7 @@ public class WebSocket
         // are chances that sendFrame() is called when mWritingThread
         // is null. So, it should be checked whether an instance of
         // WritingThread is available or not before calling queueFrame().
-        if (wt == null)
-        {
+        if (wt == null) {
             // An instance of WritingThread is not available.
             return this;
         }
@@ -2760,15 +2452,11 @@ public class WebSocket
         // CLOSED, queueing won't be a big issue.
 
         // If the frame was not split.
-        if (frames == null)
-        {
+        if (frames == null) {
             // Queue the frame.
             wt.queueFrame(frame);
-        }
-        else
-        {
-            for (WebSocketFrame f : frames)
-            {
+        } else {
+            for (WebSocketFrame f : frames) {
                 // Queue the frame.
                 wt.queueFrame(f);
             }
@@ -2778,8 +2466,7 @@ public class WebSocket
     }
 
 
-    private List<WebSocketFrame> splitIfNecessary(WebSocketFrame frame)
-    {
+    private List<WebSocketFrame> splitIfNecessary(WebSocketFrame frame) {
         return WebSocketFrame.splitIfNecessary(frame, mMaxPayloadSize, mPerMessageCompressionExtension);
     }
 
@@ -2800,11 +2487,9 @@ public class WebSocket
      * sendContinuation(boolean fin)} with {@code fin=true}.
      * </p>
      *
-     * @return
-     *         {@code this} object.
+     * @return {@code this} object.
      */
-    public WebSocket sendContinuation()
-    {
+    public WebSocket sendContinuation() {
         return sendFrame(WebSocketFrame.createContinuationFrame());
     }
 
@@ -2820,14 +2505,10 @@ public class WebSocket
      * WebSocketFrame#setFin(boolean) setFin}{@code (fin))}.
      * </p>
      *
-     * @param fin
-     *         The FIN bit value.
-     *
-     * @return
-     *         {@code this} object.
+     * @param fin The FIN bit value.
+     * @return {@code this} object.
      */
-    public WebSocket sendContinuation(boolean fin)
-    {
+    public WebSocket sendContinuation(boolean fin) {
         return sendFrame(WebSocketFrame.createContinuationFrame().setFin(fin));
     }
 
@@ -2849,14 +2530,10 @@ public class WebSocket
      * fin=true}.
      * </p>
      *
-     * @param payload
-     *         The payload of a continuation frame.
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload of a continuation frame.
+     * @return {@code this} object.
      */
-    public WebSocket sendContinuation(String payload)
-    {
+    public WebSocket sendContinuation(String payload) {
         return sendFrame(WebSocketFrame.createContinuationFrame(payload));
     }
 
@@ -2872,17 +2549,11 @@ public class WebSocket
      * WebSocketFrame#setFin(boolean) setFin}{@code (fin))}.
      * </p>
      *
-     * @param payload
-     *         The payload of a continuation frame.
-     *
-     * @param fin
-     *         The FIN bit value.
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload of a continuation frame.
+     * @param fin     The FIN bit value.
+     * @return {@code this} object.
      */
-    public WebSocket sendContinuation(String payload, boolean fin)
-    {
+    public WebSocket sendContinuation(String payload, boolean fin) {
         return sendFrame(WebSocketFrame.createContinuationFrame(payload).setFin(fin));
     }
 
@@ -2904,14 +2575,10 @@ public class WebSocket
      * fin=true}.
      * </p>
      *
-     * @param payload
-     *         The payload of a continuation frame.
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload of a continuation frame.
+     * @return {@code this} object.
      */
-    public WebSocket sendContinuation(byte[] payload)
-    {
+    public WebSocket sendContinuation(byte[] payload) {
         return sendFrame(WebSocketFrame.createContinuationFrame(payload));
     }
 
@@ -2927,17 +2594,11 @@ public class WebSocket
      * WebSocketFrame#setFin(boolean) setFin}{@code (fin))}.
      * </p>
      *
-     * @param payload
-     *         The payload of a continuation frame.
-     *
-     * @param fin
-     *         The FIN bit value.
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload of a continuation frame.
+     * @param fin     The FIN bit value.
+     * @return {@code this} object.
      */
-    public WebSocket sendContinuation(byte[] payload, boolean fin)
-    {
+    public WebSocket sendContinuation(byte[] payload, boolean fin) {
         return sendFrame(WebSocketFrame.createContinuationFrame(payload).setFin(fin));
     }
 
@@ -2958,14 +2619,10 @@ public class WebSocket
      * setText(String payload, boolean fin)} with {@code fin=false}.
      * </p>
      *
-     * @param message
-     *         A text message to be sent to the server.
-     *
-     * @return
-     *         {@code this} object.
+     * @param message A text message to be sent to the server.
+     * @return {@code this} object.
      */
-    public WebSocket sendText(String message)
-    {
+    public WebSocket sendText(String message) {
         return sendFrame(WebSocketFrame.createTextFrame(message));
     }
 
@@ -2981,17 +2638,11 @@ public class WebSocket
      * WebSocketFrame#setFin(boolean) setFin}{@code (fin))}.
      * </p>
      *
-     * @param payload
-     *         The payload of a text frame.
-     *
-     * @param fin
-     *         The FIN bit value.
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload of a text frame.
+     * @param fin     The FIN bit value.
+     * @return {@code this} object.
      */
-    public WebSocket sendText(String payload, boolean fin)
-    {
+    public WebSocket sendText(String payload, boolean fin) {
         return sendFrame(WebSocketFrame.createTextFrame(payload).setFin(fin));
     }
 
@@ -3012,14 +2663,10 @@ public class WebSocket
      * setBinary(byte[] payload, boolean fin)} with {@code fin=false}.
      * </p>
      *
-     * @param message
-     *         A binary message to be sent to the server.
-     *
-     * @return
-     *         {@code this} object.
+     * @param message A binary message to be sent to the server.
+     * @return {@code this} object.
      */
-    public WebSocket sendBinary(byte[] message)
-    {
+    public WebSocket sendBinary(byte[] message) {
         return sendFrame(WebSocketFrame.createBinaryFrame(message));
     }
 
@@ -3035,17 +2682,11 @@ public class WebSocket
      * WebSocketFrame#setFin(boolean) setFin}{@code (fin))}.
      * </p>
      *
-     * @param payload
-     *         The payload of a binary frame.
-     *
-     * @param fin
-     *         The FIN bit value.
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload of a binary frame.
+     * @param fin     The FIN bit value.
+     * @return {@code this} object.
      */
-    public WebSocket sendBinary(byte[] payload, boolean fin)
-    {
+    public WebSocket sendBinary(byte[] payload, boolean fin) {
         return sendFrame(WebSocketFrame.createBinaryFrame(payload).setFin(fin));
     }
 
@@ -3059,11 +2700,9 @@ public class WebSocket
      * WebSocketFrame#createCloseFrame() createCloseFrame()}).
      * </p>
      *
-     * @return
-     *         {@code this} object.
+     * @return {@code this} object.
      */
-    public WebSocket sendClose()
-    {
+    public WebSocket sendClose() {
         return sendFrame(WebSocketFrame.createCloseFrame());
     }
 
@@ -3078,16 +2717,11 @@ public class WebSocket
      * createCloseFrame}{@code (closeCode))}.
      * </p>
      *
-     * @param closeCode
-     *         The close code.
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param closeCode The close code.
+     * @return {@code this} object.
      * @see WebSocketCloseCode
      */
-    public WebSocket sendClose(int closeCode)
-    {
+    public WebSocket sendClose(int closeCode) {
         return sendFrame(WebSocketFrame.createCloseFrame(closeCode));
     }
 
@@ -3102,22 +2736,15 @@ public class WebSocket
      * createCloseFrame}{@code (closeCode, reason))}.
      * </p>
      *
-     * @param closeCode
-     *         The close code.
-     *
-     * @param reason
-     *         The close reason.
-     *         Note that a control frame's payload length must be 125 bytes or less
-     *         (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
-     *         >5.5. Control Frames</a>).
-     *
-     * @return
-     *         {@code this} object.
-     *
+     * @param closeCode The close code.
+     * @param reason    The close reason.
+     *                  Note that a control frame's payload length must be 125 bytes or less
+     *                  (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
+     *                  >5.5. Control Frames</a>).
+     * @return {@code this} object.
      * @see WebSocketCloseCode
      */
-    public WebSocket sendClose(int closeCode, String reason)
-    {
+    public WebSocket sendClose(int closeCode, String reason) {
         return sendFrame(WebSocketFrame.createCloseFrame(closeCode, reason));
     }
 
@@ -3131,11 +2758,9 @@ public class WebSocket
      * WebSocketFrame#createPingFrame() createPingFrame()}).
      * </p>
      *
-     * @return
-     *         {@code this} object.
+     * @return {@code this} object.
      */
-    public WebSocket sendPing()
-    {
+    public WebSocket sendPing() {
         return sendFrame(WebSocketFrame.createPingFrame());
     }
 
@@ -3150,17 +2775,13 @@ public class WebSocket
      * createPingFrame}{@code (payload))}.
      * </p>
      *
-     * @param payload
-     *         The payload for a ping frame.
-     *         Note that a control frame's payload length must be 125 bytes or less
-     *         (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
-     *         >5.5. Control Frames</a>).
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload for a ping frame.
+     *                Note that a control frame's payload length must be 125 bytes or less
+     *                (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
+     *                >5.5. Control Frames</a>).
+     * @return {@code this} object.
      */
-    public WebSocket sendPing(byte[] payload)
-    {
+    public WebSocket sendPing(byte[] payload) {
         return sendFrame(WebSocketFrame.createPingFrame(payload));
     }
 
@@ -3175,17 +2796,13 @@ public class WebSocket
      * createPingFrame}{@code (payload))}.
      * </p>
      *
-     * @param payload
-     *         The payload for a ping frame.
-     *         Note that a control frame's payload length must be 125 bytes or less
-     *         (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
-     *         >5.5. Control Frames</a>).
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload for a ping frame.
+     *                Note that a control frame's payload length must be 125 bytes or less
+     *                (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
+     *                >5.5. Control Frames</a>).
+     * @return {@code this} object.
      */
-    public WebSocket sendPing(String payload)
-    {
+    public WebSocket sendPing(String payload) {
         return sendFrame(WebSocketFrame.createPingFrame(payload));
     }
 
@@ -3199,11 +2816,9 @@ public class WebSocket
      * WebSocketFrame#createPongFrame() createPongFrame()}).
      * </p>
      *
-     * @return
-     *         {@code this} object.
+     * @return {@code this} object.
      */
-    public WebSocket sendPong()
-    {
+    public WebSocket sendPong() {
         return sendFrame(WebSocketFrame.createPongFrame());
     }
 
@@ -3218,17 +2833,13 @@ public class WebSocket
      * createPongFrame}{@code (payload))}.
      * </p>
      *
-     * @param payload
-     *         The payload for a pong frame.
-     *         Note that a control frame's payload length must be 125 bytes or less
-     *         (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
-     *         >5.5. Control Frames</a>).
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload for a pong frame.
+     *                Note that a control frame's payload length must be 125 bytes or less
+     *                (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
+     *                >5.5. Control Frames</a>).
+     * @return {@code this} object.
      */
-    public WebSocket sendPong(byte[] payload)
-    {
+    public WebSocket sendPong(byte[] payload) {
         return sendFrame(WebSocketFrame.createPongFrame(payload));
     }
 
@@ -3243,31 +2854,24 @@ public class WebSocket
      * createPongFrame}{@code (payload))}.
      * </p>
      *
-     * @param payload
-     *         The payload for a pong frame.
-     *         Note that a control frame's payload length must be 125 bytes or less
-     *         (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
-     *         >5.5. Control Frames</a>).
-     *
-     * @return
-     *         {@code this} object.
+     * @param payload The payload for a pong frame.
+     *                Note that a control frame's payload length must be 125 bytes or less
+     *                (RFC 6455, <a href="https://tools.ietf.org/html/rfc6455#section-5.5"
+     *                >5.5. Control Frames</a>).
+     * @return {@code this} object.
      */
-    public WebSocket sendPong(String payload)
-    {
+    public WebSocket sendPong(String payload) {
         return sendFrame(WebSocketFrame.createPongFrame(payload));
     }
 
 
-    private void changeStateOnConnect() throws WebSocketException
-    {
-        synchronized (mStateManager)
-        {
+    private void changeStateOnConnect() throws WebSocketException {
+        synchronized (mStateManager) {
             // If the current state is not CREATED.
-            if (mStateManager.getState() != CREATED)
-            {
+            if (mStateManager.getState() != CREATED) {
                 throw new WebSocketException(
-                    WebSocketError.NOT_IN_CREATED_STATE,
-                    "The current state of the WebSocket is not CREATED.");
+                        WebSocketError.NOT_IN_CREATED_STATE,
+                        "The current state of the WebSocket is not CREATED.");
             }
 
             // Change the state to CONNECTING.
@@ -3282,8 +2886,7 @@ public class WebSocket
     /**
      * Perform the opening handshake.
      */
-    private Map<String, List<String>> shakeHands(Socket socket) throws WebSocketException
-    {
+    private Map<String, List<String>> shakeHands(Socket socket) throws WebSocketException {
         // Get the input stream of the socket.
         WebSocketInputStream input = openInputStream(socket);
 
@@ -3301,7 +2904,7 @@ public class WebSocket
 
         // Keep the input stream and the output stream to pass them
         // to the reading thread and the writing thread later.
-        mInput  = input;
+        mInput = input;
         mOutput = output;
 
         // The handshake succeeded.
@@ -3313,21 +2916,17 @@ public class WebSocket
      * Open the input stream of the WebSocket connection.
      * The stream is used by the reading thread.
      */
-    private WebSocketInputStream openInputStream(Socket socket) throws WebSocketException
-    {
-        try
-        {
+    private WebSocketInputStream openInputStream(Socket socket) throws WebSocketException {
+        try {
             // Get the input stream of the raw socket through which
             // this client receives data from the server.
             return new WebSocketInputStream(
-                new BufferedInputStream(socket.getInputStream()));
-        }
-        catch (IOException e)
-        {
+                    new BufferedInputStream(socket.getInputStream()));
+        } catch (IOException e) {
             // Failed to get the input stream of the raw socket.
             throw new WebSocketException(
-                WebSocketError.SOCKET_INPUT_STREAM_FAILURE,
-                "Failed to get the input stream of the raw socket: " + e.getMessage(), e);
+                    WebSocketError.SOCKET_INPUT_STREAM_FAILURE,
+                    "Failed to get the input stream of the raw socket: " + e.getMessage(), e);
         }
     }
 
@@ -3336,21 +2935,17 @@ public class WebSocket
      * Open the output stream of the WebSocket connection.
      * The stream is used by the writing thread.
      */
-    private WebSocketOutputStream openOutputStream(Socket socket) throws WebSocketException
-    {
-        try
-        {
+    private WebSocketOutputStream openOutputStream(Socket socket) throws WebSocketException {
+        try {
             // Get the output stream of the socket through which
             // this client sends data to the server.
             return new WebSocketOutputStream(
-                new BufferedOutputStream(socket.getOutputStream()), this.payloadMasker);
-        }
-        catch (IOException e)
-        {
+                    new BufferedOutputStream(socket.getOutputStream()), this.payloadMasker);
+        } catch (IOException e) {
             // Failed to get the output stream from the raw socket.
             throw new WebSocketException(
-                WebSocketError.SOCKET_OUTPUT_STREAM_FAILURE,
-                "Failed to get the output stream from the raw socket: " + e.getMessage(), e);
+                    WebSocketError.SOCKET_OUTPUT_STREAM_FAILURE,
+                    "Failed to get the output stream from the raw socket: " + e.getMessage(), e);
         }
     }
 
@@ -3367,11 +2962,9 @@ public class WebSocket
      * </i></p>
      * </blockquote>
      *
-     * @return
-     *         A randomly generated WebSocket key.
+     * @return A randomly generated WebSocket key.
      */
-    private static String generateWebSocketKey()
-    {
+    private static String generateWebSocketKey() {
         // "16-byte value"
         byte[] data = new byte[16];
 
@@ -3386,29 +2979,25 @@ public class WebSocket
     /**
      * Send an opening handshake request to the WebSocket server.
      */
-    private void writeHandshake(WebSocketOutputStream output, String key) throws WebSocketException
-    {
+    private void writeHandshake(WebSocketOutputStream output, String key) throws WebSocketException {
         // Generate an opening handshake sent to the server from this client.
         mHandshakeBuilder.setKey(key);
-        String requestLine     = mHandshakeBuilder.buildRequestLine();
+        String requestLine = mHandshakeBuilder.buildRequestLine();
         List<String[]> headers = mHandshakeBuilder.buildHeaders();
-        String handshake       = HandshakeBuilder.build(requestLine, headers);
+        String handshake = HandshakeBuilder.build(requestLine, headers);
 
         // Call onSendingHandshake() method of listeners.
         mListenerManager.callOnSendingHandshake(requestLine, headers);
 
-        try
-        {
+        try {
             // Send the opening handshake to the server.
             output.write(handshake);
             output.flush();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             // Failed to send an opening handshake request to the server.
             throw new WebSocketException(
-                WebSocketError.OPENING_HAHDSHAKE_REQUEST_FAILURE,
-                "Failed to send an opening handshake request to the server: " + e.getMessage(), e);
+                    WebSocketError.OPENING_HAHDSHAKE_REQUEST_FAILURE,
+                    "Failed to send an opening handshake request to the server: " + e.getMessage(), e);
         }
     }
 
@@ -3416,8 +3005,7 @@ public class WebSocket
     /**
      * Receive an opening handshake response from the WebSocket server.
      */
-    private Map<String, List<String>> readHandshake(WebSocketInputStream input, String key) throws WebSocketException
-    {
+    private Map<String, List<String>> readHandshake(WebSocketInputStream input, String key) throws WebSocketException {
         return new HandshakeReader(this).readHandshake(input, key);
     }
 
@@ -3433,13 +3021,11 @@ public class WebSocket
      * called.
      * </p>
      */
-    private void startThreads()
-    {
+    private void startThreads() {
         ReadingThread readingThread = new ReadingThread(this);
         WritingThread writingThread = new WritingThread(this);
 
-        synchronized (mThreadsLock)
-        {
+        synchronized (mThreadsLock) {
             mReadingThread = readingThread;
             mWritingThread = writingThread;
         }
@@ -3464,13 +3050,11 @@ public class WebSocket
      * is called.
      * </p>
      */
-    private void stopThreads(long closeDelay)
-    {
+    private void stopThreads(long closeDelay) {
         ReadingThread readingThread;
         WritingThread writingThread;
 
-        synchronized (mThreadsLock)
-        {
+        synchronized (mThreadsLock) {
             readingThread = mReadingThread;
             writingThread = mWritingThread;
 
@@ -3478,13 +3062,11 @@ public class WebSocket
             mWritingThread = null;
         }
 
-        if (readingThread != null)
-        {
+        if (readingThread != null) {
             readingThread.requestStop(closeDelay);
         }
 
-        if (writingThread != null)
-        {
+        if (writingThread != null) {
             writingThread.requestStop();
         }
     }
@@ -3493,8 +3075,7 @@ public class WebSocket
     /**
      * Get the input stream of the WebSocket connection.
      */
-    WebSocketInputStream getInput()
-    {
+    WebSocketInputStream getInput() {
         return mInput;
     }
 
@@ -3502,8 +3083,7 @@ public class WebSocket
     /**
      * Get the output stream of the WebSocket connection.
      */
-    WebSocketOutputStream getOutput()
-    {
+    WebSocketOutputStream getOutput() {
         return mOutput;
     }
 
@@ -3511,8 +3091,7 @@ public class WebSocket
     /**
      * Get the manager that manages the state of this {@code WebSocket} instance.
      */
-    StateManager getStateManager()
-    {
+    StateManager getStateManager() {
         return mStateManager;
     }
 
@@ -3520,8 +3099,7 @@ public class WebSocket
     /**
      * Get the manager that manages registered listeners.
      */
-    ListenerManager getListenerManager()
-    {
+    ListenerManager getListenerManager() {
         return mListenerManager;
     }
 
@@ -3529,8 +3107,7 @@ public class WebSocket
     /**
      * Get the handshake builder. {@link HandshakeReader} uses this method.
      */
-    HandshakeBuilder getHandshakeBuilder()
-    {
+    HandshakeBuilder getHandshakeBuilder() {
         return mHandshakeBuilder;
     }
 
@@ -3538,8 +3115,7 @@ public class WebSocket
     /**
      * Set the agreed extensions. {@link HandshakeReader} uses this method.
      */
-    void setAgreedExtensions(List<WebSocketExtension> extensions)
-    {
+    void setAgreedExtensions(List<WebSocketExtension> extensions) {
         mAgreedExtensions = extensions;
     }
 
@@ -3547,8 +3123,7 @@ public class WebSocket
     /**
      * Set the agreed protocol. {@link HandshakeReader} uses this method.
      */
-    void setAgreedProtocol(String protocol)
-    {
+    void setAgreedProtocol(String protocol) {
         mAgreedProtocol = protocol;
     }
 
@@ -3556,16 +3131,13 @@ public class WebSocket
     /**
      * Called by the reading thread as its first step.
      */
-    void onReadingThreadStarted()
-    {
+    void onReadingThreadStarted() {
         boolean bothStarted = false;
 
-        synchronized (mThreadsLock)
-        {
+        synchronized (mThreadsLock) {
             mReadingThreadStarted = true;
 
-            if (mWritingThreadStarted)
-            {
+            if (mWritingThreadStarted) {
                 // Both the reading thread and the writing thread have started.
                 bothStarted = true;
             }
@@ -3575,8 +3147,7 @@ public class WebSocket
         callOnConnectedIfNotYet();
 
         // If both the reading thread and the writing thread have started.
-        if (bothStarted)
-        {
+        if (bothStarted) {
             onThreadsStarted();
         }
     }
@@ -3585,16 +3156,13 @@ public class WebSocket
     /**
      * Called by the writing thread as its first step.
      */
-    void onWritingThreadStarted()
-    {
+    void onWritingThreadStarted() {
         boolean bothStarted = false;
 
-        synchronized (mThreadsLock)
-        {
+        synchronized (mThreadsLock) {
             mWritingThreadStarted = true;
 
-            if (mReadingThreadStarted)
-            {
+            if (mReadingThreadStarted) {
                 // Both the reading thread and the writing thread have started.
                 bothStarted = true;
             }
@@ -3604,8 +3172,7 @@ public class WebSocket
         callOnConnectedIfNotYet();
 
         // If both the reading thread and the writing thread have started.
-        if (bothStarted)
-        {
+        if (bothStarted) {
             onThreadsStarted();
         }
     }
@@ -3616,13 +3183,10 @@ public class WebSocket
      * of the registered listeners if it has not been called yet. Either
      * the reading thread or the writing thread calls this method.
      */
-    private void callOnConnectedIfNotYet()
-    {
-        synchronized (mOnConnectedCalledLock)
-        {
+    private void callOnConnectedIfNotYet() {
+        synchronized (mOnConnectedCalledLock) {
             // If onConnected() has already been called.
-            if (mOnConnectedCalled)
-            {
+            if (mOnConnectedCalled) {
                 // Do not call onConnected() twice.
                 return;
             }
@@ -3640,8 +3204,7 @@ public class WebSocket
      * This method is called in the context of either the reading thread or
      * the writing thread.
      */
-    private void onThreadsStarted()
-    {
+    private void onThreadsStarted() {
         // Start sending ping frames periodically.
         // If the interval is zero, this call does nothing.
         mPingSender.start();
@@ -3654,15 +3217,12 @@ public class WebSocket
     /**
      * Called by the reading thread as its last step.
      */
-    void onReadingThreadFinished(WebSocketFrame closeFrame)
-    {
-        synchronized (mThreadsLock)
-        {
+    void onReadingThreadFinished(WebSocketFrame closeFrame) {
+        synchronized (mThreadsLock) {
             mReadingThreadFinished = true;
             mServerCloseFrame = closeFrame;
 
-            if (mWritingThreadFinished == false)
-            {
+            if (mWritingThreadFinished == false) {
                 // Wait for the writing thread to finish.
                 return;
             }
@@ -3676,15 +3236,12 @@ public class WebSocket
     /**
      * Called by the writing thread as its last step.
      */
-    void onWritingThreadFinished(WebSocketFrame closeFrame)
-    {
-        synchronized (mThreadsLock)
-        {
+    void onWritingThreadFinished(WebSocketFrame closeFrame) {
+        synchronized (mThreadsLock) {
             mWritingThreadFinished = true;
             mClientCloseFrame = closeFrame;
 
-            if (mReadingThreadFinished == false)
-            {
+            if (mReadingThreadFinished == false) {
                 // Wait for the reading thread to finish.
                 return;
             }
@@ -3700,34 +3257,27 @@ public class WebSocket
      * This method is called in the context of either the reading thread or
      * the writing thread.
      */
-    private void onThreadsFinished()
-    {
+    private void onThreadsFinished() {
         finish();
     }
 
 
-    void finish()
-    {
+    void finish() {
         // Stop the ping sender and the pong sender.
         mPingSender.stop();
         mPongSender.stop();
 
         // Close the raw socket.
         Socket socket = mSocketConnector.getSocket();
-        if (socket != null)
-        {
-            try
-            {
+        if (socket != null) {
+            try {
                 socket.close();
-            }
-            catch (Throwable t)
-            {
+            } catch (Throwable t) {
                 // Ignore any error raised by close().
             }
         }
 
-        synchronized (mStateManager)
-        {
+        synchronized (mStateManager) {
             // Change the state to CLOSED.
             mStateManager.setState(CLOSED);
         }
@@ -3737,15 +3287,14 @@ public class WebSocket
 
         // Notify the listeners that the WebSocket was disconnected.
         mListenerManager.callOnDisconnected(
-            mServerCloseFrame, mClientCloseFrame, mStateManager.getClosedByServer());
+                mServerCloseFrame, mClientCloseFrame, mStateManager.getClosedByServer());
     }
 
 
     /**
      * Call {@link #finish()} from within a separate thread.
      */
-    private void finishAsynchronously()
-    {
+    private void finishAsynchronously() {
         WebSocketThread thread = new FinishThread(this);
 
         // Execute onThreadCreated() of the listeners.
@@ -3758,18 +3307,14 @@ public class WebSocket
     /**
      * Find a per-message compression extension from among the agreed extensions.
      */
-    private PerMessageCompressionExtension findAgreedPerMessageCompressionExtension()
-    {
-        if (mAgreedExtensions == null)
-        {
+    private PerMessageCompressionExtension findAgreedPerMessageCompressionExtension() {
+        if (mAgreedExtensions == null) {
             return null;
         }
 
-        for (WebSocketExtension extension : mAgreedExtensions)
-        {
-            if (extension instanceof PerMessageCompressionExtension)
-            {
-                return (PerMessageCompressionExtension)extension;
+        for (WebSocketExtension extension : mAgreedExtensions) {
+            if (extension instanceof PerMessageCompressionExtension) {
+                return (PerMessageCompressionExtension) extension;
             }
         }
 
@@ -3782,8 +3327,7 @@ public class WebSocket
      * This method returns null if a per-message compression extension
      * is not found in the agreed extensions.
      */
-    PerMessageCompressionExtension getPerMessageCompressionExtension()
-    {
+    PerMessageCompressionExtension getPerMessageCompressionExtension() {
         return mPerMessageCompressionExtension;
     }
 }

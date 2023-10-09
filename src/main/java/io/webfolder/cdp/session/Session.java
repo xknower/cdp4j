@@ -1,60 +1,7 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.session;
-
-import static com.neovisionaries.ws.client.WebSocketCloseCode.NORMAL;
-import static io.webfolder.cdp.event.Events.LogEntryAdded;
-import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
-import static io.webfolder.cdp.event.Events.PageLifecycleEvent;
-import static io.webfolder.cdp.event.Events.RuntimeConsoleAPICalled;
-import static io.webfolder.cdp.session.WaitUntil.DomReady;
-import static io.webfolder.cdp.session.WaitUntil.Load;
-import static io.webfolder.cdp.type.constant.ImageFormat.Png;
-import static io.webfolder.cdp.type.network.ResourceType.Document;
-import static io.webfolder.cdp.type.network.ResourceType.XHR;
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.lang.Math.floor;
-import static java.lang.String.format;
-import static java.lang.String.valueOf;
-import static java.lang.ThreadLocal.withInitial;
-import static java.lang.reflect.Proxy.newProxyInstance;
-import static java.util.Arrays.asList;
-import static java.util.Locale.ENGLISH;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Predicate;
 
 import com.google.gson.Gson;
 import com.neovisionaries.ws.client.WebSocket;
-
 import io.webfolder.cdp.JsFunction;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
@@ -83,13 +30,47 @@ import io.webfolder.cdp.type.page.NavigateResult;
 import io.webfolder.cdp.type.page.Viewport;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
+
+import static com.neovisionaries.ws.client.WebSocketCloseCode.NORMAL;
+import static io.webfolder.cdp.event.Events.LogEntryAdded;
+import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
+import static io.webfolder.cdp.event.Events.PageLifecycleEvent;
+import static io.webfolder.cdp.event.Events.RuntimeConsoleAPICalled;
+import static io.webfolder.cdp.session.WaitUntil.DomReady;
+import static io.webfolder.cdp.session.WaitUntil.Load;
+import static io.webfolder.cdp.type.constant.ImageFormat.Png;
+import static io.webfolder.cdp.type.network.ResourceType.Document;
+import static io.webfolder.cdp.type.network.ResourceType.XHR;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.lang.Math.floor;
+import static java.lang.String.format;
+import static java.lang.String.valueOf;
+import static java.lang.ThreadLocal.withInitial;
+import static java.lang.reflect.Proxy.newProxyInstance;
+import static java.util.Arrays.asList;
+import static java.util.Locale.ENGLISH;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 public class Session implements AutoCloseable,
-                                Selector     ,
-                                Keyboard     ,
-                                Mouse        ,
-                                Navigator    ,
-                                JavaScript   ,
-                                Dom          {
+        Selector,
+        Keyboard,
+        Mouse,
+        Navigator,
+        JavaScript,
+        Dom {
 
     private final Map<Class<?>, Object> proxies = new ConcurrentHashMap<>();
 
@@ -131,8 +112,10 @@ public class Session implements AutoCloseable,
 
     private final Map<Class<?>, Object> jsFunctions;
 
-    private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
-                                                    withInitial(() -> { return TRUE; });
+    private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG =
+            withInitial(() -> {
+                return TRUE;
+            });
 
     Session(
             final Gson gson,
@@ -150,26 +133,26 @@ public class Session implements AutoCloseable,
         this.sessionId = sessionId;
         this.browserContextId = browserContextId;
         this.invocationHandler = new SessionInvocationHandler(
-                                                        gson,
-                                                        webSocket,
-                                                        contextList,
-                                                        session == null ? this : session,
-                                                        loggerFactory.getLogger("cdp4j.ws.request"),
-                                                        browserSession,
-                                                        sessionId,
-                                                        targetId,
-                                                        sessionFactory.getWebSocketReadTimeout());
-        this.targetId         = targetId; 
+                gson,
+                webSocket,
+                contextList,
+                session == null ? this : session,
+                loggerFactory.getLogger("cdp4j.ws.request"),
+                browserSession,
+                sessionId,
+                targetId,
+                sessionFactory.getWebSocketReadTimeout());
+        this.targetId = targetId;
         this.sesessionFactory = sessionFactory;
-        this.listeners   = eventListeners;
-        this.webSocket        = webSocket;
-        this.log              = loggerFactory.getLogger("cdp4j.session");
-        this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
-        this.gson             = gson;
-        this.browserSession   = browserSession;
-        this.majorVersion     = majorVersion;
-        this.jsFunctions      = new ConcurrentHashMap<>();
-        this.command          = new Command(this);
+        this.listeners = eventListeners;
+        this.webSocket = webSocket;
+        this.log = loggerFactory.getLogger("cdp4j.session");
+        this.logFlow = loggerFactory.getLogger("cdp4j.flow");
+        this.gson = gson;
+        this.browserSession = browserSession;
+        this.majorVersion = majorVersion;
+        this.jsFunctions = new ConcurrentHashMap<>();
+        this.command = new Command(this);
     }
 
     public String getId() {
@@ -224,7 +207,7 @@ public class Session implements AutoCloseable,
 
     /**
      * waits until document is ready
-     * 
+     *
      * @return this
      */
     public Session waitDocumentReady() {
@@ -233,13 +216,12 @@ public class Session implements AutoCloseable,
 
     /**
      * waits until document is ready
-     * 
+     *
      * @param timeout the maximum time to wait in milliseconds
-     * 
      * @return this
      */
     public Session waitDocumentReady(final int timeout) {
-        if ( ! isConnected() ) {
+        if (!isConnected()) {
             return this;
         }
         long start = System.currentTimeMillis();
@@ -247,9 +229,9 @@ public class Session implements AutoCloseable,
         if (isDomReady()) {
             return getThis();
         }
-        CountDownLatch latch  = new CountDownLatch(2);
-        AtomicBoolean  loaded = new AtomicBoolean(false);
-        AtomicBoolean  ready  = new AtomicBoolean(false);
+        CountDownLatch latch = new CountDownLatch(2);
+        AtomicBoolean loaded = new AtomicBoolean(false);
+        AtomicBoolean ready = new AtomicBoolean(false);
         if (isConnected()) {
             EventListener loadListener = (e, d) -> {
                 if (PageLifecycleEvent.equals(e) &&
@@ -264,13 +246,13 @@ public class Session implements AutoCloseable,
             addEventListener(loadListener);
             sesessionFactory.getThreadPool().execute(() -> {
                 try {
-                    waitUntil(s -> ! isConnected() || s.isDomReady() || ready.get(), timeout, false);
+                    waitUntil(s -> !isConnected() || s.isDomReady() || ready.get(), timeout, false);
                 } finally {
                     latch.countDown();
-                    if ( ! loaded.get() ) {
+                    if (!loaded.get()) {
                         latch.countDown();
                     }
-                    if ( ! ready.get() && isConnected() && isDomReady() ) {
+                    if (!ready.get() && isConnected() && isDomReady()) {
                         ready.set(true);
                     }
                 }
@@ -283,7 +265,7 @@ public class Session implements AutoCloseable,
                 removeEventEventListener(loadListener);
             }
             long elapsed = System.currentTimeMillis() - start;
-            if ( elapsed > timeout && isConnected() && ! isDomReady() ) {
+            if (elapsed > timeout && isConnected() && !isDomReady()) {
                 throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
             }
         }
@@ -310,17 +292,17 @@ public class Session implements AutoCloseable,
     }
 
     public boolean waitUntil(
-                    final Predicate<Session> predicate,
-                    final int timeout,
-                    final int period,
-                    final boolean log) {
+            final Predicate<Session> predicate,
+            final int timeout,
+            final int period,
+            final boolean log) {
         final int count = (int) floor(timeout / period);
         for (int i = 0; i < count; i++) {
             final boolean wakeup = predicate.test(getThis());
             if (wakeup) {
                 return true;
             } else {
-                if ( ! isConnected() ) {
+                if (!isConnected()) {
                     return false;
                 } else {
                     wait(period, log);
@@ -333,7 +315,7 @@ public class Session implements AutoCloseable,
     public Session navigate(final String url) {
         logEntry("navigate", url);
         NavigateResult navigate = command.getPage().navigate(url);
-        if ( navigate != null ) {
+        if (navigate != null) {
             this.frameId = navigate.getFrameId();
         } else {
             throw new DestinationUnreachableException(url);
@@ -345,17 +327,17 @@ public class Session implements AutoCloseable,
         return navigateAndWait(url, condition, 10_000);
     }
 
-    public Session navigateAndWait(final String    url,
+    public Session navigateAndWait(final String url,
                                    final WaitUntil condition,
-                                   final int       timeout) {
+                                   final int timeout) {
 
         long start = System.currentTimeMillis();
 
         final WaitUntil waitUntil =
-                            DomReady.equals(condition) ? Load : condition;
+                DomReady.equals(condition) ? Load : condition;
 
         logEntry("navigateAndWait",
-                            format("[url=%s, waitUntil=%s, timeout=%d]", url, condition.name(), timeout));
+                format("[url=%s, waitUntil=%s, timeout=%d]", url, condition.name(), timeout));
 
         NavigateResult navigate = command.getPage().navigate(url);
         if (navigate == null) {
@@ -390,24 +372,24 @@ public class Session implements AutoCloseable,
             throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
         }
 
-        if ( DomReady.equals(condition) && ! isDomReady() ) {
+        if (DomReady.equals(condition) && !isDomReady()) {
             try {
                 disableFlowLog();
                 boolean ready = waitUntil(p -> isDomReady(), timeout - (int) elapsedTime, 10);
-                if ( ! ready ) {
+                if (!ready) {
                     throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
                 }
             } finally {
                 enableFlowLog();
             }
         }
-        
+
         return this;
     }
 
     /**
      * Redirects javascript console logs to slf4j
-     * 
+     *
      * @return this
      */
     public Session enableConsoleLog() {
@@ -419,11 +401,18 @@ public class Session implements AutoCloseable,
                     Object value = next.getValue();
                     String type = ca.getType().toString().toUpperCase(ENGLISH);
                     switch (ca.getType()) {
-                        case Log    :
-                        case Info   : log.info("[console] [{}] {}", new Object[] { type, valueOf(value) }); break;
-                        case Error  : log.info("[console] [{}] {}", new Object[] { type, valueOf(value) }); break;
-                        case Warning: log.info("[console] [{}] {}", new Object[] { type, valueOf(value) }); break;
-                        default: break;
+                        case Log:
+                        case Info:
+                            log.info("[console] [{}] {}", new Object[]{type, valueOf(value)});
+                            break;
+                        case Error:
+                            log.info("[console] [{}] {}", new Object[]{type, valueOf(value)});
+                            break;
+                        case Warning:
+                            log.info("[console] [{}] {}", new Object[]{type, valueOf(value)});
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -433,7 +422,7 @@ public class Session implements AutoCloseable,
 
     /**
      * Redirects runtime logs (network, security, storage etc..) to slf4j
-     * 
+     *
      * @return this
      */
     public Session enableDetailLog() {
@@ -444,10 +433,18 @@ public class Session implements AutoCloseable,
                 LogEntry entry = entryAdded.getEntry();
                 String level = entry.getLevel().toString().toUpperCase(ENGLISH);
                 switch (entry.getLevel()) {
-                    case Verbose: log.info("[{}] [{}] {}", entry.getSource(), level, entry.getText()); break;
-                    case Info   : log.info("[{}] [{}] {}", entry.getSource(), level, entry.getText()); break;
-                    case Warning: log.info("[{}] [{}] {}", entry.getSource(), level, entry.getText()); break;
-                    case Error  : log.info("[{}] [{}] {}", entry.getSource(), level, entry.getText()); break;
+                    case Verbose:
+                        log.info("[{}] [{}] {}", entry.getSource(), level, entry.getText());
+                        break;
+                    case Info:
+                        log.info("[{}] [{}] {}", entry.getSource(), level, entry.getText());
+                        break;
+                    case Warning:
+                        log.info("[{}] [{}] {}", entry.getSource(), level, entry.getText());
+                        break;
+                    case Error:
+                        log.info("[{}] [{}] {}", entry.getSource(), level, entry.getText());
+                        break;
                 }
             }
         });
@@ -456,7 +453,7 @@ public class Session implements AutoCloseable,
 
     /**
      * Redirects network logs to slf4j
-     * 
+     *
      * @return this
      */
     public Session enableNetworkLog() {
@@ -464,17 +461,17 @@ public class Session implements AutoCloseable,
         addEventListener((e, d) -> {
             if (NetworkResponseReceived.equals(e)) {
                 ResponseReceived rr = (ResponseReceived) d;
-                Response         response = rr.getResponse();
-                final String     url      = response.getUrl();
-                final int        status   = response.getStatus().intValue();
-                final String     mimeType = response.getMimeType();
+                Response response = rr.getResponse();
+                final String url = response.getUrl();
+                final int status = response.getStatus().intValue();
+                final String mimeType = response.getMimeType();
                 if (Document.equals(rr.getType()) || XHR.equals(rr.getType())) {
-                    log.info("[{}] [{}] [{}] [{}] [{}]", new Object[] {
-                        rr.getType().toString().toUpperCase(ENGLISH),
-                        rr.getResponse().getProtocol().toUpperCase(ENGLISH),
-                        status,
-                        mimeType,
-                        url
+                    log.info("[{}] [{}] [{}] [{}] [{}]", new Object[]{
+                            rr.getType().toString().toUpperCase(ENGLISH),
+                            rr.getResponse().getProtocol().toUpperCase(ENGLISH),
+                            status,
+                            mimeType,
+                            url
                     });
                 }
             }
@@ -499,7 +496,7 @@ public class Session implements AutoCloseable,
 
     /**
      * Capture page screenshot.
-     * 
+     *
      * @param hideScrollbar hides the scollbar
      */
     public byte[] captureScreenshot(boolean hideScrollbar) {
@@ -508,12 +505,12 @@ public class Session implements AutoCloseable,
 
     /**
      * Capture page screenshot.
-     * 
+     *
      * @param hideScrollbar hides the scollbar
-     * @param format Image compression format (defaults to png).
-     * @param quality Compression quality from range [0..100] (jpeg only).
-     * @param clip Capture the screenshot of a given region only.
-     * @param fromSurface Capture the screenshot from the surface, rather than the view. Defaults to true.
+     * @param format        Image compression format (defaults to png).
+     * @param quality       Compression quality from range [0..100] (jpeg only).
+     * @param clip          Capture the screenshot of a given region only.
+     * @param fromSurface   Capture the screenshot from the surface, rather than the view. Defaults to true.
      */
     public byte[] captureScreenshot(boolean hideScrollbar,
                                     @Optional ImageFormat format,
@@ -547,15 +544,13 @@ public class Session implements AutoCloseable,
         }
         return data;
     }
-    
+
     /**
      * Causes the current thread to wait until waiting time elapses.
-     * 
+     *
      * @param timeout the maximum time to wait in milliseconds
-     * 
-     * @throws CdpException if the session held by another thread at the time of invocation.
-     * 
      * @return this
+     * @throws CdpException if the session held by another thread at the time of invocation.
      */
     public Session wait(int timeout) {
         return wait(timeout, true);
@@ -563,12 +558,10 @@ public class Session implements AutoCloseable,
 
     /**
      * Causes the current thread to wait until waiting time elapses.
-     * 
+     *
      * @param timeout the maximum time to wait in milliseconds
-     * 
-     * @throws CdpException if the session held by another thread at the time of invocation.
-     * 
      * @return this
+     * @throws CdpException if the session held by another thread at the time of invocation.
      */
     public Session wait(int timeout, boolean log) {
         if (lock.tryLock()) {
@@ -646,7 +639,7 @@ public class Session implements AutoCloseable,
     }
 
     void terminate(String message) {
-        if ( terminateListener != null ) {
+        if (terminateListener != null) {
             terminateListener.onTerminate(new TerminateEvent(message));
             terminateListener = null;
         }
@@ -654,11 +647,11 @@ public class Session implements AutoCloseable,
 
     void info(
             final String message,
-            final Object ...args) {
+            final Object... args) {
         log.info(message, args);
     }
 
-    void error(final String message, final Object ...args) {
+    void error(final String message, final Object... args) {
         log.error(message, args);
     }
 
@@ -669,15 +662,15 @@ public class Session implements AutoCloseable,
     void logEntry(
             final String method,
             final String args) {
-        if ( ! ENABLE_ENTRY_EXIT_LOG.get() ) {
+        if (!ENABLE_ENTRY_EXIT_LOG.get()) {
             return;
         }
         boolean hasArgs = args != null ? true : false;
-        logFlow.info("{}({}{}{})", new Object[] {
-            method,
-            hasArgs ? "\"" : "",
-            hasArgs ? args : "",
-            hasArgs ? "\"" : ""
+        logFlow.info("{}({}{}{})", new Object[]{
+                method,
+                hasArgs ? "\"" : "",
+                hasArgs ? args : "",
+                hasArgs ? "\"" : ""
         });
     }
 
@@ -691,16 +684,16 @@ public class Session implements AutoCloseable,
             final String method,
             final String args,
             final Object retValue) {
-        if ( ! ENABLE_ENTRY_EXIT_LOG.get() ) {
+        if (!ENABLE_ENTRY_EXIT_LOG.get()) {
             return;
         }
         boolean hasArgs = args != null ? true : false;
-        logFlow.info("{}({}{}{}): {}", new Object[] {
-            method,
-            hasArgs ? "\"" : "",
-            hasArgs ? args : "",
-            hasArgs ? "\"" : "",
-            retValue
+        logFlow.info("{}({}{}{}): {}", new Object[]{
+                method,
+                hasArgs ? "\"" : "",
+                hasArgs ? args : "",
+                hasArgs ? "\"" : "",
+                retValue
         });
     }
 
@@ -711,7 +704,7 @@ public class Session implements AutoCloseable,
             return (T) proxy;
         }
         ClassLoader classLoader = getClass().getClassLoader();
-        Class<T>[] interfaces = new Class[] { klass };
+        Class<T>[] interfaces = new Class[]{klass};
         proxy = (T) newProxyInstance(classLoader, interfaces, invocationHandler);
         Object existing = proxies.putIfAbsent(klass, proxy);
         if (existing != null) {
@@ -734,23 +727,23 @@ public class Session implements AutoCloseable,
 
     @SuppressWarnings("unchecked")
     public <T> T registerJsFunction(Class<T> klass) {
-        if ( ! klass.isInterface() ) {
+        if (!klass.isInterface()) {
             throw new CdpException("Class must be interface: " + klass.getName());
         }
         if (asList(klass.getMethods())
-                        .stream()
-                        .filter(p -> p.isAnnotationPresent(JsFunction.class))
-                        .count() == 0) {
+                .stream()
+                .filter(p -> p.isAnnotationPresent(JsFunction.class))
+                .count() == 0) {
             throw new CdpException("Interface must be contain at least one @JsFunction");
         }
         if (jsFunctions.containsKey(klass)) {
             throw new CdpException("Duplicate Registration is not allowed: " + klass);
         }
         if (jsFunctions.keySet()
-                        .stream()
-                        .filter(p -> p.getSimpleName()
+                .stream()
+                .filter(p -> p.getSimpleName()
                         .equals(klass.getSimpleName())).count() > 0) {
-            throw new CdpException("Duplicate class name is not allowed: " + klass.getSimpleName());            
+            throw new CdpException("Duplicate class name is not allowed: " + klass.getSimpleName());
         }
         Method[] methods = klass.getMethods();
         StringBuilder builder = new StringBuilder();
@@ -782,19 +775,19 @@ public class Session implements AutoCloseable,
         page.enable();
         page.addScriptToEvaluateOnNewDocument(builder.toString());
         Object instance = newProxyInstance(getClass().getClassLoader(),
-                                            new Class<?>[] { klass },
-                                            (InvocationHandler) (proxy, method, args) -> {
-            String className = method.getDeclaringClass().getSimpleName();
-            String methodName = method.getName();
-            Class<?> returnType = method.getReturnType();
-            if ((void.class.equals(returnType) || Void.class.equals(returnType)) && (args == null || args.length == 0)) {
-                callFunction("document." + className + "." + methodName);
-                return null;
-            } else {
-                Object result = callFunction("document." + className + "." + methodName, returnType, args);
-                return result;
-            }
-        });
+                new Class<?>[]{klass},
+                (InvocationHandler) (proxy, method, args) -> {
+                    String className = method.getDeclaringClass().getSimpleName();
+                    String methodName = method.getName();
+                    Class<?> returnType = method.getReturnType();
+                    if ((void.class.equals(returnType) || Void.class.equals(returnType)) && (args == null || args.length == 0)) {
+                        callFunction("document." + className + "." + methodName);
+                        return null;
+                    } else {
+                        Object result = callFunction("document." + className + "." + methodName, returnType, args);
+                        return result;
+                    }
+                });
         jsFunctions.put(klass, instance);
         return (T) instance;
     }
@@ -836,7 +829,7 @@ public class Session implements AutoCloseable,
     public String getTargetId() {
         return targetId;
     }
-    
+
     public String getBrowserContextId() {
         return browserContextId;
     }

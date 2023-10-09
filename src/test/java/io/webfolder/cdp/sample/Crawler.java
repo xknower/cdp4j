@@ -1,43 +1,4 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp.sample;
-
-import static io.webfolder.cdp.event.Events.NetworkLoadingFinished;
-import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
-import static java.util.Base64.getDecoder;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.synchronizedSet;
-
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.event.network.LoadingFinished;
@@ -47,6 +8,25 @@ import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
 import io.webfolder.cdp.type.network.ResourceType;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static io.webfolder.cdp.event.Events.NetworkLoadingFinished;
+import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
+import static java.util.Base64.getDecoder;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.synchronizedSet;
 
 public class Crawler {
 
@@ -61,7 +41,7 @@ public class Crawler {
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
                 String tc = node.getTextContent();
-                if ( tc != null ) {
+                if (tc != null) {
                     urls.add(tc);
                 }
             }
@@ -163,8 +143,8 @@ public class Crawler {
                 if (NetworkResponseReceived.equals(e)) {
                     ResponseReceived rr = (ResponseReceived) d;
 
-                    if ( ! rr.getResponse().getUrl().startsWith("https://") &&
-                            ! rr.getResponse().getUrl().startsWith("http://") ) {
+                    if (!rr.getResponse().getUrl().startsWith("https://") &&
+                            !rr.getResponse().getUrl().startsWith("http://")) {
                         return;
                     }
 
@@ -185,7 +165,7 @@ public class Crawler {
             for (String requestId : new ArrayList<>(finishedResources)) {
                 try {
                     GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(requestId);
-                    if ( rb.getBase64Encoded() ) {
+                    if (rb.getBase64Encoded()) {
                         webResource.setContent(getDecoder().decode(rb.getBody()));
                     } else {
                         webResource.setDocument(rb.getBody());
@@ -196,7 +176,7 @@ public class Crawler {
             }
 
             String ct = (String) webResource.getResponseHeaders().get("content-type");
-            if ( ct != null && "text/html".equals(ct) ) {
+            if (ct != null && "text/html".equals(ct)) {
                 webResource.setDocument(session.getContent());
             }
 
@@ -205,7 +185,7 @@ public class Crawler {
 
         @Override
         public void close() {
-            if ( session != null ) {
+            if (session != null) {
                 session.close();
             }
         }
@@ -238,8 +218,8 @@ public class Crawler {
 
         for (Resource resource : resources) {
             System.out.println("URL: " + resource.getUrl() +
-                               ", Status Code: " + resource.getStatus() +
-                               ", Content Length: " + resource.getDocument().length());
+                    ", Status Code: " + resource.getStatus() +
+                    ", Content Length: " + resource.getDocument().length());
         }
 
         dummySession.close();

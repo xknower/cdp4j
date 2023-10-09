@@ -1,32 +1,14 @@
-/**
- * cdp4j Commercial License
- *
- * Copyright 2017, 2019 WebFolder OÜ
- *
- * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
- * associated  documentation files  (the "Software"), to deal in  the Software  without
- * restriction, including without limitation  the rights  to use, copy, modify,  merge,
- * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
- * the Software is furnished to do so, subject to the following conditions:
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
- * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package io.webfolder.cdp;
 
-import static java.lang.String.format;
-import static java.lang.Thread.sleep;
-import static java.util.Collections.emptyList;
+import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.session.SessionFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.session.SessionFactory;
+import static java.lang.String.format;
+import static java.lang.Thread.sleep;
+import static java.util.Collections.emptyList;
 
 abstract class AbstractLauncher {
 
@@ -107,17 +89,17 @@ abstract class AbstractLauncher {
         if (connectionTimeout % SLEEP_DURATION != 0) {
             throw new IllegalArgumentException();
         }
-        if ( ! launched ) {
+        if (!launched) {
             List<String> list = getCommonParameters(chromeExecutablePath, arguments);
             internalLaunch(list, arguments);
             launched = true;
         }
 
-        int     retryCount = 0;
-        boolean connected  = factory.ping();
+        int retryCount = 0;
+        boolean connected = factory.ping();
 
         int maxRetryCount = connectionTimeout / (int) SLEEP_DURATION;
-        while ( ! ( connected = factory.ping() ) && retryCount < maxRetryCount ) {
+        while (!(connected = factory.ping()) && retryCount < maxRetryCount) {
             try {
                 sleep(SLEEP_DURATION);
             } catch (InterruptedException e) {
@@ -126,7 +108,7 @@ abstract class AbstractLauncher {
             retryCount += 1;
         }
 
-        if ( ! connected ) {
+        if (!connected) {
             throw new CdpException("Unable to connect to the browser");
         }
 
