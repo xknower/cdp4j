@@ -12,6 +12,10 @@ import io.webfolder.cdp.type.network.ResourcePriority;
 @Domain("Network")
 @EventName("resourceChangedPriority")
 public class ResourceChangedPriority {
+
+    /**
+     * Request identifier.
+     */
     private String requestId;
 
     private ResourcePriority newPriority;

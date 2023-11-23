@@ -43,6 +43,11 @@ import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * 会话工厂，创建Session并初始化管理业务流程
+ * - 1. 创建Session
+ * - 2. 连接Websocket
+ */
 public class SessionFactory implements AutoCloseable {
 
     public final static String DEFAULT_HOST = "localhost";
@@ -182,14 +187,25 @@ public class SessionFactory implements AutoCloseable {
         return create(browserContextId, new SessionSettings());
     }
 
+    /**
+     * 创建Session，初始化Websocket；执行 {@link #connect(String, String)}
+     *
+     * @param browserContextId 浏览器上下文ID
+     * @param sessionSettings  Session配置
+     * @return Session
+     */
     public Session create(String browserContextId, SessionSettings sessionSettings) {
         boolean initialized = browserSession == null ? false : true;
 
+        // 1. 创建获取Session，并初始化连接websocket
         Session browserSession = getBrowserSession();
+
+        // 2. 等待Websocket完成，获取或创建一个标签页
         Target target = browserSession.getCommand().getTarget();
 
         TabInfo tab = null;
 
+        // 第一次创建Session，监听等待 websocket 连接完成，并等待一段时间获取第一个Tab信息
         if (!initialized) {
             for (int i = 0; i < 500 && tabs.isEmpty(); i++) {
                 try {
@@ -203,6 +219,7 @@ public class SessionFactory implements AutoCloseable {
             }
         }
 
+        // 未获取到则主动创建一个空白页
         if (tab == null) {
             String targetId = target.createTarget("about:blank",
                     sessionSettings.getScreenWidth(),
@@ -229,6 +246,7 @@ public class SessionFactory implements AutoCloseable {
             tab = new TabInfo(targetId, browserContextId);
         }
 
+        // 3. 执行连接
         return connect(tab.getTargetId(), tab.getBrowserContextId());
     }
 
@@ -236,7 +254,13 @@ public class SessionFactory implements AutoCloseable {
         return connect(targetId, null);
     }
 
+    /**
+     * @param targetId         目标ID
+     * @param browserContextId 浏览器会话ID
+     * @return Session
+     */
     Session connect(String targetId, String browserContextId) {
+        // 1. 获取主会话，未存在则创建
         Session bs = getBrowserSession();
 
         if (browserContextId == null) {
@@ -253,6 +277,7 @@ public class SessionFactory implements AutoCloseable {
             browserContextId = found.getBrowserContextId();
         }
 
+        // 2. 会话ID，并初始化一个会话
         Target target = bs.getCommand().getTarget();
         String sessionId = target.attachToTarget(targetId);
 
@@ -272,6 +297,7 @@ public class SessionFactory implements AutoCloseable {
         wsAdapters.put(sessionId, wsAdapter);
         sessions.put(sessionId, session);
 
+        // 监听会话上下文事件，并获取设置 executionContextId
         session.getCommand().getRuntime().enable();
 
         session.addEventListener((event, value) -> {
@@ -289,6 +315,8 @@ public class SessionFactory implements AutoCloseable {
             }
         });
 
+        // 设置该会话检查器
+
         Command command = session.getCommand();
 
         command.getInspector().enable();
@@ -298,10 +326,17 @@ public class SessionFactory implements AutoCloseable {
         return session;
     }
 
+    /**
+     * 创建获取Session
+     *
+     * @return Session
+     */
     private synchronized Session getBrowserSession() {
         if (browserSession == null) {
+            // 1. HTTP请求获取信息
             Map<String, Object> version = getVersion();
             String webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
+            // 2. 创建 websocket 连接
             webSocket = null;
             try {
                 webSocket = factory.createSocket(webSocketDebuggerUrl);
@@ -309,6 +344,7 @@ public class SessionFactory implements AutoCloseable {
             } catch (IOException e) {
                 throw new CdpException(e);
             }
+            // 初始化 WSAdapter 适配器，并设置 websocket Listener
             Map<Integer, WSContext> contexts = new ConcurrentHashMap<>();
             List<EventListener> listeners = new CopyOnWriteArrayList<>();
             WSAdapter adapter = new WSAdapter(gson, contexts,
@@ -316,12 +352,14 @@ public class SessionFactory implements AutoCloseable {
                     loggerFactory.getLogger("cdp4j.ws.response"));
             webSocket.addListener(adapter);
             try {
+                // 连接 websocket
                 webSocket.connect();
             } catch (WebSocketException e) {
                 throw new CdpException(e);
             }
             webSocket.setAutoFlush(true);
 
+            // 3. 构建Session实例，设置 session id 和 target id
             browserSession = new Session(gson, webSocketDebuggerUrl,
                     webSocketDebuggerUrl, null,
                     webSocket, contexts,
@@ -329,9 +367,11 @@ public class SessionFactory implements AutoCloseable {
                     loggerFactory, true,
                     null, 0);
             adapter.setSession(browserSession);
+            // Session添加目标监听器
             browserSession.addEventListener(new TargetListener(sessions, wsAdapters, tabs));
             Target target = browserSession.getCommand().getTarget();
             target.setDiscoverTargets(TRUE);
+            // Session添加关闭事件处理
             browserSession.onTerminate(event -> close());
         }
         return browserSession;
@@ -450,6 +490,11 @@ public class SessionFactory implements AutoCloseable {
         }
     }
 
+    /**
+     * 监测Chrome状态
+     *
+     * @return true 正常
+     */
     public boolean ping() {
         String sessions = format("http://%s:%d/json/version",
                 host,

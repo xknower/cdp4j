@@ -8,9 +8,12 @@ import java.util.concurrent.CountDownLatch;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
+/**
+ * websocket 执行内容
+ */
 class WSContext {
 
-    private CountDownLatch latch = new CountDownLatch(1);
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     private JsonElement data;
 

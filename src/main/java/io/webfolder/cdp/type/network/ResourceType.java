@@ -64,4 +64,13 @@ public enum ResourceType {
     public String toString() {
         return value;
     }
+
+    public boolean isFile() {
+        return this == Document || this == Stylesheet || this == Image || this == Font || this == Script;
+    }
+
+    public boolean isHTTPRequest() {
+        return this == XHR || this == Fetch;
+    }
+
 }

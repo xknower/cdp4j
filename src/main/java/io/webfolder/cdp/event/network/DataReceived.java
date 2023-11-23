@@ -9,6 +9,10 @@ import io.webfolder.cdp.annotation.EventName;
 @Domain("Network")
 @EventName("dataReceived")
 public class DataReceived {
+
+    /**
+     * Request identifier.
+     */
     private String requestId;
 
     private Double timestamp;

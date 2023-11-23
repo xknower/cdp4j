@@ -123,7 +123,14 @@ import io.webfolder.cdp.event.tracing.BufferUsage;
 import io.webfolder.cdp.event.tracing.DataCollected;
 import io.webfolder.cdp.event.tracing.TracingComplete;
 
+/**
+ * 定义接收事件枚举类型清单，基于事件名获取事件类型来构造接收的事件对象，并调用事件监听器处理
+ */
 public enum Events {
+
+    // Animation
+    // ---------- ---------- ---------- ---------- ----------
+
     /**
      * Event for when an animation has been cancelled
      */
@@ -139,9 +146,15 @@ public enum Events {
      */
     AnimationAnimationStarted("Animation", "animationStarted", AnimationStarted.class),
 
+    // ApplicationCache
+    // ---------- ---------- ---------- ---------- ----------
+
     ApplicationCacheApplicationCacheStatusUpdated("ApplicationCache", "applicationCacheStatusUpdated", ApplicationCacheStatusUpdated.class),
 
     ApplicationCacheNetworkStateUpdated("ApplicationCache", "networkStateUpdated", NetworkStateUpdated.class),
+
+    // CSS
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Fires whenever a web font is updated
@@ -171,6 +184,9 @@ public enum Events {
      * Fired whenever an active document stylesheet is removed
      */
     CSSStyleSheetRemoved("CSS", "styleSheetRemoved", StyleSheetRemoved.class),
+
+    // DOM
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Fired when<code>Element</code>'s attribute is modified
@@ -245,6 +261,9 @@ public enum Events {
      */
     DOMShadowRootPushed("DOM", "shadowRootPushed", ShadowRootPushed.class),
 
+    // DOMStorage
+    // ---------- ---------- ---------- ---------- ----------
+
     DOMStorageDomStorageItemAdded("DOMStorage", "domStorageItemAdded", DomStorageItemAdded.class),
 
     DOMStorageDomStorageItemRemoved("DOMStorage", "domStorageItemRemoved", DomStorageItemRemoved.class),
@@ -253,7 +272,13 @@ public enum Events {
 
     DOMStorageDomStorageItemsCleared("DOMStorage", "domStorageItemsCleared", DomStorageItemsCleared.class),
 
+    // Database
+    // ---------- ---------- ---------- ---------- ----------
+
     DatabaseAddDatabase("Database", "addDatabase", AddDatabase.class),
+
+    // Emulation
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Notification sent after the virtual time has advanced
@@ -270,10 +295,16 @@ public enum Events {
      */
     EmulationVirtualTimePaused("Emulation", "virtualTimePaused", VirtualTimePaused.class),
 
+    // HeadlessExperimental
+    // ---------- ---------- ---------- ---------- ----------
+
     /**
      * Issued when the target starts or stops needing BeginFrames
      */
     HeadlessExperimentalNeedsBeginFramesChanged("HeadlessExperimental", "needsBeginFramesChanged", NeedsBeginFramesChanged.class),
+
+    // Inspector
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Fired when remote debugging connection is about to be terminated
@@ -291,100 +322,115 @@ public enum Events {
      */
     InspectorTargetReloadedAfterCrash("Inspector", "targetReloadedAfterCrash", TargetReloadedAfterCrash.class),
 
+    // LayerTree
+    // ---------- ---------- ---------- ---------- ----------
+
     LayerTreeLayerPainted("LayerTree", "layerPainted", LayerPainted.class),
 
     LayerTreeLayerTreeDidChange("LayerTree", "layerTreeDidChange", LayerTreeDidChange.class),
+
+    // Log
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Issued when new message was logged
      */
     LogEntryAdded("Log", "entryAdded", EntryAdded.class),
 
+    // Network 网络事件
+    // ---------- ---------- ---------- ---------- ----------
+
     /**
-     * Fired when data chunk was received over the network
+     * Fired when data chunk was received over the network. 在通过网络接收数据块时激发。
      */
     NetworkDataReceived("Network", "dataReceived", DataReceived.class),
 
     /**
-     * Fired when EventSource message is received
+     * Fired when EventSource message is received. 收到EventSource消息时激发。
      */
     NetworkEventSourceMessageReceived("Network", "eventSourceMessageReceived", EventSourceMessageReceived.class),
 
     /**
-     * Fired when HTTP request has failed to load
+     * Fired when HTTP request has failed to load. 当HTTP请求加载失败时激发。
      */
     NetworkLoadingFailed("Network", "loadingFailed", LoadingFailed.class),
 
     /**
-     * Fired when HTTP request has finished loading
+     * Fired when HTTP request has finished loading. 当HTTP请求完成加载时激发。
      */
     NetworkLoadingFinished("Network", "loadingFinished", LoadingFinished.class),
 
     /**
      * Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
-     * mocked
+     * mocked. 截获的HTTP请求的详细信息，必须允许、阻止、修改或模拟。（请求发送拦截）
      */
     NetworkRequestIntercepted("Network", "requestIntercepted", RequestIntercepted.class),
 
     /**
-     * Fired if request ended up loading from cache
+     * Fired if request ended up loading from cache. 如果请求最终从缓存加载，则激发。
      */
     NetworkRequestServedFromCache("Network", "requestServedFromCache", RequestServedFromCache.class),
 
     /**
-     * Fired when page is about to send HTTP request
+     * Fired when page is about to send HTTP request. 当页面即将发送HTTP请求时激发。
      */
     NetworkRequestWillBeSent("Network", "requestWillBeSent", RequestWillBeSent.class),
 
     /**
-     * Fired when resource loading priority is changed
+     * Fired when resource loading priority is changed. 当资源加载优先级更改时激发。
      */
     NetworkResourceChangedPriority("Network", "resourceChangedPriority", ResourceChangedPriority.class),
 
     /**
-     * Fired when a signed exchange was received over the network
+     * Fired when a signed exchange was received over the network. 在通过网络接收到签名的交换时激发。
      */
     NetworkSignedExchangeReceived("Network", "signedExchangeReceived", SignedExchangeReceived.class),
 
     /**
-     * Fired when HTTP response is available
+     * Fired when HTTP response is available. 当HTTP响应可用时激发。
      */
     NetworkResponseReceived("Network", "responseReceived", ResponseReceived.class),
 
+    // Network 网络WebSocket事件
+    // ---------- ---------- ----------
+
     /**
-     * Fired when WebSocket is closed
+     * Fired when WebSocket is closed. WebSocket关闭时激发。
      */
     NetworkWebSocketClosed("Network", "webSocketClosed", WebSocketClosed.class),
 
     /**
-     * Fired upon WebSocket creation
+     * Fired upon WebSocket creation. WebSocket创建时激发。
      */
     NetworkWebSocketCreated("Network", "webSocketCreated", WebSocketCreated.class),
 
     /**
-     * Fired when WebSocket frame error occurs
+     * Fired when WebSocket frame error occurs. WebSocket帧错误是激发。
      */
     NetworkWebSocketFrameError("Network", "webSocketFrameError", WebSocketFrameError.class),
 
     /**
-     * Fired when WebSocket frame is received
+     * Fired when WebSocket frame is received. 收到WebSocket帧时激发。
      */
     NetworkWebSocketFrameReceived("Network", "webSocketFrameReceived", WebSocketFrameReceived.class),
 
     /**
-     * Fired when WebSocket frame is sent
+     * Fired when WebSocket frame is sent. 发送WebSocket帧时激发。
      */
     NetworkWebSocketFrameSent("Network", "webSocketFrameSent", WebSocketFrameSent.class),
 
     /**
-     * Fired when WebSocket handshake response becomes available
+     * Fired when WebSocket handshake response becomes available. 当WebSocket握手响应可用时激发。
      */
     NetworkWebSocketHandshakeResponseReceived("Network", "webSocketHandshakeResponseReceived", WebSocketHandshakeResponseReceived.class),
 
     /**
-     * Fired when WebSocket is about to initiate handshake
+     * Fired when WebSocket is about to initiate handshake. WebSocket即将启动握手时激发。
      */
     NetworkWebSocketWillSendHandshakeRequest("Network", "webSocketWillSendHandshakeRequest", WebSocketWillSendHandshakeRequest.class),
+
+    // Overlay
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Fired when the node should be inspected
@@ -403,6 +449,9 @@ public enum Events {
      * Fired when user asks to capture screenshot of some area on the page
      */
     OverlayScreenshotRequested("Overlay", "screenshotRequested", ScreenshotRequested.class),
+
+    // Page 页面事件
+    // ---------- ---------- ---------- ---------- ----------
 
     PageDomContentEventFired("Page", "domContentEventFired", DomContentEventFired.class),
 
@@ -505,10 +554,16 @@ public enum Events {
      */
     PageCompilationCacheProduced("Page", "compilationCacheProduced", CompilationCacheProduced.class),
 
+    // Performance
+    // ---------- ---------- ---------- ---------- ----------
+
     /**
      * Current values of the metrics
      */
     PerformanceMetrics("Performance", "metrics", Metrics.class),
+
+    // Security
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * There is a certificate error
@@ -526,11 +581,17 @@ public enum Events {
      */
     SecuritySecurityStateChanged("Security", "securityStateChanged", SecurityStateChanged.class),
 
+    // ServiceWorker
+    // ---------- ---------- ---------- ---------- ----------
+
     ServiceWorkerWorkerErrorReported("ServiceWorker", "workerErrorReported", WorkerErrorReported.class),
 
     ServiceWorkerWorkerRegistrationUpdated("ServiceWorker", "workerRegistrationUpdated", WorkerRegistrationUpdated.class),
 
     ServiceWorkerWorkerVersionUpdated("ServiceWorker", "workerVersionUpdated", WorkerVersionUpdated.class),
+
+    // Storage
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * A cache's contents have been modified
@@ -551,6 +612,9 @@ public enum Events {
      * The origin's IndexedDB database list has been modified
      */
     StorageIndexedDBListUpdated("Storage", "indexedDBListUpdated", IndexedDBListUpdated.class),
+
+    // Target
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Issued when attached to target because of auto-attach or<code>attachToTarget</code> command
@@ -592,10 +656,16 @@ public enum Events {
      */
     TargetTargetInfoChanged("Target", "targetInfoChanged", TargetInfoChanged.class),
 
+    // Tethering
+    // ---------- ---------- ---------- ---------- ----------
+
     /**
      * Informs that port was successfully bound and got a specified connection id
      */
     TetheringAccepted("Tethering", "accepted", Accepted.class),
+
+    // Tracing
+    // ---------- ---------- ---------- ---------- ----------
 
     TracingBufferUsage("Tracing", "bufferUsage", BufferUsage.class),
 
@@ -611,6 +681,9 @@ public enum Events {
      * delivered via dataCollected events
      */
     TracingTracingComplete("Tracing", "tracingComplete", TracingComplete.class),
+
+    // Fetch
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Issued when the domain is enabled and the request URL matches the
@@ -629,10 +702,16 @@ public enum Events {
      */
     FetchAuthRequired("Fetch", "authRequired", AuthRequired.class),
 
+    // Console
+    // ---------- ---------- ---------- ---------- ----------
+
     /**
      * Issued when new console message is added
      */
     ConsoleMessageAdded("Console", "messageAdded", MessageAdded.class),
+
+    // Debugger
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Fired when breakpoint is resolved to an actual script and location
@@ -661,6 +740,9 @@ public enum Events {
      */
     DebuggerScriptParsed("Debugger", "scriptParsed", ScriptParsed.class),
 
+    // HeapProfiler
+    // ---------- ---------- ---------- ---------- ----------
+
     HeapProfilerAddHeapSnapshotChunk("HeapProfiler", "addHeapSnapshotChunk", AddHeapSnapshotChunk.class),
 
     /**
@@ -680,6 +762,9 @@ public enum Events {
 
     HeapProfilerResetProfiles("HeapProfiler", "resetProfiles", ResetProfiles.class),
 
+    // Profiler
+    // ---------- ---------- ---------- ---------- ----------
+
     ProfilerConsoleProfileFinished("Profiler", "consoleProfileFinished", ConsoleProfileFinished.class),
 
     /**
@@ -687,6 +772,9 @@ public enum Events {
      * profile() call
      */
     ProfilerConsoleProfileStarted("Profiler", "consoleProfileStarted", ConsoleProfileStarted.class),
+
+    // Runtime
+    // ---------- ---------- ---------- ---------- ----------
 
     /**
      * Notification is issued every time when binding is called
@@ -729,10 +817,17 @@ public enum Events {
      */
     RuntimeInspectRequested("Runtime", "inspectRequested", InspectRequested.class);
 
+    /**
+     * 事件域
+     */
     public final String domain;
-
+    /**
+     * 事件名
+     */
     public final String name;
-
+    /**
+     * 事件类
+     */
     public final Class<?> klass;
 
     Events(String domain, String name, Class<?> klass) {

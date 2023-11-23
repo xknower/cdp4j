@@ -12,6 +12,10 @@ import io.webfolder.cdp.type.network.SignedExchangeInfo;
 @Domain("Network")
 @EventName("signedExchangeReceived")
 public class SignedExchangeReceived {
+
+    /**
+     * Request identifier.
+     */
     private String requestId;
 
     private SignedExchangeInfo info;

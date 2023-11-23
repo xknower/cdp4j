@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Called when distrubution is changed
+ * Called when distribution is changed
  */
 @Experimental
 @Domain("DOM")
@@ -20,14 +20,14 @@ public class DistributedNodesUpdated {
     private List<BackendNode> distributedNodes = new ArrayList<>();
 
     /**
-     * Insertion point where distrubuted nodes were updated.
+     * Insertion point where distributed nodes were updated.
      */
     public Integer getInsertionPointId() {
         return insertionPointId;
     }
 
     /**
-     * Insertion point where distrubuted nodes were updated.
+     * Insertion point where distributed nodes were updated.
      */
     public void setInsertionPointId(Integer insertionPointId) {
         this.insertionPointId = insertionPointId;

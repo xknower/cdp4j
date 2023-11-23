@@ -11,6 +11,10 @@ import io.webfolder.cdp.type.network.ResourceType;
 @Domain("Network")
 @EventName("loadingFailed")
 public class LoadingFailed {
+
+    /**
+     * Request identifier.
+     */
     private String requestId;
 
     private Double timestamp;

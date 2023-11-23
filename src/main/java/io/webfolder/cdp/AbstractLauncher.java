@@ -14,6 +14,9 @@ abstract class AbstractLauncher {
 
     protected final SessionFactory factory;
 
+    /**
+     * 启动标识
+     */
     private volatile boolean launched;
 
     private static final int SLEEP_DURATION = 100; // ms
@@ -68,10 +71,13 @@ abstract class AbstractLauncher {
     }
 
     public final SessionFactory launch() {
-        return launch(findChrome(), emptyList());
+        return launch(emptyList());
     }
 
     public final SessionFactory launch(List<String> arguments) {
+        if (factory.ping()) { // 判断是否已经启动
+            return factory;
+        }
         return launch(findChrome(), arguments);
     }
 
@@ -79,6 +85,14 @@ abstract class AbstractLauncher {
         return launch(chromeExecutablePath, arguments, DEFAULT_CONNECTION_TIMEOUT);
     }
 
+    /**
+     * 启动入口
+     *
+     * @param chromeExecutablePath chrome执行文件路径
+     * @param arguments            chrome执行参数
+     * @param connectionTimeout    连接超时时间
+     * @return SessionFactory
+     */
     public final SessionFactory launch(String chromeExecutablePath, List<String> arguments, int connectionTimeout) {
         if (chromeExecutablePath == null || chromeExecutablePath.trim().isEmpty()) {
             throw new CdpException("chrome not found");
@@ -91,15 +105,15 @@ abstract class AbstractLauncher {
         }
         if (!launched) {
             List<String> list = getCommonParameters(chromeExecutablePath, arguments);
-            internalLaunch(list, arguments);
+            internalLaunch(list, arguments); // 执行启动
             launched = true;
         }
 
         int retryCount = 0;
-        boolean connected = factory.ping();
+        boolean connected;
 
         int maxRetryCount = connectionTimeout / (int) SLEEP_DURATION;
-        while (!(connected = factory.ping()) && retryCount < maxRetryCount) {
+        while (!(connected = factory.ping()) && retryCount < maxRetryCount) { // 检测启动状态
             try {
                 sleep(SLEEP_DURATION);
             } catch (InterruptedException e) {
@@ -115,6 +129,12 @@ abstract class AbstractLauncher {
         return factory;
     }
 
+    /**
+     * 内部启动业务
+     *
+     * @param list   chrome启动参数全量参数
+     * @param params 命令行传入参数
+     */
     protected abstract void internalLaunch(List<String> list, List<String> params);
 
     public abstract void kill();

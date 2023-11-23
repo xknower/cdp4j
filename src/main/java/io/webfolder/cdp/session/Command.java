@@ -205,6 +205,13 @@ public class Command {
         return getProxy(DOMSnapshot.class);
     }
 
+    /**
+     * 调用 Session，获取命令类型或命令执行代理实例
+     *
+     * @param klass 命令类型
+     * @param <T>   命令类型
+     * @return 命令处理结果
+     */
     @SuppressWarnings("unchecked")
     private <T> T getProxy(Class<?> klass) {
         return (T) session.getProxy(klass);

@@ -9,6 +9,10 @@ import io.webfolder.cdp.annotation.EventName;
 @Domain("Network")
 @EventName("loadingFinished")
 public class LoadingFinished {
+
+    /**
+     * Request identifier.
+     */
     private String requestId;
 
     private Double timestamp;

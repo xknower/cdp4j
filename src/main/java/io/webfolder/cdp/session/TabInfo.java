@@ -1,10 +1,19 @@
 package io.webfolder.cdp.session;
 
+/**
+ * 标签页
+ */
 class TabInfo {
 
-    private String targetId;
+    /**
+     * 目标ID
+     */
+    private final String targetId;
 
-    private String browserContextId;
+    /**
+     * 浏览器上下文ID
+     */
+    private final String browserContextId;
 
     TabInfo(String targetId, String browserContextId) {
         this.targetId = targetId;

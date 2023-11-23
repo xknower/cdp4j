@@ -13,6 +13,10 @@ import io.webfolder.cdp.type.network.Response;
 @Domain("Network")
 @EventName("requestWillBeSent")
 public class RequestWillBeSent {
+
+    /**
+     * Request identifier.
+     */
     private String requestId;
 
     private String loaderId;

@@ -1,8 +1,7 @@
 package io.webfolder.cdp.type.css;
 
 /**
- * Text range within a resource
- * All numbers are zero-based
+ * Text range within a resource All numbers are zero-based
  */
 public class SourceRange {
     private Integer startLine;

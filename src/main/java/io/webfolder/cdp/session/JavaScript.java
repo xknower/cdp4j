@@ -184,7 +184,7 @@ public interface JavaScript {
      * @return variable value
      */
     @SuppressWarnings("unchecked")
-    public default <T> T getVariable(String name, Class<T> returnType) {
+    default <T> T getVariable(String name, Class<T> returnType) {
         CallArgument objArgument = new CallArgument();
         objArgument.setValue(name);
 
@@ -240,7 +240,7 @@ public interface JavaScript {
      * @param name     variable name
      * @param newValue value
      */
-    public default void setVariable(String name, Object newValue) {
+    default void setVariable(String name, Object newValue) {
         EvaluateResult windowResult = getThis().getCommand().getRuntime().evaluate("window");
 
         if (windowResult == null) {
@@ -286,5 +286,5 @@ public interface JavaScript {
         getThis().releaseObject(obj.getResult().getObjectId());
     }
 
-    public Session getThis();
+    Session getThis();
 }

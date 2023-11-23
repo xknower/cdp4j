@@ -22,7 +22,7 @@ public interface Navigator {
      *
      * @return this
      */
-    public default Session stop() {
+    default Session stop() {
         getThis().logEntry("stop");
         getThis().getCommand().getPage().stopLoading();
         return getThis();
@@ -33,7 +33,7 @@ public interface Navigator {
      *
      * @return this
      */
-    public default Session back() {
+    default Session back() {
         getThis().logEntry("back");
         Page page = getThis().getCommand().getPage();
         GetNavigationHistoryResult history = page.getNavigationHistory();
@@ -53,7 +53,7 @@ public interface Navigator {
      *
      * @return this
      */
-    public default Session forward() {
+    default Session forward() {
         getThis().logEntry("forward");
         Page page = getThis().getCommand().getPage();
         GetNavigationHistoryResult history = page.getNavigationHistory();
@@ -73,7 +73,7 @@ public interface Navigator {
      *
      * @return this
      */
-    public default Session reload() {
+    default Session reload() {
         getThis().logEntry("reload");
         getThis().getCommand().getPage().reload();
         return getThis();
@@ -86,7 +86,7 @@ public interface Navigator {
      * @param userAgent User agent to use
      * @return this
      */
-    public default Session setUserAgent(final String userAgent) {
+    default Session setUserAgent(final String userAgent) {
         getThis().logEntry("userAgent", userAgent);
         Network network = getThis().getCommand().getNetwork();
         network.enable();
@@ -112,7 +112,7 @@ public interface Navigator {
      *
      * @return an initial <strong>/</strong> followed by the path of the URL
      */
-    public default String getPathname() {
+    default String getPathname() {
         DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = dom.getDocument().getNodeId();
         RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
@@ -128,7 +128,7 @@ public interface Navigator {
      * @return key value pair
      */
     @SuppressWarnings("unchecked")
-    public default Map<String, Object> getQueryString() {
+    default Map<String, Object> getQueryString() {
         getThis().disableFlowLog();
         String json = (String) getThis()
                 .evaluate("JSON.stringify(Array.from(new URLSearchParams(document.location.search)))");
@@ -203,7 +203,7 @@ public interface Navigator {
      *
      * @return <code>true</code> if browser cache cleared.
      */
-    public default boolean clearCache() {
+    default boolean clearCache() {
         getThis().logEntry("clearCache");
         Network network = getThis().getCommand().getNetwork();
         network.enable();
@@ -223,7 +223,7 @@ public interface Navigator {
      *
      * @return <code>true</code> if browser cookies cleared.
      */
-    public default boolean clearCookies() {
+    default boolean clearCookies() {
         getThis().logEntry("clearCookies");
         Network network = getThis().getCommand().getNetwork();
         network.enable();

@@ -23,6 +23,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.ThreadLocalRandom.current;
 
+/**
+ * 本地启动器
+ */
 public class Launcher extends AbstractLauncher {
 
     private static final String OS = getProperty("os.name").toLowerCase(ENGLISH);
@@ -160,6 +163,12 @@ public class Launcher extends AbstractLauncher {
         return launch(chromeExecutablePath, emptyList());
     }
 
+    /**
+     * 本地启动业务流程
+     *
+     * @param list      启动参数全量参数
+     * @param arguments 传入参数
+     */
     @Override
     protected void internalLaunch(List<String> list, List<String> arguments) {
         boolean foundUserDataDir = arguments.stream().anyMatch(arg -> arg.startsWith("--user-data-dir="));
@@ -173,13 +182,15 @@ public class Launcher extends AbstractLauncher {
             list.add(format("--remote-debugging-address=%s", factory.getHost()));
         }
 
+        // 拉起 chrome 进程
         try {
             String cdp4jId = toHexString(current().nextLong());
             list.add("--cdp4jId=" + cdp4jId);
             ProcessBuilder builder = new ProcessBuilder(list);
             builder.environment().put("CDP4J_ID", cdp4jId);
             Process process = builder.start();
-
+            // chrome.exe --remote-debugging-port=9222 --user-data-dir=C:UsersxknowerAppDataLocalTemp\emote-profile --cdp4jId=7acc4bb5778e8234
+            // --disable-features=TranslateUI --disable-extensions --disable-background-networking --safebrowsing-disable-auto-update --disable-sync --metrics-recording-only --disable-default-apps --mute-audio --no-first-run --no-default-browser-check --disable-plugin-power-saver --disable-popup-blocking
             process.getOutputStream().close();
             process.getInputStream().close();
             process.getErrorStream().close();

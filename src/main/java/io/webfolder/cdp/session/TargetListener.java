@@ -12,13 +12,16 @@ import io.webfolder.cdp.type.target.TargetInfo;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 目标事件处理器
+ */
 class TargetListener implements EventListener {
 
-    private Map<String, Session> sessions;
+    private final Map<String, Session> sessions;
 
-    private Map<String, WSAdapter> wsAdapters;
+    private final Map<String, WSAdapter> wsAdapters;
 
-    private List<TabInfo> tabs;
+    private final List<TabInfo> tabs;
 
     TargetListener(
             Map<String, Session> sessions,

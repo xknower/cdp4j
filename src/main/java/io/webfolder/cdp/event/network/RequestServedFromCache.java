@@ -9,6 +9,10 @@ import io.webfolder.cdp.annotation.EventName;
 @Domain("Network")
 @EventName("requestServedFromCache")
 public class RequestServedFromCache {
+
+    /**
+     * Request identifier.
+     */
     private String requestId;
 
     /**

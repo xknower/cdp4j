@@ -11,16 +11,32 @@ import io.webfolder.cdp.type.network.Response;
 @Domain("Network")
 @EventName("responseReceived")
 public class ResponseReceived {
+
+    /**
+     * Request identifier.
+     */
     private String requestId;
 
+    /**
+     * Loader identifier. Empty string if the request is fetched from worker.
+     */
     private String loaderId;
 
     private Double timestamp;
 
+    /**
+     * Resource type as it was perceived by the rendering engine
+     */
     private ResourceType type;
 
+    /**
+     * HTTP response data
+     */
     private Response response;
 
+    /**
+     * Frame identifier.
+     */
     private String frameId;
 
     /**

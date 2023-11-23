@@ -134,9 +134,9 @@ public interface Selector {
      */
     default void setProperty(
             final String selector,
-            final String propetyName,
+            final String propertyName,
             final Object value) {
-        setProperty(selector, propetyName, value, EMPTY_ARGS);
+        setProperty(selector, propertyName, value, EMPTY_ARGS);
     }
 
     /**
@@ -221,8 +221,6 @@ public interface Selector {
     /**
      * Gets the property value of the matched element
      *
-     * @param selector     css or xpath selector
-     * @param propertyName property name
      * @return property value
      */
     default Object getPropertyByObjectId(

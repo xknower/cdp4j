@@ -240,7 +240,7 @@ public interface Dom {
      * The list of options for a &lt;select&gt; element consists of all the option element children of the select element,
      * and all the &lt;option&gt; element children of all the &lt;optgroup&gt; element children of the &lt;select&gt; element.
      *
-     * @param css selector
+     * @param selector css selector
      * @return list of HTML &lt;option&gt; elements (in document order).
      */
     default List<Option> getOptions(final String selector) {
@@ -299,7 +299,7 @@ public interface Dom {
      * @param selector css or xpath selector
      * @return this
      */
-    public default Session clearOptions(final String selector) {
+    default Session clearOptions(final String selector) {
         return clearOptions(selector, -1, Constant.EMPTY_ARGS);
     }
 
@@ -310,7 +310,7 @@ public interface Dom {
      * @return this
      * @args format string
      */
-    public default Session clearOptions(final String selector, Object... args) {
+    default Session clearOptions(final String selector, Object... args) {
         getThis().logEntry("clearOptions", format(selector, args));
         return setSelectedIndex(selector, -1, args);
     }
@@ -322,7 +322,7 @@ public interface Dom {
      * @param indexes  indices of selected items.
      * @return this
      */
-    public default Session setSelectedOptions(
+    default Session setSelectedOptions(
             final String selector,
             final List<Integer> indexes) {
         return setSelectedOptions(selector, indexes, Constant.EMPTY_ARGS);
@@ -336,7 +336,7 @@ public interface Dom {
      * @param args     format string
      * @return this
      */
-    public default Session setSelectedOptions(
+    default Session setSelectedOptions(
             final String selector,
             final List<Integer> indexes,
             final Object... args) {

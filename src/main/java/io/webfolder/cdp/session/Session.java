@@ -72,16 +72,25 @@ public class Session implements AutoCloseable,
         JavaScript,
         Dom {
 
+    /**
+     * 缓存命令处理类型及代理实例
+     */
     private final Map<Class<?>, Object> proxies = new ConcurrentHashMap<>();
 
-    private AtomicBoolean connected = new AtomicBoolean(true);
+    private final AtomicBoolean connected = new AtomicBoolean(true);
 
     private final List<EventListener> listeners;
 
+    /**
+     * 会话处理代理，代理执行命令任务
+     */
     private final SessionInvocationHandler invocationHandler;
 
     private final SessionFactory sesessionFactory;
 
+    /**
+     * 会话ID
+     */
     private final String sessionId;
 
     private final WebSocket webSocket;
@@ -92,6 +101,9 @@ public class Session implements AutoCloseable,
 
     private final Gson gson;
 
+    /**
+     * 目标ID
+     */
     private final String targetId;
 
     private final boolean browserSession;
@@ -110,6 +122,9 @@ public class Session implements AutoCloseable,
 
     private final int majorVersion;
 
+    /**
+     * 缓存脚本处理类型及代理实例
+     */
     private final Map<Class<?>, Object> jsFunctions;
 
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG =
@@ -190,14 +205,14 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * Use {@link Session#getListenerManager()}
+     * Use {@link Session#addEventListener(EventListener)}
      */
     public void addEventListener(EventListener eventListener) {
         listeners.add(eventListener);
     }
 
     /**
-     * Use {@link Session#getListenerManager()}
+     * Use {@link Session#removeEventEventListener(EventListener)}
      */
     public void removeEventEventListener(EventListener eventListener) {
         if (eventListener != null) {
@@ -215,7 +230,7 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * waits until document is ready
+     * waits until document is ready. 等待页面加载完成。
      *
      * @param timeout the maximum time to wait in milliseconds
      * @return this
@@ -233,6 +248,7 @@ public class Session implements AutoCloseable,
         AtomicBoolean loaded = new AtomicBoolean(false);
         AtomicBoolean ready = new AtomicBoolean(false);
         if (isConnected()) {
+            // 监听页面生命周期事件，load 事件，监听页面加载完成
             EventListener loadListener = (e, d) -> {
                 if (PageLifecycleEvent.equals(e) &&
                         "load".equalsIgnoreCase(((LifecycleEvent) d).getName())) {
@@ -246,6 +262,7 @@ public class Session implements AutoCloseable,
             addEventListener(loadListener);
             sesessionFactory.getThreadPool().execute(() -> {
                 try {
+                    // 等待完成
                     waitUntil(s -> !isConnected() || s.isDomReady() || ready.get(), timeout, false);
                 } finally {
                     latch.countDown();
@@ -312,6 +329,12 @@ public class Session implements AutoCloseable,
         return false;
     }
 
+    /**
+     * 页面导航
+     *
+     * @param url 页面URL
+     * @return Session
+     */
     public Session navigate(final String url) {
         logEntry("navigate", url);
         NavigateResult navigate = command.getPage().navigate(url);
@@ -327,6 +350,14 @@ public class Session implements AutoCloseable,
         return navigateAndWait(url, condition, 10_000);
     }
 
+    /**
+     * 页面导航并等待完成
+     *
+     * @param url       页面URL
+     * @param condition 等待条件
+     * @param timeout   超时时间，ms
+     * @return Session
+     */
     public Session navigateAndWait(final String url,
                                    final WaitUntil condition,
                                    final int timeout) {
@@ -504,9 +535,9 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * Capture page screenshot.
+     * Capture page screenshot. 页面截图。
      *
-     * @param hideScrollbar hides the scollbar
+     * @param hideScrollbar hides the scrollbar
      * @param format        Image compression format (defaults to png).
      * @param quality       Compression quality from range [0..100] (jpeg only).
      * @param clip          Capture the screenshot of a given region only.
@@ -589,7 +620,6 @@ public class Session implements AutoCloseable,
     public void onTerminate(TerminateListener terminateListener) {
         this.terminateListener = terminateListener;
     }
-
 
     public Command getCommand() {
         return command;
@@ -697,6 +727,14 @@ public class Session implements AutoCloseable,
         });
     }
 
+    /**
+     * 根据命令类型或命令执行代理实例
+     *
+     * @param klass 处理类型
+     * @param <T>   处理类型
+     * @return 处理类型的代理实例
+     * @see SessionInvocationHandler
+     */
     @SuppressWarnings("unchecked")
     <T> T getProxy(Class<T> klass) {
         T proxy = (T) proxies.get(klass);
@@ -705,7 +743,7 @@ public class Session implements AutoCloseable,
         }
         ClassLoader classLoader = getClass().getClassLoader();
         Class<T>[] interfaces = new Class[]{klass};
-        proxy = (T) newProxyInstance(classLoader, interfaces, invocationHandler);
+        proxy = (T) newProxyInstance(classLoader, interfaces, invocationHandler); // 初始化代理实例
         Object existing = proxies.putIfAbsent(klass, proxy);
         if (existing != null) {
             return (T) existing;
@@ -774,6 +812,7 @@ public class Session implements AutoCloseable,
         Page page = getCommand().getPage();
         page.enable();
         page.addScriptToEvaluateOnNewDocument(builder.toString());
+        // 获取执行js脚本代理
         Object instance = newProxyInstance(getClass().getClassLoader(),
                 new Class<?>[]{klass},
                 (InvocationHandler) (proxy, method, args) -> {

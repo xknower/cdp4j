@@ -59,6 +59,9 @@ import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 import static java.util.Locale.ENGLISH;
 
+/**
+ * Chromium下载器
+ */
 public class ChromiumDownloader implements Downloader {
 
     private static final String OS = getProperty("os.name").toLowerCase(ENGLISH);

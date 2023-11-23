@@ -23,6 +23,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.lang.String.format;
 import static java.util.Base64.getDecoder;
 
+/**
+ * 会话处理代理，代理接口执行通过 websocket 发送执行命令并获取返回结果
+ */
 class SessionInvocationHandler implements InvocationHandler {
 
     private final AtomicInteger counter = new AtomicInteger(0);
@@ -33,6 +36,9 @@ class SessionInvocationHandler implements InvocationHandler {
 
     private final Map<Integer, WSContext> contexts;
 
+    /**
+     * 缓存记录 Domain enabled disable 调用
+     */
     private final List<String> enabledDomains = new CopyOnWriteArrayList<>();
 
     private final CdpLogger log;
@@ -74,10 +80,12 @@ class SessionInvocationHandler implements InvocationHandler {
             final Method method,
             final Object[] args) throws Throwable {
 
+        // 1. 获取事件域和事件名，事件返回实体注解定义
         final Class<?> klass = method.getDeclaringClass();
         final String domain = klass.getAnnotation(Domain.class).value();
-        final String command = method.getName();
+        final String command = method.getName(); // 执行的方法名
 
+        // 获取参数和返回类型
         final boolean hasArgs = args != null && args.length > 0;
         final boolean voidMethod = void.class.equals(method.getReturnType());
 
@@ -94,6 +102,7 @@ class SessionInvocationHandler implements InvocationHandler {
             enabledDomains.remove(domain);
         }
 
+        // 构造反射执行参数，
         Map<String, Object> params = new HashMap<>(hasArgs ? args.length : 0);
 
         if (hasArgs) {
@@ -115,6 +124,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
         log.debug(json);
 
+        // 2. 调用 websocket，发送执行事件消息，并等待返回
         WSContext context = null;
 
         if (session.isConnected()) {
@@ -140,6 +150,7 @@ class SessionInvocationHandler implements InvocationHandler {
             enabledDomains.add(domain);
         }
 
+        // 构造返回结果，并返回
         Class<?> retType = method.getReturnType();
 
         if (voidMethod || retType.equals(Void.class)) {
@@ -148,6 +159,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
         JsonElement data = context.getData();
 
+        // 获取返回结果字段，或只获取部分字段
         String returns = method.isAnnotationPresent(Returns.class) ?
                 method.getAnnotation(Returns.class).value() : null;
 
@@ -169,7 +181,7 @@ class SessionInvocationHandler implements InvocationHandler {
         JsonObject resultObject = result.getAsJsonObject();
 
         Object ret = null;
-        Type genericReturnType = method.getGenericReturnType();
+        Type genericReturnType = method.getGenericReturnType(); // 方法返回类型
 
         if (returns != null) {
 

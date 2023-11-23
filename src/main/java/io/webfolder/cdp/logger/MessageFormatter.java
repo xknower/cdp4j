@@ -6,6 +6,8 @@ import java.util.Map;
 
 // contributors: lizongbo: proposed special treatment of array parameter values
 // Joern Huxhorn: pointed out double[] omission, suggested deep array copy
+//
+// 贡献者：lizongbo：提出数组参数值的特殊处理；Joern Huxhorn：指出 double[]遗漏，建议深度数组复制。
 
 /**
  * Formats messages according to very simple substitution rules. Substitutions

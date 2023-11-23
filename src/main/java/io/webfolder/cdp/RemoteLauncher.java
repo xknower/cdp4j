@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.joining;
 
+/**
+ * 远程启动器，通过 ssh 调用远程拉起 chrome 进程
+ */
 public class RemoteLauncher extends AbstractLauncher {
 
     private final String host;
@@ -46,6 +49,12 @@ public class RemoteLauncher extends AbstractLauncher {
         return chromeExecutable;
     }
 
+    /**
+     * 远程启动流程
+     *
+     * @param list       启动参数全量参数
+     * @param parameters 传入参数
+     */
     @Override
     protected void internalLaunch(List<String> list, List<String> parameters) {
         if (parameters.stream().noneMatch(arg -> arg.startsWith("--remote-debugging-address="))) {
