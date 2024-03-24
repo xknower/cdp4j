@@ -39,7 +39,7 @@ public interface Dom {
      * textContent property represents the text content of a node and its descendants.
      * <p>
      * textContent returns null if the element is a document, a document type, or a notation.
-     * To grab all of the text and CDATA data for the whole document, one could use document.documentElement.textContent.
+     * To grab all the text and CDATA data for the whole document, one could use document.documentElement.textContent.
      *
      * @param selector css or xpath selector
      * @return textContent returns the concatenation of the textContent property value of every child node,<br>
@@ -53,7 +53,7 @@ public interface Dom {
      * textContent property represents the text content of a node and its descendants.
      * <p>
      * textContent returns null if the element is a document, a document type, or a notation.
-     * To grab all of the text and CDATA data for the whole document, one could use document.documentElement.textContent.
+     * To grab all the text and CDATA data for the whole document, one could use document.documentElement.textContent.
      *
      * @param selector css or xpath selector
      * @param args     format string
@@ -77,7 +77,7 @@ public interface Dom {
 
     /**
      * The HTMLInputElement.select() method selects all the text in a &lt;textarea&gt; element<br>
-     * or an &lt;input&gt; element with a text field.
+     * or a &lt;input&gt; element with a text field.
      *
      * @param selector css or xpath selector, format string
      * @return this
@@ -307,8 +307,8 @@ public interface Dom {
      * Clears any existing selected items of &lt;select&gt; element.
      *
      * @param selector css or xpath selector
+     * @param args format string
      * @return this
-     * @args format string
      */
     default Session clearOptions(final String selector, Object... args) {
         getThis().logEntry("clearOptions", format(selector, args));
@@ -911,4 +911,5 @@ public interface Dom {
     }
 
     Session getThis();
+
 }

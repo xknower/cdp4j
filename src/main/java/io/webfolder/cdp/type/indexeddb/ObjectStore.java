@@ -1,73 +1,31 @@
 package io.webfolder.cdp.type.indexeddb;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Object store
  */
+@Data
 public class ObjectStore {
+
+    /**
+     * Object store name.
+     */
     private String name;
-
+    /**
+     * Object store key path.
+     */
     private KeyPath keyPath;
-
+    /**
+     * If true, object store has auto increment flag set.
+     */
     private Boolean autoIncrement;
-
+    /**
+     * Indexes in this object store.
+     */
     private List<ObjectStoreIndex> indexes = new ArrayList<>();
 
-    /**
-     * Object store name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Object store name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Object store key path.
-     */
-    public KeyPath getKeyPath() {
-        return keyPath;
-    }
-
-    /**
-     * Object store key path.
-     */
-    public void setKeyPath(KeyPath keyPath) {
-        this.keyPath = keyPath;
-    }
-
-    /**
-     * If true, object store has auto increment flag set.
-     */
-    public Boolean isAutoIncrement() {
-        return autoIncrement;
-    }
-
-    /**
-     * If true, object store has auto increment flag set.
-     */
-    public void setAutoIncrement(Boolean autoIncrement) {
-        this.autoIncrement = autoIncrement;
-    }
-
-    /**
-     * Indexes in this object store.
-     */
-    public List<ObjectStoreIndex> getIndexes() {
-        return indexes;
-    }
-
-    /**
-     * Indexes in this object store.
-     */
-    public void setIndexes(List<ObjectStoreIndex> indexes) {
-        this.indexes = indexes;
-    }
 }

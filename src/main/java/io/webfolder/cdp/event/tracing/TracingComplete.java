@@ -3,6 +3,7 @@ package io.webfolder.cdp.event.tracing;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.tracing.StreamCompression;
+import lombok.Data;
 
 /**
  * Signals that tracing is stopped and there is no trace buffers pending flush, all data were
@@ -10,36 +11,16 @@ import io.webfolder.cdp.type.tracing.StreamCompression;
  */
 @Domain("Tracing")
 @EventName("tracingComplete")
+@Data
 public class TracingComplete {
-    private String stream;
 
+    /**
+     * A handle of the stream that holds resulting trace data.
+     */
+    private String stream;
+    /**
+     * Compression format of returned stream.
+     */
     private StreamCompression streamCompression;
 
-    /**
-     * A handle of the stream that holds resulting trace data.
-     */
-    public String getStream() {
-        return stream;
-    }
-
-    /**
-     * A handle of the stream that holds resulting trace data.
-     */
-    public void setStream(String stream) {
-        this.stream = stream;
-    }
-
-    /**
-     * Compression format of returned stream.
-     */
-    public StreamCompression getStreamCompression() {
-        return streamCompression;
-    }
-
-    /**
-     * Compression format of returned stream.
-     */
-    public void setStreamCompression(StreamCompression streamCompression) {
-        this.streamCompression = streamCompression;
-    }
 }

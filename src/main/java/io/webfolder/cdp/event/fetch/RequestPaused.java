@@ -6,6 +6,7 @@ import io.webfolder.cdp.type.fetch.HeaderEntry;
 import io.webfolder.cdp.type.network.ErrorReason;
 import io.webfolder.cdp.type.network.Request;
 import io.webfolder.cdp.type.network.ResourceType;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,116 +22,36 @@ import java.util.List;
  */
 @Domain("Fetch")
 @EventName("requestPaused")
+@Data
 public class RequestPaused {
+
+    /**
+     * Each request the page makes will have a unique id.
+     */
     private String requestId;
-
+    /**
+     * The details of the request.
+     */
     private Request request;
-
+    /**
+     * The id of the frame that initiated the request.
+     */
     private String frameId;
-
+    /**
+     * How the requested resource will be used.
+     */
     private ResourceType resourceType;
-
+    /**
+     * Response error if intercepted at response stage.
+     */
     private ErrorReason responseErrorReason;
-
+    /**
+     * Response code if intercepted at response stage.
+     */
     private Integer responseStatusCode;
-
+    /**
+     * Response headers if intercepted at the response stage.
+     */
     private List<HeaderEntry> responseHeaders = new ArrayList<>();
 
-    /**
-     * Each request the page makes will have a unique id.
-     */
-    public String getRequestId() {
-        return requestId;
-    }
-
-    /**
-     * Each request the page makes will have a unique id.
-     */
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
-
-    /**
-     * The details of the request.
-     */
-    public Request getRequest() {
-        return request;
-    }
-
-    /**
-     * The details of the request.
-     */
-    public void setRequest(Request request) {
-        this.request = request;
-    }
-
-    /**
-     * The id of the frame that initiated the request.
-     */
-    public String getFrameId() {
-        return frameId;
-    }
-
-    /**
-     * The id of the frame that initiated the request.
-     */
-    public void setFrameId(String frameId) {
-        this.frameId = frameId;
-    }
-
-    /**
-     * How the requested resource will be used.
-     */
-    public ResourceType getResourceType() {
-        return resourceType;
-    }
-
-    /**
-     * How the requested resource will be used.
-     */
-    public void setResourceType(ResourceType resourceType) {
-        this.resourceType = resourceType;
-    }
-
-    /**
-     * Response error if intercepted at response stage.
-     */
-    public ErrorReason getResponseErrorReason() {
-        return responseErrorReason;
-    }
-
-    /**
-     * Response error if intercepted at response stage.
-     */
-    public void setResponseErrorReason(ErrorReason responseErrorReason) {
-        this.responseErrorReason = responseErrorReason;
-    }
-
-    /**
-     * Response code if intercepted at response stage.
-     */
-    public Integer getResponseStatusCode() {
-        return responseStatusCode;
-    }
-
-    /**
-     * Response code if intercepted at response stage.
-     */
-    public void setResponseStatusCode(Integer responseStatusCode) {
-        this.responseStatusCode = responseStatusCode;
-    }
-
-    /**
-     * Response headers if intercepted at the response stage.
-     */
-    public List<HeaderEntry> getResponseHeaders() {
-        return responseHeaders;
-    }
-
-    /**
-     * Response headers if intercepted at the response stage.
-     */
-    public void setResponseHeaders(List<HeaderEntry> responseHeaders) {
-        this.responseHeaders = responseHeaders;
-    }
 }

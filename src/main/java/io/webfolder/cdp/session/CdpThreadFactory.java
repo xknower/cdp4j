@@ -3,6 +3,9 @@ package io.webfolder.cdp.session;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 线程工厂
+ */
 class CdpThreadFactory implements ThreadFactory {
 
     private final AtomicInteger counter = new AtomicInteger();
@@ -13,4 +16,5 @@ class CdpThreadFactory implements ThreadFactory {
         thread.setDaemon(true);
         return thread;
     }
+
 }

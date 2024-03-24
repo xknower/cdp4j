@@ -1,13 +1,16 @@
 package io.webfolder.cdp.logger;
 
-import static io.webfolder.cdp.logger.CdpLoggerType.Console;
-import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
-
+/**
+ * 日志工厂，根据日志类型，创建日志记录实例
+ */
 public class CdpLoggerFactory implements LoggerFactory {
 
     private final CdpLoggerType loggerType;
 
-    private static CdpLogger NULL_LOGGER = new CdpLogger() {
+    /**
+     * 空日志，默认或创建异常时，使用此类型
+     */
+    private static final CdpLogger NULL_LOGGER = new CdpLogger() {
 
         @Override
         public void info(String message, Object... args) {
@@ -28,6 +31,7 @@ public class CdpLoggerFactory implements LoggerFactory {
         @Override
         public void error(String message, Throwable t) {
         }
+
     };
 
     public CdpLoggerFactory() {
@@ -56,14 +60,18 @@ public class CdpLoggerFactory implements LoggerFactory {
         }
     }
 
+    /**
+     * 加载默认日志记录类型，默认加载 Slf4j 记录日志
+     */
     public static CdpLoggerType getDefaultLoggerType() {
-        CdpLoggerType cdpLoggerType = Console;
+        CdpLoggerType cdpLoggerType = CdpLoggerType.Console;
         try {
             CdpLoggerFactory.class.getClassLoader().loadClass("org.slf4j.Logger");
-            cdpLoggerType = Slf4j;
+            cdpLoggerType = CdpLoggerType.Slf4j;
         } catch (ClassNotFoundException e) {
             // ignore
         }
         return cdpLoggerType;
     }
+
 }

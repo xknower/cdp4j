@@ -4,6 +4,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.target.TargetInfo;
+import lombok.Data;
 
 /**
  * Issued when attached to target because of auto-attach or <code>attachToTarget</code> command
@@ -11,40 +12,16 @@ import io.webfolder.cdp.type.target.TargetInfo;
 @Experimental
 @Domain("Target")
 @EventName("attachedToTarget")
+@Data
 public class AttachedToTarget {
+
+    /**
+     * Identifier assigned to the session used to send/receive messages.
+     */
     private String sessionId;
 
     private TargetInfo targetInfo;
 
     private Boolean waitingForDebugger;
 
-    /**
-     * Identifier assigned to the session used to send/receive messages.
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    /**
-     * Identifier assigned to the session used to send/receive messages.
-     */
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public TargetInfo getTargetInfo() {
-        return targetInfo;
-    }
-
-    public void setTargetInfo(TargetInfo targetInfo) {
-        this.targetInfo = targetInfo;
-    }
-
-    public Boolean isWaitingForDebugger() {
-        return waitingForDebugger;
-    }
-
-    public void setWaitingForDebugger(Boolean waitingForDebugger) {
-        this.waitingForDebugger = waitingForDebugger;
-    }
 }

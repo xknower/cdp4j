@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Network level fetch failure reason
  */
 public enum ErrorReason {
+
     @SerializedName("Failed")
     Failed("Failed"),
 
@@ -58,4 +59,5 @@ public enum ErrorReason {
     public String toString() {
         return value;
     }
+
 }

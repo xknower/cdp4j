@@ -1,38 +1,20 @@
 package io.webfolder.cdp.type.css;
 
+import lombok.Data;
+
 /**
  * Data for a simple selector (these are delimited by commas in a selector list)
  */
+@Data
 public class Value {
-    private String text;
 
+    /**
+     * Value text.
+     */
+    private String text;
+    /**
+     * Value range in the underlying resource (if available).
+     */
     private SourceRange range;
 
-    /**
-     * Value text.
-     */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * Value text.
-     */
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    /**
-     * Value range in the underlying resource (if available).
-     */
-    public SourceRange getRange() {
-        return range;
-    }
-
-    /**
-     * Value range in the underlying resource (if available).
-     */
-    public void setRange(SourceRange range) {
-        this.range = range;
-    }
 }

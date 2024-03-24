@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Whether the request complied with Certificate Transparency policy
  */
 public enum CertificateTransparencyCompliance {
+
     @SerializedName("unknown")
     Unknown("unknown"),
 
@@ -25,4 +26,5 @@ public enum CertificateTransparencyCompliance {
     public String toString() {
         return value;
     }
+
 }

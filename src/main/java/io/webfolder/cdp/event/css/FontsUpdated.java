@@ -3,6 +3,7 @@ package io.webfolder.cdp.event.css;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.css.FontFace;
+import lombok.Data;
 
 /**
  * Fires whenever a web font is updated
@@ -11,20 +12,12 @@ import io.webfolder.cdp.type.css.FontFace;
  */
 @Domain("CSS")
 @EventName("fontsUpdated")
+@Data
 public class FontsUpdated {
+
+    /**
+     * The web font that has loaded.
+     */
     private FontFace font;
 
-    /**
-     * The web font that has loaded.
-     */
-    public FontFace getFont() {
-        return font;
-    }
-
-    /**
-     * The web font that has loaded.
-     */
-    public void setFont(FontFace font) {
-        this.font = font;
-    }
 }

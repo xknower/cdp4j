@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.overlay;
 import com.google.gson.annotations.SerializedName;
 
 public enum InspectMode {
+
     @SerializedName("searchForNode")
     SearchForNode("searchForNode"),
 
@@ -22,4 +23,5 @@ public enum InspectMode {
     public String toString() {
         return value;
     }
+
 }

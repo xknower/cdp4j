@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum TraceRecordMode {
+
     @SerializedName("recordUntilFull")
     RecordUntilFull("recordUntilFull"),
 
@@ -25,4 +26,5 @@ public enum TraceRecordMode {
     public String toString() {
         return value;
     }
+
 }

@@ -4,6 +4,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.dom.Node;
+import lombok.Data;
 
 /**
  * Called when a pseudo element is added to an element
@@ -11,36 +12,16 @@ import io.webfolder.cdp.type.dom.Node;
 @Experimental
 @Domain("DOM")
 @EventName("pseudoElementAdded")
+@Data
 public class PseudoElementAdded {
-    private Integer parentId;
 
+    /**
+     * Pseudo element's parent element id.
+     */
+    private Integer parentId;
+    /**
+     * The added pseudo element.
+     */
     private Node pseudoElement;
 
-    /**
-     * Pseudo element's parent element id.
-     */
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    /**
-     * Pseudo element's parent element id.
-     */
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    /**
-     * The added pseudo element.
-     */
-    public Node getPseudoElement() {
-        return pseudoElement;
-    }
-
-    /**
-     * The added pseudo element.
-     */
-    public void setPseudoElement(Node pseudoElement) {
-        this.pseudoElement = pseudoElement;
-    }
 }

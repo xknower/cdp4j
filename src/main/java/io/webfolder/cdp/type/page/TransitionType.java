@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Transition type
  */
 public enum TransitionType {
+
     @SerializedName("link")
     Link("link"),
 
@@ -55,4 +56,5 @@ public enum TransitionType {
     public String toString() {
         return value;
     }
+
 }

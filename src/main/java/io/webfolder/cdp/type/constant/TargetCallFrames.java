@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum TargetCallFrames {
+
     @SerializedName("any")
     Any("any"),
 
@@ -19,4 +20,5 @@ public enum TargetCallFrames {
     public String toString() {
         return value;
     }
+
 }

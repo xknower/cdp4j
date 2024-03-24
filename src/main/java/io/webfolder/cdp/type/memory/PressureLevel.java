@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Memory pressure level
  */
 public enum PressureLevel {
+
     @SerializedName("moderate")
     Moderate("moderate"),
 
@@ -22,4 +23,5 @@ public enum PressureLevel {
     public String toString() {
         return value;
     }
+
 }

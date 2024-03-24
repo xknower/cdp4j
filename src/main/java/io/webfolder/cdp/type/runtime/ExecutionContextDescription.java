@@ -1,74 +1,31 @@
 package io.webfolder.cdp.type.runtime;
 
+import lombok.Data;
+
 import java.util.Map;
 
 /**
  * Description of an isolated world
  */
+@Data
 public class ExecutionContextDescription {
+
+    /**
+     * Unique id of the execution context. It can be used to specify in which execution context
+     * script evaluation should be performed.
+     */
     private Integer id;
-
+    /**
+     * Execution context origin.
+     */
     private String origin;
-
+    /**
+     * Human readable name describing given context.
+     */
     private String name;
-
+    /**
+     * Embedder-specific auxiliary data.
+     */
     private Map<String, Object> auxData;
 
-    /**
-     * Unique id of the execution context. It can be used to specify in which execution context
-     * script evaluation should be performed.
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * Unique id of the execution context. It can be used to specify in which execution context
-     * script evaluation should be performed.
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * Execution context origin.
-     */
-    public String getOrigin() {
-        return origin;
-    }
-
-    /**
-     * Execution context origin.
-     */
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    /**
-     * Human readable name describing given context.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Human readable name describing given context.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Embedder-specific auxiliary data.
-     */
-    public Map<String, Object> getAuxData() {
-        return auxData;
-    }
-
-    /**
-     * Embedder-specific auxiliary data.
-     */
-    public void setAuxData(Map<String, Object> auxData) {
-        this.auxData = auxData;
-    }
 }

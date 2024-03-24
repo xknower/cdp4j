@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Response will intercept after the response is received
  */
 public enum InterceptionStage {
+
     @SerializedName("Request")
     Request("Request"),
 
@@ -25,4 +26,5 @@ public enum InterceptionStage {
     public String toString() {
         return value;
     }
+
 }

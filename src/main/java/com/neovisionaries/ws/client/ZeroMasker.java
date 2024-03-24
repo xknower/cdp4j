@@ -10,4 +10,5 @@ public class ZeroMasker implements Masker {
 
     public void mask(byte[] payload) {
     }
+
 }

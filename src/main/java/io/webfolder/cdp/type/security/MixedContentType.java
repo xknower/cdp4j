@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * https://www.w3.org/TR/mixed-content/#categories
  */
 public enum MixedContentType {
+
     @SerializedName("blockable")
     Blockable("blockable"),
 
@@ -26,4 +27,5 @@ public enum MixedContentType {
     public String toString() {
         return value;
     }
+
 }

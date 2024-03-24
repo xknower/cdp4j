@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum ImageFormat {
+
     @SerializedName("jpeg")
     Jpeg("jpeg"),
 
@@ -19,4 +20,5 @@ public enum ImageFormat {
     public String toString() {
         return value;
     }
+
 }

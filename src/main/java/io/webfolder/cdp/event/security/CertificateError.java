@@ -2,6 +2,7 @@ package io.webfolder.cdp.event.security;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
+import lombok.Data;
 
 /**
  * There is a certificate error
@@ -14,52 +15,20 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Security")
 @EventName("certificateError")
+@Data
 public class CertificateError {
+
+    /**
+     * The ID of the event.
+     */
     private Integer eventId;
-
+    /**
+     * The type of the error.
+     */
     private String errorType;
-
+    /**
+     * The url that was requested.
+     */
     private String requestURL;
 
-    /**
-     * The ID of the event.
-     */
-    public Integer getEventId() {
-        return eventId;
-    }
-
-    /**
-     * The ID of the event.
-     */
-    public void setEventId(Integer eventId) {
-        this.eventId = eventId;
-    }
-
-    /**
-     * The type of the error.
-     */
-    public String getErrorType() {
-        return errorType;
-    }
-
-    /**
-     * The type of the error.
-     */
-    public void setErrorType(String errorType) {
-        this.errorType = errorType;
-    }
-
-    /**
-     * The url that was requested.
-     */
-    public String getRequestURL() {
-        return requestURL;
-    }
-
-    /**
-     * The url that was requested.
-     */
-    public void setRequestURL(String requestURL) {
-        this.requestURL = requestURL;
-    }
 }

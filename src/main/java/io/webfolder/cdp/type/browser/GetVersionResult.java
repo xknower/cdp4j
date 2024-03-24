@@ -1,6 +1,10 @@
 package io.webfolder.cdp.type.browser;
 
+import lombok.Getter;
+
+@Getter
 public class GetVersionResult {
+
     private String protocolVersion;
 
     private String product;
@@ -11,23 +15,4 @@ public class GetVersionResult {
 
     private String jsVersion;
 
-    public String getProtocolVersion() {
-        return protocolVersion;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public String getRevision() {
-        return revision;
-    }
-
-    public String getUserAgent() {
-        return userAgent;
-    }
-
-    public String getJsVersion() {
-        return jsVersion;
-    }
 }

@@ -1,70 +1,28 @@
 package io.webfolder.cdp.type.css;
 
+import lombok.Data;
+
 /**
  * Text range within a resource All numbers are zero-based
  */
+@Data
 public class SourceRange {
+
+    /**
+     * Start line of range.
+     */
     private Integer startLine;
-
+    /**
+     * Start column of range (inclusive).
+     */
     private Integer startColumn;
-
+    /**
+     * End line of range
+     */
     private Integer endLine;
-
+    /**
+     * End column of range (exclusive).
+     */
     private Integer endColumn;
 
-    /**
-     * Start line of range.
-     */
-    public Integer getStartLine() {
-        return startLine;
-    }
-
-    /**
-     * Start line of range.
-     */
-    public void setStartLine(Integer startLine) {
-        this.startLine = startLine;
-    }
-
-    /**
-     * Start column of range (inclusive).
-     */
-    public Integer getStartColumn() {
-        return startColumn;
-    }
-
-    /**
-     * Start column of range (inclusive).
-     */
-    public void setStartColumn(Integer startColumn) {
-        this.startColumn = startColumn;
-    }
-
-    /**
-     * End line of range
-     */
-    public Integer getEndLine() {
-        return endLine;
-    }
-
-    /**
-     * End line of range
-     */
-    public void setEndLine(Integer endLine) {
-        this.endLine = endLine;
-    }
-
-    /**
-     * End column of range (exclusive).
-     */
-    public Integer getEndColumn() {
-        return endColumn;
-    }
-
-    /**
-     * End column of range (exclusive).
-     */
-    public void setEndColumn(Integer endColumn) {
-        this.endColumn = endColumn;
-    }
 }

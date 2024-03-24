@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum Encoding {
+
     @SerializedName("webp")
     Webp("webp"),
 
@@ -22,4 +23,5 @@ public enum Encoding {
     public String toString() {
         return value;
     }
+
 }

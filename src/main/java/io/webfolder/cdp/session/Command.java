@@ -40,6 +40,9 @@ import io.webfolder.cdp.command.Target;
 import io.webfolder.cdp.command.Tethering;
 import io.webfolder.cdp.command.Tracing;
 
+/**
+ * 命令，代理获取各种命令
+ */
 @SuppressWarnings("deprecation")
 public class Command {
 
@@ -216,4 +219,5 @@ public class Command {
     private <T> T getProxy(Class<?> klass) {
         return (T) session.getProxy(klass);
     }
+
 }

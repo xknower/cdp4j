@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * inspector" rules), "regular" for regular stylesheets
  */
 public enum StyleSheetOrigin {
+
     @SerializedName("injected")
     Injected("injected"),
 
@@ -32,4 +33,5 @@ public enum StyleSheetOrigin {
     public String toString() {
         return value;
     }
+
 }

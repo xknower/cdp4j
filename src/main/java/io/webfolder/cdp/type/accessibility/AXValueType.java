@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Enum of possible property types
  */
 public enum AXValueType {
+
     @SerializedName("boolean")
     Boolean("boolean"),
 
@@ -67,4 +68,5 @@ public enum AXValueType {
     public String toString() {
         return value;
     }
+
 }

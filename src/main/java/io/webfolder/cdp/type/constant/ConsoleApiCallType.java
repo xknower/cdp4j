@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum ConsoleApiCallType {
+
     @SerializedName("log")
     Log("log"),
 
@@ -67,4 +68,5 @@ public enum ConsoleApiCallType {
     public String toString() {
         return value;
     }
+
 }

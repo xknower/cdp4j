@@ -1,56 +1,25 @@
 package io.webfolder.cdp.type.heapprofiler;
 
+import lombok.Data;
+
 /**
  * A single sample from a sampling profile
  */
+@Data
 public class SamplingHeapProfileSample {
+
+    /**
+     * Allocation size in bytes attributed to the sample.
+     */
     private Double size;
-
+    /**
+     * Id of the corresponding profile tree node.
+     */
     private Integer nodeId;
-
+    /**
+     * Time-ordered sample ordinal number. It is unique across all profiles retrieved
+     * between startSampling and stopSampling.
+     */
     private Double ordinal;
 
-    /**
-     * Allocation size in bytes attributed to the sample.
-     */
-    public Double getSize() {
-        return size;
-    }
-
-    /**
-     * Allocation size in bytes attributed to the sample.
-     */
-    public void setSize(Double size) {
-        this.size = size;
-    }
-
-    /**
-     * Id of the corresponding profile tree node.
-     */
-    public Integer getNodeId() {
-        return nodeId;
-    }
-
-    /**
-     * Id of the corresponding profile tree node.
-     */
-    public void setNodeId(Integer nodeId) {
-        this.nodeId = nodeId;
-    }
-
-    /**
-     * Time-ordered sample ordinal number. It is unique across all profiles retrieved
-     * between startSampling and stopSampling.
-     */
-    public Double getOrdinal() {
-        return ordinal;
-    }
-
-    /**
-     * Time-ordered sample ordinal number. It is unique across all profiles retrieved
-     * between startSampling and stopSampling.
-     */
-    public void setOrdinal(Double ordinal) {
-        this.ordinal = ordinal;
-    }
 }

@@ -1,54 +1,24 @@
 package io.webfolder.cdp.type.network;
 
+import lombok.Data;
+
 /**
  * WebSocket frame data
  */
+@Data
 public class WebSocketFrame {
+
+    /**
+     * WebSocket frame opcode.
+     */
     private Double opcode;
-
+    /**
+     * WebSocket frame mask.
+     */
     private Boolean mask;
-
+    /**
+     * WebSocket frame payload data.
+     */
     private String payloadData;
 
-    /**
-     * WebSocket frame opcode.
-     */
-    public Double getOpcode() {
-        return opcode;
-    }
-
-    /**
-     * WebSocket frame opcode.
-     */
-    public void setOpcode(Double opcode) {
-        this.opcode = opcode;
-    }
-
-    /**
-     * WebSocke frame mask.
-     */
-    public Boolean isMask() {
-        return mask;
-    }
-
-    /**
-     * WebSocke frame mask.
-     */
-    public void setMask(Boolean mask) {
-        this.mask = mask;
-    }
-
-    /**
-     * WebSocke frame payload data.
-     */
-    public String getPayloadData() {
-        return payloadData;
-    }
-
-    /**
-     * WebSocke frame payload data.
-     */
-    public void setPayloadData(String payloadData) {
-        this.payloadData = payloadData;
-    }
 }

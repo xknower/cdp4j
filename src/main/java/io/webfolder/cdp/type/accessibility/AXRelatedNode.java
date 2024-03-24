@@ -1,51 +1,21 @@
 package io.webfolder.cdp.type.accessibility;
 
+import lombok.Data;
+
+@Data
 public class AXRelatedNode {
+
+    /**
+     * The BackendNodeId of the related DOM node.
+     */
     private Integer backendDOMNodeId;
-
+    /**
+     * The IDRef value provided, if any.
+     */
     private String idref;
-
+    /**
+     * The text alternative of this node in the current context.
+     */
     private String text;
 
-    /**
-     * The BackendNodeId of the related DOM node.
-     */
-    public Integer getBackendDOMNodeId() {
-        return backendDOMNodeId;
-    }
-
-    /**
-     * The BackendNodeId of the related DOM node.
-     */
-    public void setBackendDOMNodeId(Integer backendDOMNodeId) {
-        this.backendDOMNodeId = backendDOMNodeId;
-    }
-
-    /**
-     * The IDRef value provided, if any.
-     */
-    public String getIdref() {
-        return idref;
-    }
-
-    /**
-     * The IDRef value provided, if any.
-     */
-    public void setIdref(String idref) {
-        this.idref = idref;
-    }
-
-    /**
-     * The text alternative of this node in the current context.
-     */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * The text alternative of this node in the current context.
-     */
-    public void setText(String text) {
-        this.text = text;
-    }
 }

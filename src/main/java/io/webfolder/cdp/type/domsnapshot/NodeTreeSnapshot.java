@@ -1,237 +1,73 @@
 package io.webfolder.cdp.type.domsnapshot;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Table containing nodes
  */
+@Data
 public class NodeTreeSnapshot {
+
+    /**
+     * Parent node index.
+     */
     private List<Integer> parentIndex = new ArrayList<>();
-
+    /**
+     * <code>Node</code>'s nodeType.
+     */
     private List<Integer> nodeType = new ArrayList<>();
-
+    /**
+     * <code>Node</code>'s nodeName.
+     */
     private List<Integer> nodeName = new ArrayList<>();
-
+    /**
+     * <code>Node</code>'s nodeValue.
+     */
     private List<Integer> nodeValue = new ArrayList<>();
-
+    /**
+     * <code>Node</code>'s id, corresponds to DOM.Node.backendNodeId.
+     */
     private List<Integer> backendNodeId = new ArrayList<>();
-
+    /**
+     * Only set for textarea elements, contains the text value.
+     */
     private RareStringData textValue;
-
+    /**
+     * Only set for input elements, contains the input's associated text value.
+     */
     private RareStringData inputValue;
-
+    /**
+     * Only set for radio and checkbox input elements, indicates if the element has been checked
+     */
     private RareBooleanData inputChecked;
-
+    /**
+     * Only set for option elements, indicates if the element has been selected
+     */
     private RareBooleanData optionSelected;
-
+    /**
+     * The index of the document in the list of the snapshot documents.
+     */
     private RareIntegerData contentDocumentIndex;
-
+    /**
+     * Type of a pseudo element node.
+     */
     private RareStringData pseudoType;
-
+    /**
+     * Whether this DOM node responds to mouse clicks. This includes nodes that have had click
+     * event listeners attached via JavaScript as well as anchor tags that naturally navigate when
+     * clicked.
+     */
     private RareBooleanData isClickable;
-
+    /**
+     * The selected url for nodes with a srcset attribute.
+     */
     private RareStringData currentSourceURL;
-
+    /**
+     * The url of the script (if any) that generates this node.
+     */
     private RareStringData originURL;
 
-    /**
-     * Parent node index.
-     */
-    public List<Integer> getParentIndex() {
-        return parentIndex;
-    }
-
-    /**
-     * Parent node index.
-     */
-    public void setParentIndex(List<Integer> parentIndex) {
-        this.parentIndex = parentIndex;
-    }
-
-    /**
-     * <code>Node</code>'s nodeType.
-     */
-    public List<Integer> getNodeType() {
-        return nodeType;
-    }
-
-    /**
-     * <code>Node</code>'s nodeType.
-     */
-    public void setNodeType(List<Integer> nodeType) {
-        this.nodeType = nodeType;
-    }
-
-    /**
-     * <code>Node</code>'s nodeName.
-     */
-    public List<Integer> getNodeName() {
-        return nodeName;
-    }
-
-    /**
-     * <code>Node</code>'s nodeName.
-     */
-    public void setNodeName(List<Integer> nodeName) {
-        this.nodeName = nodeName;
-    }
-
-    /**
-     * <code>Node</code>'s nodeValue.
-     */
-    public List<Integer> getNodeValue() {
-        return nodeValue;
-    }
-
-    /**
-     * <code>Node</code>'s nodeValue.
-     */
-    public void setNodeValue(List<Integer> nodeValue) {
-        this.nodeValue = nodeValue;
-    }
-
-    /**
-     * <code>Node</code>'s id, corresponds to DOM.Node.backendNodeId.
-     */
-    public List<Integer> getBackendNodeId() {
-        return backendNodeId;
-    }
-
-    /**
-     * <code>Node</code>'s id, corresponds to DOM.Node.backendNodeId.
-     */
-    public void setBackendNodeId(List<Integer> backendNodeId) {
-        this.backendNodeId = backendNodeId;
-    }
-
-    /**
-     * Only set for textarea elements, contains the text value.
-     */
-    public RareStringData getTextValue() {
-        return textValue;
-    }
-
-    /**
-     * Only set for textarea elements, contains the text value.
-     */
-    public void setTextValue(RareStringData textValue) {
-        this.textValue = textValue;
-    }
-
-    /**
-     * Only set for input elements, contains the input's associated text value.
-     */
-    public RareStringData getInputValue() {
-        return inputValue;
-    }
-
-    /**
-     * Only set for input elements, contains the input's associated text value.
-     */
-    public void setInputValue(RareStringData inputValue) {
-        this.inputValue = inputValue;
-    }
-
-    /**
-     * Only set for radio and checkbox input elements, indicates if the element has been checked
-     */
-    public RareBooleanData getInputChecked() {
-        return inputChecked;
-    }
-
-    /**
-     * Only set for radio and checkbox input elements, indicates if the element has been checked
-     */
-    public void setInputChecked(RareBooleanData inputChecked) {
-        this.inputChecked = inputChecked;
-    }
-
-    /**
-     * Only set for option elements, indicates if the element has been selected
-     */
-    public RareBooleanData getOptionSelected() {
-        return optionSelected;
-    }
-
-    /**
-     * Only set for option elements, indicates if the element has been selected
-     */
-    public void setOptionSelected(RareBooleanData optionSelected) {
-        this.optionSelected = optionSelected;
-    }
-
-    /**
-     * The index of the document in the list of the snapshot documents.
-     */
-    public RareIntegerData getContentDocumentIndex() {
-        return contentDocumentIndex;
-    }
-
-    /**
-     * The index of the document in the list of the snapshot documents.
-     */
-    public void setContentDocumentIndex(RareIntegerData contentDocumentIndex) {
-        this.contentDocumentIndex = contentDocumentIndex;
-    }
-
-    /**
-     * Type of a pseudo element node.
-     */
-    public RareStringData getPseudoType() {
-        return pseudoType;
-    }
-
-    /**
-     * Type of a pseudo element node.
-     */
-    public void setPseudoType(RareStringData pseudoType) {
-        this.pseudoType = pseudoType;
-    }
-
-    /**
-     * Whether this DOM node responds to mouse clicks. This includes nodes that have had click
-     * event listeners attached via JavaScript as well as anchor tags that naturally navigate when
-     * clicked.
-     */
-    public RareBooleanData getIsClickable() {
-        return isClickable;
-    }
-
-    /**
-     * Whether this DOM node responds to mouse clicks. This includes nodes that have had click
-     * event listeners attached via JavaScript as well as anchor tags that naturally navigate when
-     * clicked.
-     */
-    public void setIsClickable(RareBooleanData isClickable) {
-        this.isClickable = isClickable;
-    }
-
-    /**
-     * The selected url for nodes with a srcset attribute.
-     */
-    public RareStringData getCurrentSourceURL() {
-        return currentSourceURL;
-    }
-
-    /**
-     * The selected url for nodes with a srcset attribute.
-     */
-    public void setCurrentSourceURL(RareStringData currentSourceURL) {
-        this.currentSourceURL = currentSourceURL;
-    }
-
-    /**
-     * The url of the script (if any) that generates this node.
-     */
-    public RareStringData getOriginURL() {
-        return originURL;
-    }
-
-    /**
-     * The url of the script (if any) that generates this node.
-     */
-    public void setOriginURL(RareStringData originURL) {
-        this.originURL = originURL;
-    }
 }

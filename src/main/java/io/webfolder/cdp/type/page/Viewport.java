@@ -1,86 +1,32 @@
 package io.webfolder.cdp.type.page;
 
+import lombok.Data;
+
 /**
  * Viewport for capturing screenshot
  */
+@Data
 public class Viewport {
+
+    /**
+     * X offset in CSS pixels.
+     */
     private Double x;
-
+    /**
+     * Y offset in CSS pixels
+     */
     private Double y;
-
+    /**
+     * Rectangle width in CSS pixels
+     */
     private Double width;
-
+    /**
+     * Rectangle height in CSS pixels
+     */
     private Double height;
-
+    /**
+     * Page scale factor.
+     */
     private Double scale;
 
-    /**
-     * X offset in CSS pixels.
-     */
-    public Double getX() {
-        return x;
-    }
-
-    /**
-     * X offset in CSS pixels.
-     */
-    public void setX(Double x) {
-        this.x = x;
-    }
-
-    /**
-     * Y offset in CSS pixels
-     */
-    public Double getY() {
-        return y;
-    }
-
-    /**
-     * Y offset in CSS pixels
-     */
-    public void setY(Double y) {
-        this.y = y;
-    }
-
-    /**
-     * Rectangle width in CSS pixels
-     */
-    public Double getWidth() {
-        return width;
-    }
-
-    /**
-     * Rectangle width in CSS pixels
-     */
-    public void setWidth(Double width) {
-        this.width = width;
-    }
-
-    /**
-     * Rectangle height in CSS pixels
-     */
-    public Double getHeight() {
-        return height;
-    }
-
-    /**
-     * Rectangle height in CSS pixels
-     */
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    /**
-     * Page scale factor.
-     */
-    public Double getScale() {
-        return scale;
-    }
-
-    /**
-     * Page scale factor.
-     */
-    public void setScale(Double scale) {
-        this.scale = scale;
-    }
 }

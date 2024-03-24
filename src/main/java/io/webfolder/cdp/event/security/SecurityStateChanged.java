@@ -5,6 +5,7 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.security.InsecureContentStatus;
 import io.webfolder.cdp.type.security.SecurityState;
 import io.webfolder.cdp.type.security.SecurityStateExplanation;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,86 +15,29 @@ import java.util.List;
  */
 @Domain("Security")
 @EventName("securityStateChanged")
+@Data
 public class SecurityStateChanged {
+
+    /**
+     * Security state.
+     */
     private SecurityState securityState;
-
+    /**
+     * True if the page was loaded over cryptographic transport such as HTTPS.
+     */
     private Boolean schemeIsCryptographic;
-
+    /**
+     * List of explanations for the security state. If the overall security state is <code>insecure</code> or
+     * <code>warning</code>, at least one corresponding explanation should be included.
+     */
     private List<SecurityStateExplanation> explanations = new ArrayList<>();
-
+    /**
+     * Information about insecure content on the page.
+     */
     private InsecureContentStatus insecureContentStatus;
-
+    /**
+     * Overrides user-visible description of the state.
+     */
     private String summary;
 
-    /**
-     * Security state.
-     */
-    public SecurityState getSecurityState() {
-        return securityState;
-    }
-
-    /**
-     * Security state.
-     */
-    public void setSecurityState(SecurityState securityState) {
-        this.securityState = securityState;
-    }
-
-    /**
-     * True if the page was loaded over cryptographic transport such as HTTPS.
-     */
-    public Boolean isSchemeIsCryptographic() {
-        return schemeIsCryptographic;
-    }
-
-    /**
-     * True if the page was loaded over cryptographic transport such as HTTPS.
-     */
-    public void setSchemeIsCryptographic(Boolean schemeIsCryptographic) {
-        this.schemeIsCryptographic = schemeIsCryptographic;
-    }
-
-    /**
-     * List of explanations for the security state. If the overall security state is <code>insecure</code> or
-     * <code>warning</code>, at least one corresponding explanation should be included.
-     */
-    public List<SecurityStateExplanation> getExplanations() {
-        return explanations;
-    }
-
-    /**
-     * List of explanations for the security state. If the overall security state is <code>insecure</code> or
-     * <code>warning</code>, at least one corresponding explanation should be included.
-     */
-    public void setExplanations(List<SecurityStateExplanation> explanations) {
-        this.explanations = explanations;
-    }
-
-    /**
-     * Information about insecure content on the page.
-     */
-    public InsecureContentStatus getInsecureContentStatus() {
-        return insecureContentStatus;
-    }
-
-    /**
-     * Information about insecure content on the page.
-     */
-    public void setInsecureContentStatus(InsecureContentStatus insecureContentStatus) {
-        this.insecureContentStatus = insecureContentStatus;
-    }
-
-    /**
-     * Overrides user-visible description of the state.
-     */
-    public String getSummary() {
-        return summary;
-    }
-
-    /**
-     * Overrides user-visible description of the state.
-     */
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
 }

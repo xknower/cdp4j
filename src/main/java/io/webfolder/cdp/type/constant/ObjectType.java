@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum ObjectType {
+
     @SerializedName("object")
     Object("object"),
 
@@ -37,4 +38,5 @@ public enum ObjectType {
     public String toString() {
         return value;
     }
+
 }

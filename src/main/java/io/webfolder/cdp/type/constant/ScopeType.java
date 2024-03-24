@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum ScopeType {
+
     @SerializedName("global")
     Global("global"),
 
@@ -40,4 +41,5 @@ public enum ScopeType {
     public String toString() {
         return value;
     }
+
 }

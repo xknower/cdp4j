@@ -22,7 +22,7 @@ public class MultiSelect {
 
             System.out.println("Selected options:");
             session.getOptions("select").stream().forEach(o -> {
-                if (o.isSelected()) {
+                if (o.getSelected()) {
                     System.out.println(o);
                 }
             });
@@ -31,19 +31,19 @@ public class MultiSelect {
             session.clearOptions("select");
 
             System.out.println("Selected Option count: " +
-                    session.getOptions("select").stream().filter(o -> o.isSelected()).count());
+                    session.getOptions("select").stream().filter(o -> o.getSelected()).count());
 
             session.wait(1000);
             session.setSelectedOptions("select", asList(0, 1, 2));
             System.out.println("Selected options:");
             session.getOptions("select").stream().forEach(o -> {
-                if (o.isSelected()) {
+                if (o.getSelected()) {
                     System.out.println(o);
                 }
             });
 
             System.out.println("Selected Option count: " +
-                    session.getOptions("select").stream().filter(o -> o.isSelected()).count());
+                    session.getOptions("select").stream().filter(o -> o.getSelected()).count());
 
             session.wait(1000);
         }

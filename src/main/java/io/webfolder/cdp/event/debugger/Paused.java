@@ -6,6 +6,7 @@ import io.webfolder.cdp.type.constant.PauseReason;
 import io.webfolder.cdp.type.debugger.CallFrame;
 import io.webfolder.cdp.type.runtime.StackTrace;
 import io.webfolder.cdp.type.runtime.StackTraceId;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,118 +16,37 @@ import java.util.List;
  */
 @Domain("Debugger")
 @EventName("paused")
+@Data
 public class Paused {
+
+    /**
+     * Call stack the virtual machine stopped on.
+     */
     private List<CallFrame> callFrames = new ArrayList<>();
-
+    /**
+     * Pause reason.
+     */
     private PauseReason reason;
-
+    /**
+     * Object containing break-specific auxiliary properties.
+     */
     private Object data;
-
+    /**
+     * Hit breakpoints IDs
+     */
     private List<String> hitBreakpoints;
-
+    /**
+     * Async stack trace, if any.
+     */
     private StackTrace asyncStackTrace;
-
+    /**
+     * Async stack trace, if any.
+     */
     private StackTraceId asyncStackTraceId;
-
+    /**
+     * Just scheduled async call will have this stack trace as parent stack during async execution.
+     * This field is available only after <code>Debugger.stepInto</code>call with<code>breakOnAsynCall</code> flag.
+     */
     private StackTraceId asyncCallStackTraceId;
 
-    /**
-     * Call stack the virtual machine stopped on.
-     */
-    public List<CallFrame> getCallFrames() {
-        return callFrames;
-    }
-
-    /**
-     * Call stack the virtual machine stopped on.
-     */
-    public void setCallFrames(List<CallFrame> callFrames) {
-        this.callFrames = callFrames;
-    }
-
-    /**
-     * Pause reason.
-     */
-    public PauseReason getReason() {
-        return reason;
-    }
-
-    /**
-     * Pause reason.
-     */
-    public void setReason(PauseReason reason) {
-        this.reason = reason;
-    }
-
-    /**
-     * Object containing break-specific auxiliary properties.
-     */
-    public Object getData() {
-        return data;
-    }
-
-    /**
-     * Object containing break-specific auxiliary properties.
-     */
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    /**
-     * Hit breakpoints IDs
-     */
-    public List<String> getHitBreakpoints() {
-        return hitBreakpoints;
-    }
-
-    /**
-     * Hit breakpoints IDs
-     */
-    public void setHitBreakpoints(List<String> hitBreakpoints) {
-        this.hitBreakpoints = hitBreakpoints;
-    }
-
-    /**
-     * Async stack trace, if any.
-     */
-    public StackTrace getAsyncStackTrace() {
-        return asyncStackTrace;
-    }
-
-    /**
-     * Async stack trace, if any.
-     */
-    public void setAsyncStackTrace(StackTrace asyncStackTrace) {
-        this.asyncStackTrace = asyncStackTrace;
-    }
-
-    /**
-     * Async stack trace, if any.
-     */
-    public StackTraceId getAsyncStackTraceId() {
-        return asyncStackTraceId;
-    }
-
-    /**
-     * Async stack trace, if any.
-     */
-    public void setAsyncStackTraceId(StackTraceId asyncStackTraceId) {
-        this.asyncStackTraceId = asyncStackTraceId;
-    }
-
-    /**
-     * Just scheduled async call will have this stack trace as parent stack during async execution.
-     * This field is available only after <code>Debugger.stepInto</code>call with<code>breakOnAsynCall</code> flag.
-     */
-    public StackTraceId getAsyncCallStackTraceId() {
-        return asyncCallStackTraceId;
-    }
-
-    /**
-     * Just scheduled async call will have this stack trace as parent stack during async execution.
-     * This field is available only after <code>Debugger.stepInto</code>call with<code>breakOnAsynCall</code> flag.
-     */
-    public void setAsyncCallStackTraceId(StackTraceId asyncCallStackTraceId) {
-        this.asyncCallStackTraceId = asyncCallStackTraceId;
-    }
 }

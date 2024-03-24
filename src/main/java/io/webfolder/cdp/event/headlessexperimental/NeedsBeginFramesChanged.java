@@ -2,26 +2,19 @@ package io.webfolder.cdp.event.headlessexperimental;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
+import lombok.Data;
 
 /**
  * Issued when the target starts or stops needing BeginFrames
  */
 @Domain("HeadlessExperimental")
 @EventName("needsBeginFramesChanged")
+@Data
 public class NeedsBeginFramesChanged {
+
+    /**
+     * True if BeginFrames are needed, false otherwise.
+     */
     private Boolean needsBeginFrames;
 
-    /**
-     * True if BeginFrames are needed, false otherwise.
-     */
-    public Boolean isNeedsBeginFrames() {
-        return needsBeginFrames;
-    }
-
-    /**
-     * True if BeginFrames are needed, false otherwise.
-     */
-    public void setNeedsBeginFrames(Boolean needsBeginFrames) {
-        this.needsBeginFrames = needsBeginFrames;
-    }
 }

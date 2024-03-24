@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Enum of possible property sources
  */
 public enum AXValueSourceType {
+
     @SerializedName("attribute")
     Attribute("attribute"),
 
@@ -34,4 +35,5 @@ public enum AXValueSourceType {
     public String toString() {
         return value;
     }
+
 }

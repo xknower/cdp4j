@@ -1,22 +1,16 @@
 package io.webfolder.cdp.type.cachestorage;
 
+import lombok.Data;
+
 /**
  * Cached response
  */
+@Data
 public class CachedResponse {
+
+    /**
+     * Entry content, base64-encoded.
+     */
     private String body;
 
-    /**
-     * Entry content, base64-encoded.
-     */
-    public String getBody() {
-        return body;
-    }
-
-    /**
-     * Entry content, base64-encoded.
-     */
-    public void setBody(String body) {
-        this.body = body;
-    }
 }

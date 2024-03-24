@@ -22,4 +22,5 @@ public class DefaultMasker implements Masker {
             payload[i] = (byte) ((payload[i] ^ this.maskingKey[i % 4]) & 0xFF);
         }
     }
+
 }

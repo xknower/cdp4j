@@ -9,6 +9,7 @@ import io.webfolder.cdp.event.Events;
 import io.webfolder.cdp.exception.CommandException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.logger.CdpLogger;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ class WSAdapter extends WebSocketAdapter {
 
     private final CdpLogger log;
 
+    @Setter
     private Session session;
 
     private static class TerminateSession implements Runnable {
@@ -169,7 +171,4 @@ class WSAdapter extends WebSocketAdapter {
         return unmodifiableMap(map);
     }
 
-    void setSession(final Session session) {
-        this.session = session;
-    }
 }

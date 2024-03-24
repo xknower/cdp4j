@@ -1,38 +1,20 @@
 package io.webfolder.cdp.type.domsnapshot;
 
+import lombok.Data;
+
 /**
  * A name/value pair
  */
+@Data
 public class NameValue {
-    private String name;
 
+    /**
+     * Attribute/property name.
+     */
+    private String name;
+    /**
+     * Attribute/property value.
+     */
     private String value;
 
-    /**
-     * Attribute/property name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Attribute/property name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Attribute/property value.
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * Attribute/property value.
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
 }

@@ -2,6 +2,7 @@ package io.webfolder.cdp.event.page;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
+import lombok.Data;
 
 import java.util.List;
 
@@ -12,68 +13,24 @@ import java.util.List;
  */
 @Domain("Page")
 @EventName("windowOpen")
+@Data
 public class WindowOpen {
+
+    /**
+     * The URL for the new window.
+     */
     private String url;
-
+    /**
+     * Window name.
+     */
     private String windowName;
-
+    /**
+     * An array of enabled window features.
+     */
     private List<String> windowFeatures;
-
+    /**
+     * Whether or not it was triggered by user gesture.
+     */
     private Boolean userGesture;
 
-    /**
-     * The URL for the new window.
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * The URL for the new window.
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * Window name.
-     */
-    public String getWindowName() {
-        return windowName;
-    }
-
-    /**
-     * Window name.
-     */
-    public void setWindowName(String windowName) {
-        this.windowName = windowName;
-    }
-
-    /**
-     * An array of enabled window features.
-     */
-    public List<String> getWindowFeatures() {
-        return windowFeatures;
-    }
-
-    /**
-     * An array of enabled window features.
-     */
-    public void setWindowFeatures(List<String> windowFeatures) {
-        this.windowFeatures = windowFeatures;
-    }
-
-    /**
-     * Whether or not it was triggered by user gesture.
-     */
-    public Boolean isUserGesture() {
-        return userGesture;
-    }
-
-    /**
-     * Whether or not it was triggered by user gesture.
-     */
-    public void setUserGesture(Boolean userGesture) {
-        this.userGesture = userGesture;
-    }
 }

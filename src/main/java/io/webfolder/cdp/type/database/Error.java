@@ -1,38 +1,20 @@
 package io.webfolder.cdp.type.database;
 
+import lombok.Data;
+
 /**
  * Database error
  */
+@Data
 public class Error {
-    private String message;
 
+    /**
+     * Error message.
+     */
+    private String message;
+    /**
+     * Error code.
+     */
     private Integer code;
 
-    /**
-     * Error message.
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * Error message.
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     * Error code.
-     */
-    public Integer getCode() {
-        return code;
-    }
-
-    /**
-     * Error code.
-     */
-    public void setCode(Integer code) {
-        this.code = code;
-    }
 }

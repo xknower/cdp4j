@@ -2,6 +2,7 @@ package io.webfolder.cdp.event.tracing;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +15,9 @@ import java.util.Map;
  */
 @Domain("Tracing")
 @EventName("dataCollected")
+@Data
 public class DataCollected {
 
     private List<Map<String, Object>> value = new ArrayList<>();
 
-    public List<Map<String, Object>> getValue() {
-        return value;
-    }
-
-    public void setValue(List<Map<String, Object>> value) {
-        this.value = value;
-    }
 }

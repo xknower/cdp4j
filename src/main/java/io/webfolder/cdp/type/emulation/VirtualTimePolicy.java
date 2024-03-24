@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * resource fetches
  */
 public enum VirtualTimePolicy {
+
     @SerializedName("advance")
     Advance("advance"),
 
@@ -28,4 +29,5 @@ public enum VirtualTimePolicy {
     public String toString() {
         return value;
     }
+
 }

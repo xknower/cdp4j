@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Loading priority of a resource request
  */
 public enum ResourcePriority {
+
     @SerializedName("VeryLow")
     VeryLow("VeryLow"),
 
@@ -31,4 +32,5 @@ public enum ResourcePriority {
     public String toString() {
         return value;
     }
+
 }

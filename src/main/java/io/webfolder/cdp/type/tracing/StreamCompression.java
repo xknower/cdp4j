@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Compression type to use for traces returned via streams
  */
 public enum StreamCompression {
+
     @SerializedName("none")
     None("none"),
 
@@ -22,4 +23,5 @@ public enum StreamCompression {
     public String toString() {
         return value;
     }
+
 }

@@ -12,14 +12,12 @@ class WebSocketOutputStream extends BufferedOutputStream {
         this.payloadMask = (payloadMask == null) ? new DefaultMasker() : payloadMask;
     }
 
-
     public void write(String string) throws IOException {
         // Convert the string into a byte array.
         byte[] bytes = Misc.getBytesUTF8(string);
 
         write(bytes);
     }
-
 
     public void write(WebSocketFrame frame) throws IOException {
         writeFrame0(frame);
@@ -36,7 +34,6 @@ class WebSocketOutputStream extends BufferedOutputStream {
         writeFramePayload(frame);
     }
 
-
     private void writeFrame0(WebSocketFrame frame) throws IOException {
         int b = (frame.getFin() ? 0x80 : 0x00)
                 | (frame.getRsv1() ? 0x40 : 0x00)
@@ -46,7 +43,6 @@ class WebSocketOutputStream extends BufferedOutputStream {
 
         write(b);
     }
-
 
     private void writeFrame1(WebSocketFrame frame) throws IOException {
         // Frames sent from a client are always masked.
@@ -64,7 +60,6 @@ class WebSocketOutputStream extends BufferedOutputStream {
 
         write(b);
     }
-
 
     private void writeFrameExtendedPayloadLength(WebSocketFrame frame) throws IOException {
         int len = frame.getPayloadLength();
@@ -92,7 +87,6 @@ class WebSocketOutputStream extends BufferedOutputStream {
         write((len) & 0xFF);
     }
 
-
     private void writeFramePayload(WebSocketFrame frame) throws IOException {
         byte[] payload = frame.getPayload();
 
@@ -105,4 +99,5 @@ class WebSocketOutputStream extends BufferedOutputStream {
         // Write
         write(payload);
     }
+
 }

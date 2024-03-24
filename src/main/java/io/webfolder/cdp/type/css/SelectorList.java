@@ -1,41 +1,23 @@
 package io.webfolder.cdp.type.css;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Selector list data
  */
+@Data
 public class SelectorList {
-    private List<Value> selectors = new ArrayList<>();
 
+    /**
+     * Selectors in the list.
+     */
+    private List<Value> selectors = new ArrayList<>();
+    /**
+     * Rule selector text.
+     */
     private String text;
 
-    /**
-     * Selectors in the list.
-     */
-    public List<Value> getSelectors() {
-        return selectors;
-    }
-
-    /**
-     * Selectors in the list.
-     */
-    public void setSelectors(List<Value> selectors) {
-        this.selectors = selectors;
-    }
-
-    /**
-     * Rule selector text.
-     */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * Rule selector text.
-     */
-    public void setText(String text) {
-        this.text = text;
-    }
 }

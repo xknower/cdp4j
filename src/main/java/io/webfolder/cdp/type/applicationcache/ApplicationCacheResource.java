@@ -1,54 +1,24 @@
 package io.webfolder.cdp.type.applicationcache;
 
+import lombok.Data;
+
 /**
  * Detailed application cache resource information
  */
+@Data
 public class ApplicationCacheResource {
+
+    /**
+     * Resource url.
+     */
     private String url;
-
+    /**
+     * Resource size.
+     */
     private Integer size;
-
+    /**
+     * Resource type.
+     */
     private String type;
 
-    /**
-     * Resource url.
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * Resource url.
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * Resource size.
-     */
-    public Integer getSize() {
-        return size;
-    }
-
-    /**
-     * Resource size.
-     */
-    public void setSize(Integer size) {
-        this.size = size;
-    }
-
-    /**
-     * Resource type.
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Resource type.
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
 }

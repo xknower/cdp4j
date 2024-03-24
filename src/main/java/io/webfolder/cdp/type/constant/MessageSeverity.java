@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum MessageSeverity {
+
     @SerializedName("log")
     Log("log"),
 
@@ -28,4 +29,5 @@ public enum MessageSeverity {
     public String toString() {
         return value;
     }
+
 }

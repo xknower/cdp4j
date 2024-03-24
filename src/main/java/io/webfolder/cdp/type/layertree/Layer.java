@@ -1,267 +1,80 @@
 package io.webfolder.cdp.type.layertree;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Information about a compositing layer
  */
+@Data
 public class Layer {
+
+    /**
+     * The unique id for this layer.
+     */
     private String layerId;
-
+    /**
+     * The id of parent (not present for root).
+     */
     private String parentLayerId;
-
+    /**
+     * The backend id for the node associated with this layer.
+     */
     private Integer backendNodeId;
-
+    /**
+     * Offset from parent layer, X coordinate.
+     */
     private Double offsetX;
-
+    /**
+     * Offset from parent layer, Y coordinate.
+     */
     private Double offsetY;
-
+    /**
+     * Layer width.
+     */
     private Double width;
-
+    /**
+     * Layer height.
+     */
     private Double height;
-
+    /**
+     * Transformation matrix for layer, default is identity matrix
+     */
     private List<Double> transform = new ArrayList<>();
-
+    /**
+     * Transform anchor point X, absent if no transform specified
+     */
     private Double anchorX;
-
+    /**
+     * Transform anchor point Y, absent if no transform specified
+     */
     private Double anchorY;
-
+    /**
+     * Transform anchor point Z, absent if no transform specified
+     */
     private Double anchorZ;
-
+    /**
+     * Indicates how many time this layer has painted.
+     */
     private Integer paintCount;
-
+    /**
+     * Indicates whether this layer hosts any content, rather than being used for
+     * transform/scrolling purposes only.
+     */
     private Boolean drawsContent;
-
+    /**
+     * Set if layer is not visible.
+     */
     private Boolean invisible;
-
+    /**
+     * Rectangles scrolling on main thread only.
+     */
     private List<ScrollRect> scrollRects = new ArrayList<>();
-
+    /**
+     * Sticky position constraint information
+     */
     private StickyPositionConstraint stickyPositionConstraint;
 
-    /**
-     * The unique id for this layer.
-     */
-    public String getLayerId() {
-        return layerId;
-    }
-
-    /**
-     * The unique id for this layer.
-     */
-    public void setLayerId(String layerId) {
-        this.layerId = layerId;
-    }
-
-    /**
-     * The id of parent (not present for root).
-     */
-    public String getParentLayerId() {
-        return parentLayerId;
-    }
-
-    /**
-     * The id of parent (not present for root).
-     */
-    public void setParentLayerId(String parentLayerId) {
-        this.parentLayerId = parentLayerId;
-    }
-
-    /**
-     * The backend id for the node associated with this layer.
-     */
-    public Integer getBackendNodeId() {
-        return backendNodeId;
-    }
-
-    /**
-     * The backend id for the node associated with this layer.
-     */
-    public void setBackendNodeId(Integer backendNodeId) {
-        this.backendNodeId = backendNodeId;
-    }
-
-    /**
-     * Offset from parent layer, X coordinate.
-     */
-    public Double getOffsetX() {
-        return offsetX;
-    }
-
-    /**
-     * Offset from parent layer, X coordinate.
-     */
-    public void setOffsetX(Double offsetX) {
-        this.offsetX = offsetX;
-    }
-
-    /**
-     * Offset from parent layer, Y coordinate.
-     */
-    public Double getOffsetY() {
-        return offsetY;
-    }
-
-    /**
-     * Offset from parent layer, Y coordinate.
-     */
-    public void setOffsetY(Double offsetY) {
-        this.offsetY = offsetY;
-    }
-
-    /**
-     * Layer width.
-     */
-    public Double getWidth() {
-        return width;
-    }
-
-    /**
-     * Layer width.
-     */
-    public void setWidth(Double width) {
-        this.width = width;
-    }
-
-    /**
-     * Layer height.
-     */
-    public Double getHeight() {
-        return height;
-    }
-
-    /**
-     * Layer height.
-     */
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    /**
-     * Transformation matrix for layer, default is identity matrix
-     */
-    public List<Double> getTransform() {
-        return transform;
-    }
-
-    /**
-     * Transformation matrix for layer, default is identity matrix
-     */
-    public void setTransform(List<Double> transform) {
-        this.transform = transform;
-    }
-
-    /**
-     * Transform anchor point X, absent if no transform specified
-     */
-    public Double getAnchorX() {
-        return anchorX;
-    }
-
-    /**
-     * Transform anchor point X, absent if no transform specified
-     */
-    public void setAnchorX(Double anchorX) {
-        this.anchorX = anchorX;
-    }
-
-    /**
-     * Transform anchor point Y, absent if no transform specified
-     */
-    public Double getAnchorY() {
-        return anchorY;
-    }
-
-    /**
-     * Transform anchor point Y, absent if no transform specified
-     */
-    public void setAnchorY(Double anchorY) {
-        this.anchorY = anchorY;
-    }
-
-    /**
-     * Transform anchor point Z, absent if no transform specified
-     */
-    public Double getAnchorZ() {
-        return anchorZ;
-    }
-
-    /**
-     * Transform anchor point Z, absent if no transform specified
-     */
-    public void setAnchorZ(Double anchorZ) {
-        this.anchorZ = anchorZ;
-    }
-
-    /**
-     * Indicates how many time this layer has painted.
-     */
-    public Integer getPaintCount() {
-        return paintCount;
-    }
-
-    /**
-     * Indicates how many time this layer has painted.
-     */
-    public void setPaintCount(Integer paintCount) {
-        this.paintCount = paintCount;
-    }
-
-    /**
-     * Indicates whether this layer hosts any content, rather than being used for
-     * transform/scrolling purposes only.
-     */
-    public Boolean isDrawsContent() {
-        return drawsContent;
-    }
-
-    /**
-     * Indicates whether this layer hosts any content, rather than being used for
-     * transform/scrolling purposes only.
-     */
-    public void setDrawsContent(Boolean drawsContent) {
-        this.drawsContent = drawsContent;
-    }
-
-    /**
-     * Set if layer is not visible.
-     */
-    public Boolean isInvisible() {
-        return invisible;
-    }
-
-    /**
-     * Set if layer is not visible.
-     */
-    public void setInvisible(Boolean invisible) {
-        this.invisible = invisible;
-    }
-
-    /**
-     * Rectangles scrolling on main thread only.
-     */
-    public List<ScrollRect> getScrollRects() {
-        return scrollRects;
-    }
-
-    /**
-     * Rectangles scrolling on main thread only.
-     */
-    public void setScrollRects(List<ScrollRect> scrollRects) {
-        this.scrollRects = scrollRects;
-    }
-
-    /**
-     * Sticky position constraint information
-     */
-    public StickyPositionConstraint getStickyPositionConstraint() {
-        return stickyPositionConstraint;
-    }
-
-    /**
-     * Sticky position constraint information
-     */
-    public void setStickyPositionConstraint(StickyPositionConstraint stickyPositionConstraint) {
-        this.stickyPositionConstraint = stickyPositionConstraint;
-    }
 }

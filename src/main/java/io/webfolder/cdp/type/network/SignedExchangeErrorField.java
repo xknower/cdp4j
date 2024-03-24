@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Field type for a signed exchange related error
  */
 public enum SignedExchangeErrorField {
+
     @SerializedName("signatureSig")
     SignatureSig("signatureSig"),
 
@@ -34,4 +35,5 @@ public enum SignedExchangeErrorField {
     public String toString() {
         return value;
     }
+
 }

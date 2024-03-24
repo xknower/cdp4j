@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * org/html/draft-west-first-party-cookies
  */
 public enum CookieSameSite {
+
     @SerializedName("Strict")
     Strict("Strict"),
 
@@ -25,4 +26,5 @@ public enum CookieSameSite {
     public String toString() {
         return value;
     }
+
 }

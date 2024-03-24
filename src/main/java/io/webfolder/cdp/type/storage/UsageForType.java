@@ -1,38 +1,20 @@
 package io.webfolder.cdp.type.storage;
 
+import lombok.Data;
+
 /**
  * Usage for a storage type
  */
+@Data
 public class UsageForType {
-    private StorageType storageType;
 
+    /**
+     * Name of storage type.
+     */
+    private StorageType storageType;
+    /**
+     * Storage usage (bytes).
+     */
     private Double usage;
 
-    /**
-     * Name of storage type.
-     */
-    public StorageType getStorageType() {
-        return storageType;
-    }
-
-    /**
-     * Name of storage type.
-     */
-    public void setStorageType(StorageType storageType) {
-        this.storageType = storageType;
-    }
-
-    /**
-     * Storage usage (bytes).
-     */
-    public Double getUsage() {
-        return usage;
-    }
-
-    /**
-     * Storage usage (bytes).
-     */
-    public void setUsage(Double usage) {
-        this.usage = usage;
-    }
 }

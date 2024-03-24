@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * elements other than parent/child/sibling
  */
 public enum AXPropertyName {
+
     @SerializedName("busy")
     Busy("busy"),
 
@@ -137,4 +138,5 @@ public enum AXPropertyName {
     public String toString() {
         return value;
     }
+
 }

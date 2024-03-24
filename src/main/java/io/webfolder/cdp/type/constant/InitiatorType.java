@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum InitiatorType {
+
     @SerializedName("parser")
     Parser("parser"),
 
@@ -28,4 +29,5 @@ public enum InitiatorType {
     public String toString() {
         return value;
     }
+
 }

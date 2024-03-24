@@ -1,6 +1,7 @@
 package io.webfolder.cdp.type.css;
 
 import io.webfolder.cdp.type.dom.PseudoType;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,36 +9,16 @@ import java.util.List;
 /**
  * CSS rule collection for a single pseudo style
  */
+@Data
 public class PseudoElementMatches {
-    private PseudoType pseudoType;
 
+    /**
+     * Pseudo element type.
+     */
+    private PseudoType pseudoType;
+    /**
+     * Matches of CSS rules applicable to the pseudo style.
+     */
     private List<RuleMatch> matches = new ArrayList<>();
 
-    /**
-     * Pseudo element type.
-     */
-    public PseudoType getPseudoType() {
-        return pseudoType;
-    }
-
-    /**
-     * Pseudo element type.
-     */
-    public void setPseudoType(PseudoType pseudoType) {
-        this.pseudoType = pseudoType;
-    }
-
-    /**
-     * Matches of CSS rules applicable to the pseudo style.
-     */
-    public List<RuleMatch> getMatches() {
-        return matches;
-    }
-
-    /**
-     * Matches of CSS rules applicable to the pseudo style.
-     */
-    public void setMatches(List<RuleMatch> matches) {
-        this.matches = matches;
-    }
 }

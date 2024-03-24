@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum AnimationType {
+
     @SerializedName("CSSTransition")
     CSSTransition("CSSTransition"),
 
@@ -22,4 +23,5 @@ public enum AnimationType {
     public String toString() {
         return value;
     }
+
 }

@@ -292,7 +292,7 @@ public interface Selector {
             GetPropertiesResult properties = runtime.getProperties(result.getResult().getObjectId(), true, false, false);
             if (properties != null) {
                 for (PropertyDescriptor next : properties.getResult()) {
-                    if (!next.isEnumerable()) {
+                    if (!next.getEnumerable()) {
                         continue;
                     }
                     int index = parseInt(next.getName());
@@ -479,4 +479,5 @@ public interface Selector {
     }
 
     Session getThis();
+
 }

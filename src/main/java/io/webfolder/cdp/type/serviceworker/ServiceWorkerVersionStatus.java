@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.serviceworker;
 import com.google.gson.annotations.SerializedName;
 
 public enum ServiceWorkerVersionStatus {
+
     @SerializedName("new")
     New("new"),
 
@@ -31,4 +32,5 @@ public enum ServiceWorkerVersionStatus {
     public String toString() {
         return value;
     }
+
 }

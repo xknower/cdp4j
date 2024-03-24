@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum KeyEventType {
+
     @SerializedName("keyDown")
     KeyDown("keyDown"),
 
@@ -25,4 +26,5 @@ public enum KeyEventType {
     public String toString() {
         return value;
     }
+
 }

@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum TouchEventType {
+
     @SerializedName("touchStart")
     TouchStart("touchStart"),
 
@@ -25,4 +26,5 @@ public enum TouchEventType {
     public String toString() {
         return value;
     }
+
 }

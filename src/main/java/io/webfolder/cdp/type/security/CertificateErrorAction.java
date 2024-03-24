@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * request and cancel will cancel the request
  */
 public enum CertificateErrorAction {
+
     @SerializedName("continue")
     Continue("continue"),
 
@@ -24,4 +25,5 @@ public enum CertificateErrorAction {
     public String toString() {
         return value;
     }
+
 }

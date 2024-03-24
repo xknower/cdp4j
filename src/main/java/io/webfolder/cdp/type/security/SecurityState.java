@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * The security level of a page or resource
  */
 public enum SecurityState {
+
     @SerializedName("unknown")
     Unknown("unknown"),
 
@@ -31,4 +32,5 @@ public enum SecurityState {
     public String toString() {
         return value;
     }
+
 }

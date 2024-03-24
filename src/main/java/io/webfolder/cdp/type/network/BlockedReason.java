@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * The reason why request was blocked
  */
 public enum BlockedReason {
+
     @SerializedName("other")
     Other("other"),
 
@@ -40,4 +41,5 @@ public enum BlockedReason {
     public String toString() {
         return value;
     }
+
 }

@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum PauseOnExceptionState {
+
     @SerializedName("none")
     None("none"),
 
@@ -22,4 +23,5 @@ public enum PauseOnExceptionState {
     public String toString() {
         return value;
     }
+
 }

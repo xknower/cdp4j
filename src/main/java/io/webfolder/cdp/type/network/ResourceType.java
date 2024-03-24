@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Resource type as it was perceived by the rendering engine
  */
 public enum ResourceType {
+
     @SerializedName("Document")
     Document("Document"),
 

@@ -3,6 +3,7 @@ package io.webfolder.cdp.session;
 import com.google.gson.JsonElement;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.exception.CommandException;
+import lombok.Getter;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -15,8 +16,10 @@ class WSContext {
 
     private final CountDownLatch latch = new CountDownLatch(1);
 
+    @Getter
     private JsonElement data;
 
+    @Getter
     private CommandException error;
 
     void await(final int timeout) {
@@ -32,16 +35,9 @@ class WSContext {
         latch.countDown();
     }
 
-    JsonElement getData() {
-        return data;
-    }
-
     void setError(CommandException error) {
         this.error = error;
         latch.countDown();
     }
 
-    CommandException getError() {
-        return error;
-    }
 }

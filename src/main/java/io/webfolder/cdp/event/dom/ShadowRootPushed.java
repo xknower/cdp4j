@@ -4,6 +4,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.dom.Node;
+import lombok.Data;
 
 /**
  * Called when shadow root is pushed into the element
@@ -11,36 +12,16 @@ import io.webfolder.cdp.type.dom.Node;
 @Experimental
 @Domain("DOM")
 @EventName("shadowRootPushed")
+@Data
 public class ShadowRootPushed {
-    private Integer hostId;
 
+    /**
+     * Host element id.
+     */
+    private Integer hostId;
+    /**
+     * Shadow root.
+     */
     private Node root;
 
-    /**
-     * Host element id.
-     */
-    public Integer getHostId() {
-        return hostId;
-    }
-
-    /**
-     * Host element id.
-     */
-    public void setHostId(Integer hostId) {
-        this.hostId = hostId;
-    }
-
-    /**
-     * Shadow root.
-     */
-    public Node getRoot() {
-        return root;
-    }
-
-    /**
-     * Shadow root.
-     */
-    public void setRoot(Node root) {
-        this.root = root;
-    }
 }

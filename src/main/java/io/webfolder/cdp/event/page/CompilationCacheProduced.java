@@ -3,6 +3,7 @@ package io.webfolder.cdp.event.page;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
+import lombok.Data;
 
 /**
  * Issued for every compilation cache generated
@@ -13,30 +14,13 @@ import io.webfolder.cdp.annotation.Experimental;
 @Experimental
 @Domain("Page")
 @EventName("compilationCacheProduced")
+@Data
 public class CompilationCacheProduced {
-    private String url;
 
+    private String url;
+    /**
+     * Base64-encoded data
+     */
     private String data;
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * Base64-encoded data
-     */
-    public String getData() {
-        return data;
-    }
-
-    /**
-     * Base64-encoded data
-     */
-    public void setData(String data) {
-        this.data = data;
-    }
 }

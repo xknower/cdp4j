@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum ViolationType {
+
     @SerializedName("longTask")
     LongTask("longTask"),
 
@@ -34,4 +35,5 @@ public enum ViolationType {
     public String toString() {
         return value;
     }
+
 }

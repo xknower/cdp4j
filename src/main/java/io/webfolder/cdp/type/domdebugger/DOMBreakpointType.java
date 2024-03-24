@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * DOM breakpoint type
  */
 public enum DOMBreakpointType {
+
     @SerializedName("subtree-modified")
     SubtreeModified("subtree-modified"),
 
@@ -25,4 +26,5 @@ public enum DOMBreakpointType {
     public String toString() {
         return value;
     }
+
 }

@@ -1,57 +1,27 @@
 package io.webfolder.cdp.type.indexeddb;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Database with an array of object stores
  */
+@Data
 public class DatabaseWithObjectStores {
+
+    /**
+     * Database name.
+     */
     private String name;
-
+    /**
+     * Database version.
+     */
     private Integer version;
-
+    /**
+     * Object stores in this database.
+     */
     private List<ObjectStore> objectStores = new ArrayList<>();
 
-    /**
-     * Database name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Database name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Database version.
-     */
-    public Integer getVersion() {
-        return version;
-    }
-
-    /**
-     * Database version.
-     */
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    /**
-     * Object stores in this database.
-     */
-    public List<ObjectStore> getObjectStores() {
-        return objectStores;
-    }
-
-    /**
-     * Object stores in this database.
-     */
-    public void setObjectStores(List<ObjectStore> objectStores) {
-        this.objectStores = objectStores;
-    }
 }

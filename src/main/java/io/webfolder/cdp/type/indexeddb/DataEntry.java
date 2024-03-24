@@ -1,56 +1,25 @@
 package io.webfolder.cdp.type.indexeddb;
 
 import io.webfolder.cdp.type.runtime.RemoteObject;
+import lombok.Data;
 
 /**
  * Data entry
  */
+@Data
 public class DataEntry {
+
+    /**
+     * Key object.
+     */
     private RemoteObject key;
-
+    /**
+     * Primary key object.
+     */
     private RemoteObject primaryKey;
-
+    /**
+     * Value object.
+     */
     private RemoteObject value;
 
-    /**
-     * Key object.
-     */
-    public RemoteObject getKey() {
-        return key;
-    }
-
-    /**
-     * Key object.
-     */
-    public void setKey(RemoteObject key) {
-        this.key = key;
-    }
-
-    /**
-     * Primary key object.
-     */
-    public RemoteObject getPrimaryKey() {
-        return primaryKey;
-    }
-
-    /**
-     * Primary key object.
-     */
-    public void setPrimaryKey(RemoteObject primaryKey) {
-        this.primaryKey = primaryKey;
-    }
-
-    /**
-     * Value object.
-     */
-    public RemoteObject getValue() {
-        return value;
-    }
-
-    /**
-     * Value object.
-     */
-    public void setValue(RemoteObject value) {
-        this.value = value;
-    }
 }

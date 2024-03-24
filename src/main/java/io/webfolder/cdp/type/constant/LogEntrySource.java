@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum LogEntrySource {
+
     @SerializedName("xml")
     Xml("xml"),
 
@@ -52,4 +53,5 @@ public enum LogEntrySource {
     public String toString() {
         return value;
     }
+
 }

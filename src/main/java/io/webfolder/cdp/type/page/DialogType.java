@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Javascript dialog type
  */
 public enum DialogType {
+
     @SerializedName("alert")
     Alert("alert"),
 
@@ -28,4 +29,5 @@ public enum DialogType {
     public String toString() {
         return value;
     }
+
 }

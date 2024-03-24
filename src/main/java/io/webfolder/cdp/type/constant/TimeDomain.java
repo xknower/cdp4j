@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum TimeDomain {
+
     @SerializedName("timeTicks")
     TimeTicks("timeTicks"),
 
@@ -19,4 +20,5 @@ public enum TimeDomain {
     public String toString() {
         return value;
     }
+
 }

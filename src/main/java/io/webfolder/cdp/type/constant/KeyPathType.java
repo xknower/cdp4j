@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum KeyPathType {
+
     @SerializedName("null")
     Null("null"),
 
@@ -22,4 +23,5 @@ public enum KeyPathType {
     public String toString() {
         return value;
     }
+
 }

@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * type of HTTP response cached
  */
 public enum CachedResponseType {
+
     @SerializedName("basic")
     Basic("basic"),
 
@@ -34,4 +35,5 @@ public enum CachedResponseType {
     public String toString() {
         return value;
     }
+
 }

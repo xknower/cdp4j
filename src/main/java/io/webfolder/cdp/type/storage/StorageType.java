@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Enum of possible storage types
  */
 public enum StorageType {
+
     @SerializedName("appcache")
     Appcache("appcache"),
 
@@ -49,4 +50,5 @@ public enum StorageType {
     public String toString() {
         return value;
     }
+
 }

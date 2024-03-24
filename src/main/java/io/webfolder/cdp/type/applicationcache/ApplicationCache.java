@@ -1,89 +1,35 @@
 package io.webfolder.cdp.type.applicationcache;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Detailed application cache information
  */
+@Data
 public class ApplicationCache {
+
+    /**
+     * Manifest URL.
+     */
     private String manifestURL;
-
+    /**
+     * Application cache size.
+     */
     private Double size;
-
+    /**
+     * Application cache creation time.
+     */
     private Double creationTime;
-
+    /**
+     * Application cache update time.
+     */
     private Double updateTime;
-
+    /**
+     * Application cache resources.
+     */
     private List<ApplicationCacheResource> resources = new ArrayList<>();
 
-    /**
-     * Manifest URL.
-     */
-    public String getManifestURL() {
-        return manifestURL;
-    }
-
-    /**
-     * Manifest URL.
-     */
-    public void setManifestURL(String manifestURL) {
-        this.manifestURL = manifestURL;
-    }
-
-    /**
-     * Application cache size.
-     */
-    public Double getSize() {
-        return size;
-    }
-
-    /**
-     * Application cache size.
-     */
-    public void setSize(Double size) {
-        this.size = size;
-    }
-
-    /**
-     * Application cache creation time.
-     */
-    public Double getCreationTime() {
-        return creationTime;
-    }
-
-    /**
-     * Application cache creation time.
-     */
-    public void setCreationTime(Double creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    /**
-     * Application cache update time.
-     */
-    public Double getUpdateTime() {
-        return updateTime;
-    }
-
-    /**
-     * Application cache update time.
-     */
-    public void setUpdateTime(Double updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    /**
-     * Application cache resources.
-     */
-    public List<ApplicationCacheResource> getResources() {
-        return resources;
-    }
-
-    /**
-     * Application cache resources.
-     */
-    public void setResources(List<ApplicationCacheResource> resources) {
-        this.resources = resources;
-    }
 }

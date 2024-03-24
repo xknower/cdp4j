@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Shadow root type
  */
 public enum ShadowRootType {
+
     @SerializedName("user-agent")
     UserAgent("user-agent"),
 
@@ -25,4 +26,5 @@ public enum ShadowRootType {
     public String toString() {
         return value;
     }
+
 }

@@ -1,121 +1,42 @@
 package io.webfolder.cdp.type.page;
 
 import io.webfolder.cdp.annotation.Experimental;
+import lombok.Data;
 
 /**
  * Generic font families collection
  */
 @Experimental
+@Data
 public class FontFamilies {
+
+    /**
+     * The standard font-family.
+     */
     private String standard;
-
+    /**
+     * The fixed font-family.
+     */
     private String fixed;
-
+    /**
+     * The serif font-family.
+     */
     private String serif;
-
+    /**
+     * The sansSerif font-family.
+     */
     private String sansSerif;
-
+    /**
+     * The cursive font-family.
+     */
     private String cursive;
-
+    /**
+     * The fantasy font-family.
+     */
     private String fantasy;
-
+    /**
+     * The pictograph font-family.
+     */
     private String pictograph;
 
-    /**
-     * The standard font-family.
-     */
-    public String getStandard() {
-        return standard;
-    }
-
-    /**
-     * The standard font-family.
-     */
-    public void setStandard(String standard) {
-        this.standard = standard;
-    }
-
-    /**
-     * The fixed font-family.
-     */
-    public String getFixed() {
-        return fixed;
-    }
-
-    /**
-     * The fixed font-family.
-     */
-    public void setFixed(String fixed) {
-        this.fixed = fixed;
-    }
-
-    /**
-     * The serif font-family.
-     */
-    public String getSerif() {
-        return serif;
-    }
-
-    /**
-     * The serif font-family.
-     */
-    public void setSerif(String serif) {
-        this.serif = serif;
-    }
-
-    /**
-     * The sansSerif font-family.
-     */
-    public String getSansSerif() {
-        return sansSerif;
-    }
-
-    /**
-     * The sansSerif font-family.
-     */
-    public void setSansSerif(String sansSerif) {
-        this.sansSerif = sansSerif;
-    }
-
-    /**
-     * The cursive font-family.
-     */
-    public String getCursive() {
-        return cursive;
-    }
-
-    /**
-     * The cursive font-family.
-     */
-    public void setCursive(String cursive) {
-        this.cursive = cursive;
-    }
-
-    /**
-     * The fantasy font-family.
-     */
-    public String getFantasy() {
-        return fantasy;
-    }
-
-    /**
-     * The fantasy font-family.
-     */
-    public void setFantasy(String fantasy) {
-        this.fantasy = fantasy;
-    }
-
-    /**
-     * The pictograph font-family.
-     */
-    public String getPictograph() {
-        return pictograph;
-    }
-
-    /**
-     * The pictograph font-family.
-     */
-    public void setPictograph(String pictograph) {
-        this.pictograph = pictograph;
-    }
 }

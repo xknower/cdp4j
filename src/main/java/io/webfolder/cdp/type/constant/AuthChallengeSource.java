@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum AuthChallengeSource {
+
     @SerializedName("Server")
     Server("Server"),
 
@@ -19,4 +20,5 @@ public enum AuthChallengeSource {
     public String toString() {
         return value;
     }
+
 }

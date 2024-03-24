@@ -1,6 +1,5 @@
 package com.neovisionaries.ws.client;
 
-
 import com.neovisionaries.ws.client.StateManager.CloseInitiator;
 
 import java.io.ByteArrayOutputStream;
@@ -21,8 +20,8 @@ import static com.neovisionaries.ws.client.WebSocketOpcode.TEXT;
 import static com.neovisionaries.ws.client.WebSocketState.CLOSED;
 import static com.neovisionaries.ws.client.WebSocketState.CLOSING;
 
-
 class ReadingThread extends WebSocketThread {
+
     private boolean mStopRequested;
     private WebSocketFrame mCloseFrame;
     private List<WebSocketFrame> mContinuation = new ArrayList<WebSocketFrame>();
@@ -33,13 +32,11 @@ class ReadingThread extends WebSocketThread {
     private long mCloseDelay;
     private boolean mNotWaitForCloseFrame;
 
-
     public ReadingThread(WebSocket websocket) {
         super("ReadingThread", websocket, ThreadType.READING_THREAD);
 
         mPMCE = websocket.getPerMessageCompressionExtension();
     }
-
 
     @Override
     public void runMain() {
@@ -60,7 +57,6 @@ class ReadingThread extends WebSocketThread {
         // Notify this reading thread finished.
         notifyFinished();
     }
-
 
     private void main() {
         mWebSocket.onReadingThreadStarted();
@@ -95,7 +91,6 @@ class ReadingThread extends WebSocketThread {
         cancelClose();
     }
 
-
     void requestStop(long closeDelay) {
         synchronized (this) {
             if (mStopRequested) {
@@ -123,7 +118,6 @@ class ReadingThread extends WebSocketThread {
         scheduleClose();
     }
 
-
     /**
      * Call {@link WebSocketListener#onFrame(WebSocket, WebSocketFrame) onFrame}
      * method of the listeners.
@@ -131,7 +125,6 @@ class ReadingThread extends WebSocketThread {
     private void callOnFrame(WebSocketFrame frame) {
         mWebSocket.getListenerManager().callOnFrame(frame);
     }
-
 
     /**
      * Call {@link WebSocketListener#onContinuationFrame(WebSocket, WebSocketFrame)
@@ -141,7 +134,6 @@ class ReadingThread extends WebSocketThread {
         mWebSocket.getListenerManager().callOnContinuationFrame(frame);
     }
 
-
     /**
      * Call {@link WebSocketListener#onTextFrame(WebSocket, WebSocketFrame)
      * onTextFrame} method of the listeners.
@@ -149,7 +141,6 @@ class ReadingThread extends WebSocketThread {
     private void callOnTextFrame(WebSocketFrame frame) {
         mWebSocket.getListenerManager().callOnTextFrame(frame);
     }
-
 
     /**
      * Call {@link WebSocketListener#onBinaryFrame(WebSocket, WebSocketFrame)
@@ -159,7 +150,6 @@ class ReadingThread extends WebSocketThread {
         mWebSocket.getListenerManager().callOnBinaryFrame(frame);
     }
 
-
     /**
      * Call {@link WebSocketListener#onCloseFrame(WebSocket, WebSocketFrame)
      * onCloseFrame} method of the listeners.
@@ -167,7 +157,6 @@ class ReadingThread extends WebSocketThread {
     private void callOnCloseFrame(WebSocketFrame frame) {
         mWebSocket.getListenerManager().callOnCloseFrame(frame);
     }
-
 
     /**
      * Call {@link WebSocketListener#onPingFrame(WebSocket, WebSocketFrame)
@@ -177,7 +166,6 @@ class ReadingThread extends WebSocketThread {
         mWebSocket.getListenerManager().callOnPingFrame(frame);
     }
 
-
     /**
      * Call {@link WebSocketListener#onPongFrame(WebSocket, WebSocketFrame)
      * onPongFrame} method of the listeners.
@@ -185,7 +173,6 @@ class ReadingThread extends WebSocketThread {
     private void callOnPongFrame(WebSocketFrame frame) {
         mWebSocket.getListenerManager().callOnPongFrame(frame);
     }
-
 
     /**
      * Call {@link WebSocketListener#onTextMessage(WebSocket, String)
@@ -216,7 +203,6 @@ class ReadingThread extends WebSocketThread {
         }
     }
 
-
     /**
      * Call {@link WebSocketListener#onTextMessage(WebSocket, String)
      * onTextMessage} method of the listeners.
@@ -224,7 +210,6 @@ class ReadingThread extends WebSocketThread {
     private void callOnTextMessage(String message) {
         mWebSocket.getListenerManager().callOnTextMessage(message);
     }
-
 
     /**
      * Call {@link WebSocketListener#onBinaryMessage(WebSocket, String)
@@ -234,7 +219,6 @@ class ReadingThread extends WebSocketThread {
         mWebSocket.getListenerManager().callOnBinaryMessage(message);
     }
 
-
     /**
      * Call {@link WebSocketListener#onError(WebSocket, WebSocketException)
      * onError} method of the listeners.
@@ -242,7 +226,6 @@ class ReadingThread extends WebSocketThread {
     private void callOnError(WebSocketException cause) {
         mWebSocket.getListenerManager().callOnError(cause);
     }
-
 
     /**
      * Call {@link WebSocketListener#onFrameError(WebSocket,
@@ -252,7 +235,6 @@ class ReadingThread extends WebSocketThread {
         mWebSocket.getListenerManager().callOnFrameError(cause, frame);
     }
 
-
     /**
      * Call {@link WebSocketListener#onMessageError(WebSocket, WebSocketException, List)
      * onMessageError} method of the listeners.
@@ -260,7 +242,6 @@ class ReadingThread extends WebSocketThread {
     private void callOnMessageError(WebSocketException cause, List<WebSocketFrame> frames) {
         mWebSocket.getListenerManager().callOnMessageError(cause, frames);
     }
-
 
     /**
      * Call {@link WebSocketListener#onMessageDecompressionError(WebSocket, WebSocketException, byte[])
@@ -270,7 +251,6 @@ class ReadingThread extends WebSocketThread {
         mWebSocket.getListenerManager().callOnMessageDecompressionError(cause, compressed);
     }
 
-
     /**
      * Call {@link WebSocketListener#onTextMessageError(WebSocket, WebSocketException, byte[])
      * onTextMessageError} method of the listeners.
@@ -278,7 +258,6 @@ class ReadingThread extends WebSocketThread {
     private void callOnTextMessageError(WebSocketException cause, byte[] data) {
         mWebSocket.getListenerManager().callOnTextMessageError(cause, data);
     }
-
 
     private WebSocketFrame readFrame() {
         WebSocketFrame frame = null;
@@ -350,7 +329,6 @@ class ReadingThread extends WebSocketThread {
         return null;
     }
 
-
     private void verifyFrame(WebSocketFrame frame) throws WebSocketException {
         // Verify RSV1, RSV2 and RSV3.
         verifyReservedBits(frame);
@@ -368,7 +346,6 @@ class ReadingThread extends WebSocketThread {
         verifyFrameSize(frame);
     }
 
-
     private void verifyReservedBits(WebSocketFrame frame) throws WebSocketException {
         // If extended use of web socket frames is allowed.
         if (mWebSocket.isExtended()) {
@@ -385,7 +362,6 @@ class ReadingThread extends WebSocketThread {
         verifyReservedBit2(frame);
         verifyReservedBit3(frame);
     }
-
 
     /**
      * Verify the RSV1 bit of a frame.
@@ -411,7 +387,6 @@ class ReadingThread extends WebSocketThread {
                 WebSocketError.UNEXPECTED_RESERVED_BIT, "The RSV1 bit of a frame is set unexpectedly.");
     }
 
-
     /**
      * Verify the RSV1 bit of a frame using the rule described in RFC 7692.
      * See <a href="https://tools.ietf.org/html/rfc7692#section-6">6. Framing</a>
@@ -429,7 +404,6 @@ class ReadingThread extends WebSocketThread {
         return false;
     }
 
-
     /**
      * Verify the RSV2 bit of a frame.
      */
@@ -444,7 +418,6 @@ class ReadingThread extends WebSocketThread {
                 WebSocketError.UNEXPECTED_RESERVED_BIT, "The RSV2 bit of a frame is set unexpectedly.");
     }
 
-
     /**
      * Verify the RSV3 bit of a frame.
      */
@@ -458,7 +431,6 @@ class ReadingThread extends WebSocketThread {
         throw new WebSocketException(
                 WebSocketError.UNEXPECTED_RESERVED_BIT, "The RSV3 bit of a frame is set unexpectedly.");
     }
-
 
     /**
      * Ensure that the opcode of the give frame is a known one.
@@ -498,7 +470,6 @@ class ReadingThread extends WebSocketThread {
                 "A frame has an unknown opcode: 0x" + Integer.toHexString(frame.getOpcode()));
     }
 
-
     /**
      * Ensure that the given frame is not masked.
      *
@@ -519,7 +490,6 @@ class ReadingThread extends WebSocketThread {
                     "A frame from the server is masked.");
         }
     }
-
 
     private void verifyFrameFragmentation(WebSocketFrame frame) throws WebSocketException {
         // Control frames (see Section 5.5) MAY be injected in the
@@ -565,7 +535,6 @@ class ReadingThread extends WebSocketThread {
         }
     }
 
-
     private void verifyFrameSize(WebSocketFrame frame) throws WebSocketException {
         // If the frame is not a control frame.
         if (frame.isControlFrame() == false) {
@@ -593,7 +562,6 @@ class ReadingThread extends WebSocketThread {
                     "The payload size of a control frame exceeds the maximum size (125 bytes): " + payload.length);
         }
     }
-
 
     private WebSocketFrame createCloseFrame(WebSocketException wse) {
         int closeCode;
@@ -642,7 +610,6 @@ class ReadingThread extends WebSocketThread {
         return WebSocketFrame.createCloseFrame(closeCode, wse.getMessage());
     }
 
-
     private boolean handleFrame(WebSocketFrame frame) {
         // Notify the listeners that a frame was received.
         callOnFrame(frame);
@@ -672,7 +639,6 @@ class ReadingThread extends WebSocketThread {
                 return true;
         }
     }
-
 
     private boolean handleContinuationFrame(WebSocketFrame frame) {
         // Notify the listeners that a continuation frame was received.
@@ -713,7 +679,6 @@ class ReadingThread extends WebSocketThread {
         return true;
     }
 
-
     private byte[] getMessage(List<WebSocketFrame> frames) {
         // Concatenate payloads of the frames.
         byte[] data = concatenatePayloads(mContinuation);
@@ -733,7 +698,6 @@ class ReadingThread extends WebSocketThread {
 
         return data;
     }
-
 
     private byte[] concatenatePayloads(List<WebSocketFrame> frames) {
         Throwable cause;
@@ -784,7 +748,6 @@ class ReadingThread extends WebSocketThread {
         return null;
     }
 
-
     private byte[] getMessage(WebSocketFrame frame) {
         // The raw payload of the frame.
         byte[] payload = frame.getPayload();
@@ -798,7 +761,6 @@ class ReadingThread extends WebSocketThread {
 
         return payload;
     }
-
 
     private byte[] decompress(byte[] input) {
         WebSocketException wse;
@@ -826,7 +788,6 @@ class ReadingThread extends WebSocketThread {
         return null;
     }
 
-
     private boolean handleTextFrame(WebSocketFrame frame) {
         // Notify the listeners that a text frame was received.
         callOnTextFrame(frame);
@@ -851,7 +812,6 @@ class ReadingThread extends WebSocketThread {
         return true;
     }
 
-
     private boolean handleBinaryFrame(WebSocketFrame frame) {
         // Notify the listeners that a binary frame was received.
         callOnBinaryFrame(frame);
@@ -875,7 +835,6 @@ class ReadingThread extends WebSocketThread {
         // Keep reading.
         return true;
     }
-
 
     private boolean handleCloseFrame(WebSocketFrame frame) {
         // Get the manager which manages the state of the web socket.
@@ -923,7 +882,6 @@ class ReadingThread extends WebSocketThread {
         return false;
     }
 
-
     private boolean handlePingFrame(WebSocketFrame frame) {
         // Notify the listeners that a ping frame was received.
         callOnPingFrame(frame);
@@ -946,7 +904,6 @@ class ReadingThread extends WebSocketThread {
         return true;
     }
 
-
     private boolean handlePongFrame(WebSocketFrame frame) {
         // Notify the listeners that a pong frame was received.
         callOnPongFrame(frame);
@@ -954,7 +911,6 @@ class ReadingThread extends WebSocketThread {
         // Keep reading.
         return true;
     }
-
 
     private void waitForCloseFrame() {
         if (mNotWaitForCloseFrame) {
@@ -994,11 +950,9 @@ class ReadingThread extends WebSocketThread {
         }
     }
 
-
     private void notifyFinished() {
         mWebSocket.onReadingThreadFinished(mCloseFrame);
     }
-
 
     private void scheduleClose() {
         synchronized (mCloseLock) {
@@ -1007,20 +961,17 @@ class ReadingThread extends WebSocketThread {
         }
     }
 
-
     private void scheduleCloseTask() {
         mCloseTask = new CloseTask();
         mCloseTimer = new Timer("ReadingThreadCloseTimer");
         mCloseTimer.schedule(mCloseTask, mCloseDelay);
     }
 
-
     private void cancelClose() {
         synchronized (mCloseLock) {
             cancelCloseTask();
         }
     }
-
 
     private void cancelCloseTask() {
         if (mCloseTimer != null) {
@@ -1033,7 +984,6 @@ class ReadingThread extends WebSocketThread {
             mCloseTask = null;
         }
     }
-
 
     private class CloseTask extends TimerTask {
         @Override
@@ -1055,4 +1005,5 @@ class ReadingThread extends WebSocketThread {
             }
         }
     }
+
 }

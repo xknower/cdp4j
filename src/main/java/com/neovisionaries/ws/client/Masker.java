@@ -2,6 +2,8 @@ package com.neovisionaries.ws.client;
 
 /**
  * Interface for various Masker implementations.
+ *
+ * 用于各种Masker实现的接口。
  */
 public interface Masker {
 

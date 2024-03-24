@@ -1,72 +1,29 @@
 package io.webfolder.cdp.type.layertree;
 
 import io.webfolder.cdp.type.dom.Rect;
+import lombok.Data;
 
 /**
  * Sticky position constraints
  */
+@Data
 public class StickyPositionConstraint {
+
+    /**
+     * Layout rectangle of the sticky element before being shifted
+     */
     private Rect stickyBoxRect;
-
+    /**
+     * Layout rectangle of the containing block of the sticky element
+     */
     private Rect containingBlockRect;
-
+    /**
+     * The nearest sticky layer that shifts the sticky box
+     */
     private String nearestLayerShiftingStickyBox;
-
+    /**
+     * The nearest sticky layer that shifts the containing block
+     */
     private String nearestLayerShiftingContainingBlock;
 
-    /**
-     * Layout rectangle of the sticky element before being shifted
-     */
-    public Rect getStickyBoxRect() {
-        return stickyBoxRect;
-    }
-
-    /**
-     * Layout rectangle of the sticky element before being shifted
-     */
-    public void setStickyBoxRect(Rect stickyBoxRect) {
-        this.stickyBoxRect = stickyBoxRect;
-    }
-
-    /**
-     * Layout rectangle of the containing block of the sticky element
-     */
-    public Rect getContainingBlockRect() {
-        return containingBlockRect;
-    }
-
-    /**
-     * Layout rectangle of the containing block of the sticky element
-     */
-    public void setContainingBlockRect(Rect containingBlockRect) {
-        this.containingBlockRect = containingBlockRect;
-    }
-
-    /**
-     * The nearest sticky layer that shifts the sticky box
-     */
-    public String getNearestLayerShiftingStickyBox() {
-        return nearestLayerShiftingStickyBox;
-    }
-
-    /**
-     * The nearest sticky layer that shifts the sticky box
-     */
-    public void setNearestLayerShiftingStickyBox(String nearestLayerShiftingStickyBox) {
-        this.nearestLayerShiftingStickyBox = nearestLayerShiftingStickyBox;
-    }
-
-    /**
-     * The nearest sticky layer that shifts the containing block
-     */
-    public String getNearestLayerShiftingContainingBlock() {
-        return nearestLayerShiftingContainingBlock;
-    }
-
-    /**
-     * The nearest sticky layer that shifts the containing block
-     */
-    public void setNearestLayerShiftingContainingBlock(String nearestLayerShiftingContainingBlock) {
-        this.nearestLayerShiftingContainingBlock = nearestLayerShiftingContainingBlock;
-    }
 }

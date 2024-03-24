@@ -2,6 +2,7 @@ package io.webfolder.cdp.event.heapprofiler;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
+import lombok.Data;
 
 /**
  * If heap objects tracking has been started then backend regularly sends a current value for last
@@ -11,24 +12,11 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("HeapProfiler")
 @EventName("lastSeenObjectId")
+@Data
 public class LastSeenObjectId {
+
     private Integer lastSeenObjectId;
 
     private Double timestamp;
 
-    public Integer getLastSeenObjectId() {
-        return lastSeenObjectId;
-    }
-
-    public void setLastSeenObjectId(Integer lastSeenObjectId) {
-        this.lastSeenObjectId = lastSeenObjectId;
-    }
-
-    public Double getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Double timestamp) {
-        this.timestamp = timestamp;
-    }
 }

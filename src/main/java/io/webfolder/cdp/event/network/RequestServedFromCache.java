@@ -2,12 +2,14 @@ package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
+import lombok.Data;
 
 /**
  * Fired if request ended up loading from cache
  */
 @Domain("Network")
 @EventName("requestServedFromCache")
+@Data
 public class RequestServedFromCache {
 
     /**
@@ -15,17 +17,4 @@ public class RequestServedFromCache {
      */
     private String requestId;
 
-    /**
-     * Request identifier.
-     */
-    public String getRequestId() {
-        return requestId;
-    }
-
-    /**
-     * Request identifier.
-     */
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
 }

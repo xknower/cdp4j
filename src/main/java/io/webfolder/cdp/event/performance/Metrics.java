@@ -3,6 +3,7 @@ package io.webfolder.cdp.event.performance;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.performance.Metric;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,36 +13,16 @@ import java.util.List;
  */
 @Domain("Performance")
 @EventName("metrics")
+@Data
 public class Metrics {
-    private List<Metric> metrics = new ArrayList<>();
 
+    /**
+     * Current values of the metrics.
+     */
+    private List<Metric> metrics = new ArrayList<>();
+    /**
+     * Timestamp title.
+     */
     private String title;
 
-    /**
-     * Current values of the metrics.
-     */
-    public List<Metric> getMetrics() {
-        return metrics;
-    }
-
-    /**
-     * Current values of the metrics.
-     */
-    public void setMetrics(List<Metric> metrics) {
-        this.metrics = metrics;
-    }
-
-    /**
-     * Timestamp title.
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Timestamp title.
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

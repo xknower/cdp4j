@@ -15,35 +15,14 @@ import java.util.List;
 @Domain("DOM")
 @EventName("setChildNodes")
 public class SetChildNodes {
-    private Integer parentId;
 
+    /**
+     * Parent node id to populate with children.
+     */
+    private Integer parentId;
+    /**
+     * Child nodes array.
+     */
     private List<Node> nodes = new ArrayList<>();
 
-    /**
-     * Parent node id to populate with children.
-     */
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    /**
-     * Parent node id to populate with children.
-     */
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    /**
-     * Child nodes array.
-     */
-    public List<Node> getNodes() {
-        return nodes;
-    }
-
-    /**
-     * Child nodes array.
-     */
-    public void setNodes(List<Node> nodes) {
-        this.nodes = nodes;
-    }
 }

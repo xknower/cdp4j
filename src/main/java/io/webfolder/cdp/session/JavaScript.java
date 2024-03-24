@@ -287,4 +287,5 @@ public interface JavaScript {
     }
 
     Session getThis();
+
 }

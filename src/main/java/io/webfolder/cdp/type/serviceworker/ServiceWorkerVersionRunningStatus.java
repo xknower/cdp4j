@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.serviceworker;
 import com.google.gson.annotations.SerializedName;
 
 public enum ServiceWorkerVersionRunningStatus {
+
     @SerializedName("stopped")
     Stopped("stopped"),
 
@@ -25,4 +26,5 @@ public enum ServiceWorkerVersionRunningStatus {
     public String toString() {
         return value;
     }
+
 }

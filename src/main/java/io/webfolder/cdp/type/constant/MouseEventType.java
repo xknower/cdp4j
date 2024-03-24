@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum MouseEventType {
+
     @SerializedName("mousePressed")
     MousePressed("mousePressed"),
 
@@ -25,4 +26,5 @@ public enum MouseEventType {
     public String toString() {
         return value;
     }
+
 }

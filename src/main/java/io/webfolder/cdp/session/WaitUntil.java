@@ -18,4 +18,5 @@ public enum WaitUntil {
     WaitUntil(String value) {
         this.value = value;
     }
+
 }

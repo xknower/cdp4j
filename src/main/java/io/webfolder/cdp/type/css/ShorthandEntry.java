@@ -1,51 +1,21 @@
 package io.webfolder.cdp.type.css;
 
+import lombok.Data;
+
+@Data
 public class ShorthandEntry {
+
+    /**
+     * Shorthand name.
+     */
     private String name;
-
+    /**
+     * Shorthand value.
+     */
     private String value;
-
+    /**
+     * Whether the property has "!important" annotation (implies <code>false</code> if absent).
+     */
     private Boolean important;
 
-    /**
-     * Shorthand name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Shorthand name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Shorthand value.
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * Shorthand value.
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Whether the property has "!important" annotation (implies <code>false</code> if absent).
-     */
-    public Boolean isImportant() {
-        return important;
-    }
-
-    /**
-     * Whether the property has "!important" annotation (implies <code>false</code> if absent).
-     */
-    public void setImportant(Boolean important) {
-        this.important = important;
-    }
 }

@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum PauseReason {
+
     @SerializedName("XHR")
     XHR("XHR"),
 
@@ -43,4 +44,5 @@ public enum PauseReason {
     public String toString() {
         return value;
     }
+
 }

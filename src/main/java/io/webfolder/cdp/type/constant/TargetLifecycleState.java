@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum TargetLifecycleState {
+
     @SerializedName("frozen")
     Frozen("frozen"),
 
@@ -19,4 +20,5 @@ public enum TargetLifecycleState {
     public String toString() {
         return value;
     }
+
 }

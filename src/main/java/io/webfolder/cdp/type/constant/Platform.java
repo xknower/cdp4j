@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum Platform {
+
     @SerializedName("mobile")
     Mobile("mobile"),
 
@@ -19,4 +20,5 @@ public enum Platform {
     public String toString() {
         return value;
     }
+
 }

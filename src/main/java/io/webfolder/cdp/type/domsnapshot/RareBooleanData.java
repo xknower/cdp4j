@@ -1,16 +1,13 @@
 package io.webfolder.cdp.type.domsnapshot;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class RareBooleanData {
+
     private List<Integer> index = new ArrayList<>();
 
-    public List<Integer> getIndex() {
-        return index;
-    }
-
-    public void setIndex(List<Integer> index) {
-        this.index = index;
-    }
 }

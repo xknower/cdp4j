@@ -29,6 +29,7 @@
             <version>1.6</version>
             <scope>provided</scope>
         </dependency>
+
         <!-- Proxy Vole is a Java library to auto detect the platform network proxy settings. -->
         <dependency>
             <groupId>com.github.markusbernhardt</groupId>
@@ -58,6 +59,7 @@
             <version>1.9.0</version>
             <scope>test</scope>
         </dependency>
+
         <!-- The cloning library is a small, open source (Apache licensed) Java library which deep-clones objects.
          The objects do not have to implement the Cloneable interface. Effectively, this library can clone ANY Java object.
           It can be used i.e. in cache implementations, if you don't want the cached object to be modified
@@ -68,6 +70,7 @@
             <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
+
         <!-- Apache Commons Compress defines an API for working with compression and archive formats. These include:
           bzip2, gzip, pack200, lzma, xz, Snappy, traditional Unix Compress, DEFLATE, DEFLATE64, LZ4, Brotli, Zstandard and ar,
            cpio, jar, tar, zip, dump, 7z, arj. -->
@@ -77,6 +80,7 @@
             <version>1.18</version>
             <scope>provided</scope>
         </dependency>
+
         <!-- Gson is a Java library that can be used to convert Java Objects into their JSON representation.
          It can also be used to convert a JSON string to an equivalent Java object. -->
         <dependency>
@@ -86,16 +90,16 @@
         </dependency>
 
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.25</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -103,11 +107,19 @@
             <version>1.2.17</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -294,20 +306,20 @@
                 </configuration>
             </plugin>
             <!-- Signs the project artifacts with GnuPG. -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-gpg-plugin</artifactId>-->
+            <!--                <version>1.6</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>sign-artifacts</id>-->
+            <!--                        <phase>verify</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>sign</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 

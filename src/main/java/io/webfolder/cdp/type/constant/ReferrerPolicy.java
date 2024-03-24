@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum ReferrerPolicy {
+
     @SerializedName("unsafe-url")
     UnsafeUrl("unsafe-url"),
 
@@ -37,4 +38,5 @@ public enum ReferrerPolicy {
     public String toString() {
         return value;
     }
+
 }

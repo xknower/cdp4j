@@ -1,70 +1,28 @@
 package io.webfolder.cdp.type.page;
 
+import lombok.Data;
+
 /**
  * Error while paring app manifest
  */
+@Data
 public class AppManifestError {
+
+    /**
+     * Error message.
+     */
     private String message;
-
+    /**
+     * If critical, this is a non-recoverable parse error.
+     */
     private Integer critical;
-
+    /**
+     * Error line.
+     */
     private Integer line;
-
+    /**
+     * Error column.
+     */
     private Integer column;
 
-    /**
-     * Error message.
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * Error message.
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     * If criticial, this is a non-recoverable parse error.
-     */
-    public Integer getCritical() {
-        return critical;
-    }
-
-    /**
-     * If criticial, this is a non-recoverable parse error.
-     */
-    public void setCritical(Integer critical) {
-        this.critical = critical;
-    }
-
-    /**
-     * Error line.
-     */
-    public Integer getLine() {
-        return line;
-    }
-
-    /**
-     * Error line.
-     */
-    public void setLine(Integer line) {
-        this.line = line;
-    }
-
-    /**
-     * Error column.
-     */
-    public Integer getColumn() {
-        return column;
-    }
-
-    /**
-     * Error column.
-     */
-    public void setColumn(Integer column) {
-        this.column = column;
-    }
 }

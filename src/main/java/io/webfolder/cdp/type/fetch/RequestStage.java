@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * body is received
  */
 public enum RequestStage {
+
     @SerializedName("Request")
     Request("Request"),
 
@@ -26,4 +27,5 @@ public enum RequestStage {
     public String toString() {
         return value;
     }
+
 }

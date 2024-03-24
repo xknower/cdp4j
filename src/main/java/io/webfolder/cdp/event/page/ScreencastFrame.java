@@ -4,6 +4,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.page.ScreencastFrameMetadata;
+import lombok.Data;
 
 /**
  * Compressed image data requested by the <code>startScreencast</code>
@@ -11,52 +12,20 @@ import io.webfolder.cdp.type.page.ScreencastFrameMetadata;
 @Experimental
 @Domain("Page")
 @EventName("screencastFrame")
+@Data
 public class ScreencastFrame {
+
+    /**
+     * Base64-encoded compressed image.
+     */
     private String data;
-
+    /**
+     * Screencast frame metadata.
+     */
     private ScreencastFrameMetadata metadata;
-
+    /**
+     * Frame number.
+     */
     private Integer sessionId;
 
-    /**
-     * Base64-encoded compressed image.
-     */
-    public String getData() {
-        return data;
-    }
-
-    /**
-     * Base64-encoded compressed image.
-     */
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    /**
-     * Screencast frame metadata.
-     */
-    public ScreencastFrameMetadata getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * Screencast frame metadata.
-     */
-    public void setMetadata(ScreencastFrameMetadata metadata) {
-        this.metadata = metadata;
-    }
-
-    /**
-     * Frame number.
-     */
-    public Integer getSessionId() {
-        return sessionId;
-    }
-
-    /**
-     * Frame number.
-     */
-    public void setSessionId(Integer sessionId) {
-        this.sessionId = sessionId;
-    }
 }

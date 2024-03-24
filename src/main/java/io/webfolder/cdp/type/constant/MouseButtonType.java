@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum MouseButtonType {
+
     @SerializedName("none")
     None("none"),
 
@@ -25,4 +26,5 @@ public enum MouseButtonType {
     public String toString() {
         return value;
     }
+
 }

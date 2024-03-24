@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * The state of the browser window
  */
 public enum WindowState {
+
     @SerializedName("normal")
     Normal("normal"),
 
@@ -28,4 +29,5 @@ public enum WindowState {
     public String toString() {
         return value;
     }
+
 }

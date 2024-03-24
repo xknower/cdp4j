@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Pseudo element type
  */
 public enum PseudoType {
+
     @SerializedName("first-line")
     FirstLine("first-line"),
 
@@ -61,4 +62,5 @@ public enum PseudoType {
     public String toString() {
         return value;
     }
+
 }

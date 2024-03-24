@@ -1,70 +1,28 @@
 package io.webfolder.cdp.type.dom;
 
+import lombok.Data;
+
 /**
  * Rectangle
  */
+@Data
 public class Rect {
+
+    /**
+     * X coordinate
+     */
     private Double x;
-
+    /**
+     * Y coordinate
+     */
     private Double y;
-
+    /**
+     * Rectangle width
+     */
     private Double width;
-
+    /**
+     * Rectangle height
+     */
     private Double height;
 
-    /**
-     * X coordinate
-     */
-    public Double getX() {
-        return x;
-    }
-
-    /**
-     * X coordinate
-     */
-    public void setX(Double x) {
-        this.x = x;
-    }
-
-    /**
-     * Y coordinate
-     */
-    public Double getY() {
-        return y;
-    }
-
-    /**
-     * Y coordinate
-     */
-    public void setY(Double y) {
-        this.y = y;
-    }
-
-    /**
-     * Rectangle width
-     */
-    public Double getWidth() {
-        return width;
-    }
-
-    /**
-     * Rectangle width
-     */
-    public void setWidth(Double width) {
-        this.width = width;
-    }
-
-    /**
-     * Rectangle height
-     */
-    public Double getHeight() {
-        return height;
-    }
-
-    /**
-     * Rectangle height
-     */
-    public void setHeight(Double height) {
-        this.height = height;
-    }
 }

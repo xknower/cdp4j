@@ -1,6 +1,10 @@
 package io.webfolder.cdp.type.systeminfo;
 
+import lombok.Getter;
+
+@Getter
 public class GetInfoResult {
+
     private GPUInfo gpu;
 
     private String modelName;
@@ -9,19 +13,4 @@ public class GetInfoResult {
 
     private String commandLine;
 
-    public GPUInfo getGpu() {
-        return gpu;
-    }
-
-    public String getModelName() {
-        return modelName;
-    }
-
-    public String getModelVersion() {
-        return modelVersion;
-    }
-
-    public String getCommandLine() {
-        return commandLine;
-    }
 }

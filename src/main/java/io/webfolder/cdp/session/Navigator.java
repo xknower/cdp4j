@@ -239,4 +239,5 @@ public interface Navigator {
     }
 
     Session getThis();
+
 }

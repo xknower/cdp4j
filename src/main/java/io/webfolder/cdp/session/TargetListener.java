@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 目标事件处理器
+ * 目标事件监听器
  */
 class TargetListener implements EventListener {
 
@@ -93,4 +93,5 @@ class TargetListener implements EventListener {
                 break;
         }
     }
+
 }

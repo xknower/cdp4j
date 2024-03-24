@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum BreakLocationType {
+
     @SerializedName("debuggerStatement")
     DebuggerStatement("debuggerStatement"),
 
@@ -22,4 +23,5 @@ public enum BreakLocationType {
     public String toString() {
         return value;
     }
+
 }

@@ -1,38 +1,20 @@
 package io.webfolder.cdp.type.schema;
 
+import lombok.Data;
+
 /**
  * Description of the protocol domain
  */
+@Data
 public class Domain {
-    private String name;
 
+    /**
+     * Domain name.
+     */
+    private String name;
+    /**
+     * Domain version.
+     */
     private String version;
 
-    /**
-     * Domain name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Domain name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Domain version.
-     */
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * Domain version.
-     */
-    public void setVersion(String version) {
-        this.version = version;
-    }
 }

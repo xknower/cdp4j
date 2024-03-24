@@ -3,6 +3,7 @@ package io.webfolder.cdp.event.dom;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
+import lombok.Data;
 
 /**
  * Called when shadow root is popped from the element
@@ -10,36 +11,16 @@ import io.webfolder.cdp.annotation.Experimental;
 @Experimental
 @Domain("DOM")
 @EventName("shadowRootPopped")
+@Data
 public class ShadowRootPopped {
-    private Integer hostId;
 
+    /**
+     * Host element id.
+     */
+    private Integer hostId;
+    /**
+     * Shadow root id.
+     */
     private Integer rootId;
 
-    /**
-     * Host element id.
-     */
-    public Integer getHostId() {
-        return hostId;
-    }
-
-    /**
-     * Host element id.
-     */
-    public void setHostId(Integer hostId) {
-        this.hostId = hostId;
-    }
-
-    /**
-     * Shadow root id.
-     */
-    public Integer getRootId() {
-        return rootId;
-    }
-
-    /**
-     * Shadow root id.
-     */
-    public void setRootId(Integer rootId) {
-        this.rootId = rootId;
-    }
 }

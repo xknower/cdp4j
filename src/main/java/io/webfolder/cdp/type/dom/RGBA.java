@@ -1,70 +1,28 @@
 package io.webfolder.cdp.type.dom;
 
+import lombok.Data;
+
 /**
  * A structure holding an RGBA color
  */
+@Data
 public class RGBA {
+
+    /**
+     * The red component, in the [0-255] range.
+     */
     private Integer r;
-
+    /**
+     * The green component, in the [0-255] range.
+     */
     private Integer g;
-
+    /**
+     * The blue component, in the [0-255] range.
+     */
     private Integer b;
-
+    /**
+     * The alpha component, in the [0-1] range (default: 1).
+     */
     private Double a;
 
-    /**
-     * The red component, in the [0-255] range.
-     */
-    public Integer getR() {
-        return r;
-    }
-
-    /**
-     * The red component, in the [0-255] range.
-     */
-    public void setR(Integer r) {
-        this.r = r;
-    }
-
-    /**
-     * The green component, in the [0-255] range.
-     */
-    public Integer getG() {
-        return g;
-    }
-
-    /**
-     * The green component, in the [0-255] range.
-     */
-    public void setG(Integer g) {
-        this.g = g;
-    }
-
-    /**
-     * The blue component, in the [0-255] range.
-     */
-    public Integer getB() {
-        return b;
-    }
-
-    /**
-     * The blue component, in the [0-255] range.
-     */
-    public void setB(Integer b) {
-        this.b = b;
-    }
-
-    /**
-     * The alpha component, in the [0-1] range (default: 1).
-     */
-    public Double getA() {
-        return a;
-    }
-
-    /**
-     * The alpha component, in the [0-1] range (default: 1).
-     */
-    public void setA(Double a) {
-        this.a = a;
-    }
 }

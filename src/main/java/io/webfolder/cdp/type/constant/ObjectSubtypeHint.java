@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum ObjectSubtypeHint {
+
     @SerializedName("array")
     Array("array"),
 
@@ -49,4 +50,5 @@ public enum ObjectSubtypeHint {
     public String toString() {
         return value;
     }
+
 }

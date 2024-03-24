@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum MessageSource {
+
     @SerializedName("xml")
     Xml("xml"),
 
@@ -46,4 +47,5 @@ public enum MessageSource {
     public String toString() {
         return value;
     }
+
 }

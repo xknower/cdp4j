@@ -2,6 +2,7 @@ package io.webfolder.cdp.event.target;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
+import lombok.Data;
 
 /**
  * Notifies about a new protocol message received from the session (as reported in
@@ -9,46 +10,18 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Target")
 @EventName("receivedMessageFromTarget")
+@Data
 public class ReceivedMessageFromTarget {
+
+    /**
+     * Identifier of a session which sends a message.
+     */
     private String sessionId;
 
     private String message;
-
+    /**
+     * Deprecated.
+     */
     private String targetId;
 
-    /**
-     * Identifier of a session which sends a message.
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    /**
-     * Identifier of a session which sends a message.
-     */
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     * Deprecated.
-     */
-    public String getTargetId() {
-        return targetId;
-    }
-
-    /**
-     * Deprecated.
-     */
-    public void setTargetId(String targetId) {
-        this.targetId = targetId;
-    }
 }

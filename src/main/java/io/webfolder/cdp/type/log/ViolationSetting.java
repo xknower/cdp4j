@@ -1,40 +1,21 @@
 package io.webfolder.cdp.type.log;
 
 import io.webfolder.cdp.type.constant.ViolationType;
+import lombok.Data;
 
 /**
  * Violation configuration setting
  */
+@Data
 public class ViolationSetting {
-    private ViolationType name;
 
+    /**
+     * Violation type.
+     */
+    private ViolationType name;
+    /**
+     * Time threshold to trigger upon.
+     */
     private Double threshold;
 
-    /**
-     * Violation type.
-     */
-    public ViolationType getName() {
-        return name;
-    }
-
-    /**
-     * Violation type.
-     */
-    public void setName(ViolationType name) {
-        this.name = name;
-    }
-
-    /**
-     * Time threshold to trigger upon.
-     */
-    public Double getThreshold() {
-        return threshold;
-    }
-
-    /**
-     * Time threshold to trigger upon.
-     */
-    public void setThreshold(Double threshold) {
-        this.threshold = threshold;
-    }
 }

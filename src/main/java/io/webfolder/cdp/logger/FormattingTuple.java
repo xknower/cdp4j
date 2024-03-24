@@ -1,17 +1,22 @@
 package io.webfolder.cdp.logger;
 
+import lombok.Getter;
+
 /**
  * Holds the results of formatting done by {@link MessageFormatter}.
  *
  * @author Joern Huxhorn
  */
+@Getter
 class FormattingTuple {
 
     static public FormattingTuple NULL = new FormattingTuple(null);
 
-    private String message;
-    private Throwable throwable;
-    private Object[] argArray;
+    private final String message;
+
+    private final Throwable throwable;
+
+    private final Object[] argArray;
 
     public FormattingTuple(String message) {
         this(message, null, null);
@@ -21,18 +26,6 @@ class FormattingTuple {
         this.message = message;
         this.throwable = throwable;
         this.argArray = argArray;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public Object[] getArgArray() {
-        return argArray;
-    }
-
-    public Throwable getThrowable() {
-        return throwable;
     }
 
 }

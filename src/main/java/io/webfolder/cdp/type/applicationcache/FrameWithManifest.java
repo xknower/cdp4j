@@ -1,54 +1,24 @@
 package io.webfolder.cdp.type.applicationcache;
 
+import lombok.Data;
+
 /**
  * Frame identifier - manifest URL pair
  */
+@Data
 public class FrameWithManifest {
+
+    /**
+     * Frame identifier.
+     */
     private String frameId;
-
+    /**
+     * Manifest URL.
+     */
     private String manifestURL;
-
+    /**
+     * Application cache status.
+     */
     private Integer status;
 
-    /**
-     * Frame identifier.
-     */
-    public String getFrameId() {
-        return frameId;
-    }
-
-    /**
-     * Frame identifier.
-     */
-    public void setFrameId(String frameId) {
-        this.frameId = frameId;
-    }
-
-    /**
-     * Manifest URL.
-     */
-    public String getManifestURL() {
-        return manifestURL;
-    }
-
-    /**
-     * Manifest URL.
-     */
-    public void setManifestURL(String manifestURL) {
-        this.manifestURL = manifestURL;
-    }
-
-    /**
-     * Application cache status.
-     */
-    public Integer getStatus() {
-        return status;
-    }
-
-    /**
-     * Application cache status.
-     */
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 }

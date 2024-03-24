@@ -1,72 +1,29 @@
 package io.webfolder.cdp.type.memory;
 
+import lombok.Data;
+
 /**
  * Executable module information
  */
+@Data
 public class Module {
+
+    /**
+     * Name of the module.
+     */
     private String name;
-
+    /**
+     * UUID of the module.
+     */
     private String uuid;
-
+    /**
+     * Base address where the module is loaded into memory. Encoded as a decimal
+     * or hexadecimal (0x prefixed) string.
+     */
     private String baseAddress;
-
+    /**
+     * Size of the module in bytes.
+     */
     private Double size;
 
-    /**
-     * Name of the module.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Name of the module.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * UUID of the module.
-     */
-    public String getUuid() {
-        return uuid;
-    }
-
-    /**
-     * UUID of the module.
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    /**
-     * Base address where the module is loaded into memory. Encoded as a decimal
-     * or hexadecimal (0x prefixed) string.
-     */
-    public String getBaseAddress() {
-        return baseAddress;
-    }
-
-    /**
-     * Base address where the module is loaded into memory. Encoded as a decimal
-     * or hexadecimal (0x prefixed) string.
-     */
-    public void setBaseAddress(String baseAddress) {
-        this.baseAddress = baseAddress;
-    }
-
-    /**
-     * Size of the module in bytes.
-     */
-    public Double getSize() {
-        return size;
-    }
-
-    /**
-     * Size of the module in bytes.
-     */
-    public void setSize(Double size) {
-        this.size = size;
-    }
 }

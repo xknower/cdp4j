@@ -1,70 +1,28 @@
 package io.webfolder.cdp.type.page;
 
+import lombok.Data;
+
 /**
  * Layout viewport position and dimensions
  */
+@Data
 public class LayoutViewport {
+
+    /**
+     * Horizontal offset relative to the document (CSS pixels).
+     */
     private Integer pageX;
-
+    /**
+     * Vertical offset relative to the document (CSS pixels).
+     */
     private Integer pageY;
-
+    /**
+     * Width (CSS pixels), excludes scrollbar if present.
+     */
     private Integer clientWidth;
-
+    /**
+     * Height (CSS pixels), excludes scrollbar if present.
+     */
     private Integer clientHeight;
 
-    /**
-     * Horizontal offset relative to the document (CSS pixels).
-     */
-    public Integer getPageX() {
-        return pageX;
-    }
-
-    /**
-     * Horizontal offset relative to the document (CSS pixels).
-     */
-    public void setPageX(Integer pageX) {
-        this.pageX = pageX;
-    }
-
-    /**
-     * Vertical offset relative to the document (CSS pixels).
-     */
-    public Integer getPageY() {
-        return pageY;
-    }
-
-    /**
-     * Vertical offset relative to the document (CSS pixels).
-     */
-    public void setPageY(Integer pageY) {
-        this.pageY = pageY;
-    }
-
-    /**
-     * Width (CSS pixels), excludes scrollbar if present.
-     */
-    public Integer getClientWidth() {
-        return clientWidth;
-    }
-
-    /**
-     * Width (CSS pixels), excludes scrollbar if present.
-     */
-    public void setClientWidth(Integer clientWidth) {
-        this.clientWidth = clientWidth;
-    }
-
-    /**
-     * Height (CSS pixels), excludes scrollbar if present.
-     */
-    public Integer getClientHeight() {
-        return clientHeight;
-    }
-
-    /**
-     * Height (CSS pixels), excludes scrollbar if present.
-     */
-    public void setClientHeight(Integer clientHeight) {
-        this.clientHeight = clientHeight;
-    }
 }

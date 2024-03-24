@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum RepaintReason {
+
     @SerializedName("RepaintsOnScroll")
     RepaintsOnScroll("RepaintsOnScroll"),
 
@@ -22,4 +23,5 @@ public enum RepaintReason {
     public String toString() {
         return value;
     }
+
 }

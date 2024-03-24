@@ -1,6 +1,7 @@
 package io.webfolder.cdp.type.network;
 
 import io.webfolder.cdp.annotation.Experimental;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,148 +11,44 @@ import java.util.List;
  * https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc-section3.1
  */
 @Experimental
+@Data
 public class SignedExchangeSignature {
+
+    /**
+     * Signed exchange signature label.
+     */
     private String label;
-
+    /**
+     * The hex string of signed exchange signature.
+     */
     private String signature;
-
+    /**
+     * Signed exchange signature integrity.
+     */
     private String integrity;
-
+    /**
+     * Signed exchange signature cert Url.
+     */
     private String certUrl;
-
+    /**
+     * The hex string of signed exchange signature cert sha256.
+     */
     private String certSha256;
-
+    /**
+     * Signed exchange signature validity Url.
+     */
     private String validityUrl;
-
+    /**
+     * Signed exchange signature date.
+     */
     private Integer date;
-
+    /**
+     * Signed exchange signature expires.
+     */
     private Integer expires;
-
+    /**
+     * The encoded certificates.
+     */
     private List<String> certificates = new ArrayList<>();
 
-    /**
-     * Signed exchange signature label.
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * Signed exchange signature label.
-     */
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    /**
-     * The hex string of signed exchange signature.
-     */
-    public String getSignature() {
-        return signature;
-    }
-
-    /**
-     * The hex string of signed exchange signature.
-     */
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    /**
-     * Signed exchange signature integrity.
-     */
-    public String getIntegrity() {
-        return integrity;
-    }
-
-    /**
-     * Signed exchange signature integrity.
-     */
-    public void setIntegrity(String integrity) {
-        this.integrity = integrity;
-    }
-
-    /**
-     * Signed exchange signature cert Url.
-     */
-    public String getCertUrl() {
-        return certUrl;
-    }
-
-    /**
-     * Signed exchange signature cert Url.
-     */
-    public void setCertUrl(String certUrl) {
-        this.certUrl = certUrl;
-    }
-
-    /**
-     * The hex string of signed exchange signature cert sha256.
-     */
-    public String getCertSha256() {
-        return certSha256;
-    }
-
-    /**
-     * The hex string of signed exchange signature cert sha256.
-     */
-    public void setCertSha256(String certSha256) {
-        this.certSha256 = certSha256;
-    }
-
-    /**
-     * Signed exchange signature validity Url.
-     */
-    public String getValidityUrl() {
-        return validityUrl;
-    }
-
-    /**
-     * Signed exchange signature validity Url.
-     */
-    public void setValidityUrl(String validityUrl) {
-        this.validityUrl = validityUrl;
-    }
-
-    /**
-     * Signed exchange signature date.
-     */
-    public Integer getDate() {
-        return date;
-    }
-
-    /**
-     * Signed exchange signature date.
-     */
-    public void setDate(Integer date) {
-        this.date = date;
-    }
-
-    /**
-     * Signed exchange signature expires.
-     */
-    public Integer getExpires() {
-        return expires;
-    }
-
-    /**
-     * Signed exchange signature expires.
-     */
-    public void setExpires(Integer expires) {
-        this.expires = expires;
-    }
-
-    /**
-     * The encoded certificates.
-     */
-    public List<String> getCertificates() {
-        return certificates;
-    }
-
-    /**
-     * The encoded certificates.
-     */
-    public void setCertificates(List<String> certificates) {
-        this.certificates = certificates;
-    }
 }

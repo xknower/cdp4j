@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 class WebSocketInputStream extends BufferedInputStream {
+
     public WebSocketInputStream(InputStream in) {
         super(in);
     }
 
-
     public String readLine() throws IOException {
         return Misc.readLine(this, "UTF-8");
     }
-
 
     public WebSocketFrame readFrame() throws IOException, WebSocketException {
         // Buffer.
@@ -121,7 +120,6 @@ class WebSocketInputStream extends BufferedInputStream {
                 .setPayload(payload);
     }
 
-
     void readBytes(byte[] buffer, int length) throws IOException, WebSocketException {
         // Read
         int total = 0;
@@ -138,14 +136,12 @@ class WebSocketInputStream extends BufferedInputStream {
         }
     }
 
-
     private void skipQuietly(long length) {
         try {
             skip(length);
         } catch (IOException e) {
         }
     }
-
 
     private byte[] readPayload(long payloadLength, boolean mask, byte[] maskingKey) throws IOException, WebSocketException {
         if (payloadLength == 0) {
@@ -177,4 +173,5 @@ class WebSocketInputStream extends BufferedInputStream {
 
         return payload;
     }
+
 }

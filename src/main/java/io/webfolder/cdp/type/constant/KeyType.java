@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum KeyType {
+
     @SerializedName("number")
     Number("number"),
 
@@ -25,4 +26,5 @@ public enum KeyType {
     public String toString() {
         return value;
     }
+
 }

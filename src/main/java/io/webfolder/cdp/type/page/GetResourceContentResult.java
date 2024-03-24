@@ -1,15 +1,12 @@
 package io.webfolder.cdp.type.page;
 
+import lombok.Getter;
+
+@Getter
 public class GetResourceContentResult {
+
     private String content;
 
     private Boolean base64Encoded;
 
-    public String getContent() {
-        return content;
-    }
-
-    public Boolean getBase64Encoded() {
-        return base64Encoded;
-    }
 }

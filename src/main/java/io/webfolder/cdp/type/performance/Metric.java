@@ -1,38 +1,20 @@
 package io.webfolder.cdp.type.performance;
 
+import lombok.Data;
+
 /**
  * Run-time execution metric
  */
+@Data
 public class Metric {
-    private String name;
 
+    /**
+     * Metric name.
+     */
+    private String name;
+    /**
+     * Metric value.
+     */
     private Double value;
 
-    /**
-     * Metric name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Metric name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Metric value.
-     */
-    public Double getValue() {
-        return value;
-    }
-
-    /**
-     * Metric value.
-     */
-    public void setValue(Double value) {
-        this.value = value;
-    }
 }

@@ -1,25 +1,19 @@
 package io.webfolder.cdp.type.network;
 
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * WebSocket request data
  */
+@Data
 public class WebSocketRequest {
+
+    /**
+     * HTTP request headers.
+     */
     private Map<String, Object> headers = new HashMap<>();
 
-    /**
-     * HTTP request headers.
-     */
-    public Map<String, Object> getHeaders() {
-        return headers;
-    }
-
-    /**
-     * HTTP request headers.
-     */
-    public void setHeaders(Map<String, Object> headers) {
-        this.headers = headers;
-    }
 }

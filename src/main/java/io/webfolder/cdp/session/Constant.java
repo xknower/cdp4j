@@ -4,6 +4,9 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
+/**
+ * 常量
+ */
 public interface Constant {
 
     List<String> DOM_PROPERTIES = asList("checked", "disabled", "selectedIndex");
@@ -31,4 +34,5 @@ public interface Constant {
     int WAIT_TIMEOUT = 10 * 1000; // 10 seconds
 
     int WAIT_PERIOD = 100; // 0.1 seconds
+
 }

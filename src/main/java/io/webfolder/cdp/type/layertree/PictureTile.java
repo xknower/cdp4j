@@ -1,54 +1,24 @@
 package io.webfolder.cdp.type.layertree;
 
+import lombok.Data;
+
 /**
  * Serialized fragment of layer picture along with its offset within the layer
  */
+@Data
 public class PictureTile {
+
+    /**
+     * Offset from owning layer left boundary
+     */
     private Double x;
-
+    /**
+     * Offset from owning layer top boundary
+     */
     private Double y;
-
+    /**
+     * Base64-encoded snapshot data.
+     */
     private String picture;
 
-    /**
-     * Offset from owning layer left boundary
-     */
-    public Double getX() {
-        return x;
-    }
-
-    /**
-     * Offset from owning layer left boundary
-     */
-    public void setX(Double x) {
-        this.x = x;
-    }
-
-    /**
-     * Offset from owning layer top boundary
-     */
-    public Double getY() {
-        return y;
-    }
-
-    /**
-     * Offset from owning layer top boundary
-     */
-    public void setY(Double y) {
-        this.y = y;
-    }
-
-    /**
-     * Base64-encoded snapshot data.
-     */
-    public String getPicture() {
-        return picture;
-    }
-
-    /**
-     * Base64-encoded snapshot data.
-     */
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
 }

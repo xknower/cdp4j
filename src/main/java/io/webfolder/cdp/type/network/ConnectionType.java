@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * The underlying connection technology that the browser is supposedly using
  */
 public enum ConnectionType {
+
     @SerializedName("none")
     None("none"),
 
@@ -43,4 +44,5 @@ public enum ConnectionType {
     public String toString() {
         return value;
     }
+
 }

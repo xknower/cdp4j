@@ -2,104 +2,37 @@ package io.webfolder.cdp.type.console;
 
 import io.webfolder.cdp.type.constant.MessageSeverity;
 import io.webfolder.cdp.type.constant.MessageSource;
+import lombok.Data;
 
 /**
  * Console message
  */
+@Data
 public class ConsoleMessage {
+
+    /**
+     * Message source.
+     */
     private MessageSource source;
-
+    /**
+     * Message severity.
+     */
     private MessageSeverity level;
-
+    /**
+     * Message text.
+     */
     private String text;
-
+    /**
+     * URL of the message origin.
+     */
     private String url;
-
+    /**
+     * Line number in the resource that generated this message (1-based).
+     */
     private Integer line;
-
+    /**
+     * Column number in the resource that generated this message (1-based).
+     */
     private Integer column;
 
-    /**
-     * Message source.
-     */
-    public MessageSource getSource() {
-        return source;
-    }
-
-    /**
-     * Message source.
-     */
-    public void setSource(MessageSource source) {
-        this.source = source;
-    }
-
-    /**
-     * Message severity.
-     */
-    public MessageSeverity getLevel() {
-        return level;
-    }
-
-    /**
-     * Message severity.
-     */
-    public void setLevel(MessageSeverity level) {
-        this.level = level;
-    }
-
-    /**
-     * Message text.
-     */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * Message text.
-     */
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    /**
-     * URL of the message origin.
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * URL of the message origin.
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * Line number in the resource that generated this message (1-based).
-     */
-    public Integer getLine() {
-        return line;
-    }
-
-    /**
-     * Line number in the resource that generated this message (1-based).
-     */
-    public void setLine(Integer line) {
-        this.line = line;
-    }
-
-    /**
-     * Column number in the resource that generated this message (1-based).
-     */
-    public Integer getColumn() {
-        return column;
-    }
-
-    /**
-     * Column number in the resource that generated this message (1-based).
-     */
-    public void setColumn(Integer column) {
-        this.column = column;
-    }
 }

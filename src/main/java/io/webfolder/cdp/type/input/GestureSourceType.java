@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.input;
 import com.google.gson.annotations.SerializedName;
 
 public enum GestureSourceType {
+
     @SerializedName("default")
     Default("default"),
 
@@ -22,4 +23,5 @@ public enum GestureSourceType {
     public String toString() {
         return value;
     }
+
 }

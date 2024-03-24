@@ -3,6 +3,7 @@ package io.webfolder.cdp.event.target;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
+import lombok.Data;
 
 /**
  * Issued when detached from target for any reason (including <code>detachFromTarget</code> command)
@@ -12,36 +13,16 @@ import io.webfolder.cdp.annotation.Experimental;
 @Experimental
 @Domain("Target")
 @EventName("detachedFromTarget")
+@Data
 public class DetachedFromTarget {
-    private String sessionId;
 
+    /**
+     * Detached session identifier.
+     */
+    private String sessionId;
+    /**
+     * Deprecated.
+     */
     private String targetId;
 
-    /**
-     * Detached session identifier.
-     */
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    /**
-     * Detached session identifier.
-     */
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    /**
-     * Deprecated.
-     */
-    public String getTargetId() {
-        return targetId;
-    }
-
-    /**
-     * Deprecated.
-     */
-    public void setTargetId(String targetId) {
-        this.targetId = targetId;
-    }
 }

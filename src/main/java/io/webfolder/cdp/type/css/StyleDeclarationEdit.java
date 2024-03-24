@@ -1,54 +1,24 @@
 package io.webfolder.cdp.type.css;
 
+import lombok.Data;
+
 /**
  * A descriptor of operation to mutate style declaration text
  */
+@Data
 public class StyleDeclarationEdit {
+
+    /**
+     * The css style sheet identifier.
+     */
     private String styleSheetId;
-
+    /**
+     * The range of the style text in the enclosing stylesheet.
+     */
     private SourceRange range;
-
+    /**
+     * New style text.
+     */
     private String text;
 
-    /**
-     * The css style sheet identifier.
-     */
-    public String getStyleSheetId() {
-        return styleSheetId;
-    }
-
-    /**
-     * The css style sheet identifier.
-     */
-    public void setStyleSheetId(String styleSheetId) {
-        this.styleSheetId = styleSheetId;
-    }
-
-    /**
-     * The range of the style text in the enclosing stylesheet.
-     */
-    public SourceRange getRange() {
-        return range;
-    }
-
-    /**
-     * The range of the style text in the enclosing stylesheet.
-     */
-    public void setRange(SourceRange range) {
-        this.range = range;
-    }
-
-    /**
-     * New style text.
-     */
-    public String getText() {
-        return text;
-    }
-
-    /**
-     * New style text.
-     */
-    public void setText(String text) {
-        this.text = text;
-    }
 }

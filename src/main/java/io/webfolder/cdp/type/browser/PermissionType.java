@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.browser;
 import com.google.gson.annotations.SerializedName;
 
 public enum PermissionType {
+
     @SerializedName("accessibilityEvents")
     AccessibilityEvents("accessibilityEvents"),
 
@@ -61,4 +62,5 @@ public enum PermissionType {
     public String toString() {
         return value;
     }
+
 }

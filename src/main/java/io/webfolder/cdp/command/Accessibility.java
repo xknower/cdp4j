@@ -34,8 +34,9 @@ public interface Accessibility {
      */
     @Experimental
     @Returns("nodes")
-    List<AXNode> getPartialAXTree(@Optional Integer nodeId, @Optional Integer backendNodeId,
-                                  @Optional String objectId, @Optional Boolean fetchRelatives);
+    List<AXNode> getPartialAXTree(
+            @Optional Integer nodeId, @Optional Integer backendNodeId,
+            @Optional String objectId, @Optional Boolean fetchRelatives);
 
     /**
      * Fetches the entire accessibility tree

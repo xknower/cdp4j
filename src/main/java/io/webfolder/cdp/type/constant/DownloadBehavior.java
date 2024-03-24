@@ -3,6 +3,7 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum DownloadBehavior {
+
     @SerializedName("deny")
     Deny("deny"),
 
@@ -22,4 +23,5 @@ public enum DownloadBehavior {
     public String toString() {
         return value;
     }
+
 }
