@@ -71,4 +71,5 @@ public class RemoteLauncherBuilder {
         return new RemoteLauncher(host, sshPort,
                 chromePort, user, password, privateKey, chromeExecutable);
     }
+
 }

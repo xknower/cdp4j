@@ -51,4 +51,5 @@ public class AdaptiveProcessManager extends ProcessManager {
     public boolean kill() {
         return processManager.kill();
     }
+
 }

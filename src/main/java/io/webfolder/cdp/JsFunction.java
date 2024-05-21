@@ -17,4 +17,5 @@ public @interface JsFunction {
      * javascript function body
      */
     String value();
+
 }

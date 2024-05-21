@@ -138,4 +138,5 @@ abstract class AbstractLauncher {
     protected abstract void internalLaunch(List<String> list, List<String> params);
 
     public abstract void kill();
+
 }

@@ -5,4 +5,5 @@ import java.nio.file.Path;
 public interface Downloader {
 
     Path download();
+
 }

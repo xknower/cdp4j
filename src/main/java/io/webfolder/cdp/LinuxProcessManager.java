@@ -69,4 +69,5 @@ public class LinuxProcessManager extends ProcessManager {
             return scanner.hasNext() ? scanner.next() : "";
         }
     }
+
 }

@@ -16,4 +16,5 @@ public class ChromiumVersion {
     public String toString() {
         return "ChromiumVersion [revision=" + revision + "]";
     }
+
 }
